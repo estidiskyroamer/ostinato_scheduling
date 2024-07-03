@@ -61,11 +61,11 @@ class RowIconButton extends StatelessWidget {
   final String label;
 
   const RowIconButton({
-    Key? key,
+    super.key,
     required this.onTap,
     required this.icon,
     required this.label,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +82,12 @@ class RowIconButton extends StatelessWidget {
           child: Column(
             children: [
               Icon(icon),
+              Padding(
+                padding: padding4,
+              ),
               Text(
                 label,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: Theme.of(context).textTheme.labelSmall,
               )
             ],
           ),

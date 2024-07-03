@@ -16,7 +16,10 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
           children: [
             Text(
               "Status",
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontStyle: FontStyle.italic),
             ),
             Row(
               children: [
@@ -43,7 +46,10 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             Padding(padding: padding8),
             Text(
               "Manage",
-              style: Theme.of(context).textTheme.labelMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontStyle: FontStyle.italic),
             ),
             Row(
               children: [
@@ -77,11 +83,12 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
 Widget studentTime(BuildContext context, String scheduleId, DateTime time,
     String studentName, String instrument) {
   return Container(
-    padding: padding8,
+    padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
     margin: const EdgeInsets.only(top: 8, left: 32),
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black38)),
+    decoration: const BoxDecoration(
+        border: Border(
+      bottom: BorderSide(color: Colors.black38),
+    )),
     child: Row(
       children: [
         Expanded(
@@ -117,8 +124,7 @@ Widget studentTime(BuildContext context, String scheduleId, DateTime time,
 Widget scheduleDate(BuildContext context, DateTime date) {
   return Container(
     padding: padding8,
-    decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16), color: Colors.black12),
+    decoration: BoxDecoration(color: Colors.black12),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -131,7 +137,7 @@ Widget scheduleDate(BuildContext context, DateTime date) {
           DateFormat("EEEE").format(date),
           style: Theme.of(context)
               .textTheme
-              .titleMedium!
+              .titleSmall!
               .copyWith(color: Colors.black45),
         )
       ],

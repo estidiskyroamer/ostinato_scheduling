@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:ostinato/pages/account/account.dart';
+import 'package:ostinato/pages/dashboard/dashboard.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';
+import 'package:ostinato/pages/student/student.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({super.key});
@@ -39,19 +42,10 @@ class _NavigationPageState extends State<NavigationPage> {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       body: <Widget>[
-        Container(
-          color: Colors.red,
-          child: const Text("Dashboard"),
-        ),
-        Container(
-          color: Colors.blue,
-          child: const Text("Students"),
-        ),
+        DashboardPage(),
+        StudentPage(),
         SchedulePage(),
-        Container(
-          color: Colors.yellow,
-          child: const Text("Account"),
-        ),
+        AccountPage(),
       ][currentIndex],
     );
   }
