@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/navigation.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -26,6 +26,10 @@ class _LoginPageState extends State<LoginPage> {
               "Ostinato",
               style: Theme.of(context).textTheme.titleLarge,
             ),
+            Text(
+              "Music Lesson Scheduling",
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
             Padding(padding: padding16),
             InputField(
               textEditingController: emailController,
@@ -43,7 +47,10 @@ class _LoginPageState extends State<LoginPage> {
                   backgroundColor: Colors.black,
                   shape: LinearBorder(),
                   padding: padding8),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => NavigationPage()));
+              },
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                     minWidth: MediaQuery.of(context).size.width / 3,

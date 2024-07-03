@@ -47,71 +47,61 @@ EdgeInsetsGeometry padding8 = const EdgeInsets.all(8);
 EdgeInsetsGeometry padding4 = const EdgeInsets.all(4);
 
 ThemeData ostinatoTheme = ThemeData(
-  fontFamily: 'Cormorant',
-  colorSchemeSeed: Colors.white,
-  textTheme: TextTheme(
-    titleLarge: const TextStyle(
-      fontSize: 48,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-      height: 1.0,
+    fontFamily: 'Cormorant',
+    colorSchemeSeed: Colors.white,
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(
+        fontSize: 48,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+        height: 1.0,
+      ),
+      titleMedium: TextStyle(
+        fontSize: 36,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+        height: 1.0,
+      ),
+      titleSmall: TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+        height: 1.0,
+      ),
+      bodyLarge: TextStyle(
+        fontSize: 30,
+        color: Colors.black,
+      ),
+      bodyMedium: TextStyle(
+        fontSize: 22,
+        color: Colors.black,
+      ),
+      bodySmall: TextStyle(
+        fontSize: 14,
+        color: Colors.black,
+      ),
+      displayLarge: TextStyle(
+        fontSize: 32,
+        fontStyle: FontStyle.italic,
+        color: Colors.white,
+      ),
+      displayMedium: TextStyle(
+        fontSize: 24,
+        fontStyle: FontStyle.italic,
+        color: Colors.white,
+      ),
+      displaySmall: TextStyle(
+        fontSize: 16,
+        fontStyle: FontStyle.italic,
+        color: Colors.white,
+      ),
+      labelLarge: TextStyle(
+          fontFamily: "Montserrat", fontSize: 20, color: Colors.black54),
+      labelMedium: TextStyle(
+          fontFamily: "Montserrat", fontSize: 16, color: Colors.black54),
+      labelSmall: TextStyle(
+          fontFamily: "Montserrat", fontSize: 12, color: Colors.black54),
     ),
-    titleMedium: const TextStyle(
-      fontSize: 36,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-      height: 1.0,
-    ),
-    titleSmall: const TextStyle(
-      fontSize: 24,
-      fontWeight: FontWeight.bold,
-      color: Colors.black,
-      height: 1.0,
-    ),
-    bodyLarge: const TextStyle(
-      fontSize: 30,
-      color: Colors.black,
-    ),
-    bodyMedium: const TextStyle(
-      fontSize: 22,
-      color: Colors.black,
-    ),
-    bodySmall: const TextStyle(
-      fontSize: 14,
-      color: Colors.black,
-    ),
-    displayLarge: const TextStyle(
-      fontSize: 32,
-      fontStyle: FontStyle.italic,
-      color: Colors.white,
-    ),
-    displayMedium: const TextStyle(
-      fontSize: 24,
-      fontStyle: FontStyle.italic,
-      color: Colors.white,
-    ),
-    displaySmall: const TextStyle(
-      fontSize: 16,
-      fontStyle: FontStyle.italic,
-      color: Colors.white,
-    ),
-    labelLarge: TextStyle(
-      fontSize: 20,
-      fontWeight: FontWeight.bold,
-      fontStyle: FontStyle.italic,
-      color: Colors.black.withAlpha(100),
-    ),
-    labelMedium: TextStyle(
-      fontSize: 16,
-      fontWeight: FontWeight.bold,
-      fontStyle: FontStyle.italic,
-      color: Colors.black.withAlpha(100),
-    ),
-    labelSmall: TextStyle(
-      fontSize: 12,
-      fontWeight: FontWeight.bold,
-      fontStyle: FontStyle.italic,
-      color: Colors.black.withAlpha(100),
-    ),
-  ),
-);
+    navigationBarTheme: NavigationBarThemeData(
+        labelTextStyle: MaterialStateProperty.all(const TextStyle(
+            fontFamily: "Montserrat", fontSize: 12, color: Colors.black54))));
