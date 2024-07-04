@@ -16,49 +16,49 @@ class _StudentPageState extends State<StudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Student List",
-          style: Theme.of(context).textTheme.titleMedium,
+        appBar: AppBar(
+          title: Text(
+            "Student List",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          automaticallyImplyLeading: false,
         ),
-        automaticallyImplyLeading: false,
-      ),
-      body: /* Column(
+        body: Column(
           children: [
-            InputField(
-                textEditingController: searchController,
-                hintText: "Search by student name..."),
-            
-          ],
-        ) */
-          SingleChildScrollView(
+            Container(
               padding: padding16,
-              child: ListView(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                children: [
-                  InputField(
-                      textEditingController: searchController,
-                      hintText: "Search by student name..."),
-                  studentItem(context, "Cayleen"),
-                  studentItem(context, "Clarice"),
-                  studentItem(context, "Velove"),
-                  studentItem(context, "Vrilla"),
-                  studentItem(context, "Sierra"),
-                  studentItem(context, "Susie"),
-                  studentItem(context, "Hikaru"),
-                  studentItem(context, "Damar"),
-                  studentItem(context, "Gian"),
-                  studentItem(context, "Andrea Taylor"),
-                  studentItem(context, "Jocelyn"),
-                  studentItem(context, "Felicia"),
-                  studentItem(context, "Erci"),
-                  studentItem(context, "Ben"),
-                  studentItem(context, "Yoshiko"),
-                  studentItem(context, "Natasha"),
-                  studentItem(context, "Given"),
-                ],
-              )),
-    );
+              child: InputField(
+                  textEditingController: searchController,
+                  hintText: "Search by student name..."),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                  padding: padding16,
+                  child: ListView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    children: [
+                      studentItem(context, "Cayleen"),
+                      studentItem(context, "Clarice"),
+                      studentItem(context, "Velove"),
+                      studentItem(context, "Vrilla"),
+                      studentItem(context, "Sierra"),
+                      studentItem(context, "Susie"),
+                      studentItem(context, "Hikaru"),
+                      studentItem(context, "Damar"),
+                      studentItem(context, "Gian"),
+                      studentItem(context, "Andrea Taylor"),
+                      studentItem(context, "Jocelyn"),
+                      studentItem(context, "Felicia"),
+                      studentItem(context, "Erci"),
+                      studentItem(context, "Ben"),
+                      studentItem(context, "Yoshiko"),
+                      studentItem(context, "Natasha"),
+                      studentItem(context, "Given"),
+                    ],
+                  )),
+            )
+          ],
+        ));
   }
 }

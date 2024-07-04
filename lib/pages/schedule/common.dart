@@ -7,76 +7,70 @@ import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 
 Widget bottomSheet(BuildContext context, String scheduleId) {
-  return Wrap(
-    children: [
-      Container(
-        padding: padding16,
-        color: HexColor("#E6F2FF"),
-        child: Column(
+  return ItemBottomSheet(
+    child: Column(
+      children: [
+        Text(
+          "Status",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontStyle: FontStyle.italic),
+        ),
+        Row(
           children: [
-            Text(
-              "Status",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontStyle: FontStyle.italic),
-            ),
-            Row(
-              children: [
-                RowIconButton(
-                    onTap: () {
-                      print("done $scheduleId");
-                    },
-                    icon: FontAwesomeIcons.circleCheck,
-                    label: "Done"),
-                RowIconButton(
-                    onTap: () {
-                      print("reschedule $scheduleId");
-                    },
-                    icon: FontAwesomeIcons.rotate,
-                    label: "Reschedule"),
-                RowIconButton(
-                    onTap: () {
-                      print("cancel $scheduleId");
-                    },
-                    icon: FontAwesomeIcons.circleXmark,
-                    label: "Canceled"),
-              ],
-            ),
-            Padding(padding: padding8),
-            Text(
-              "Manage",
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontStyle: FontStyle.italic),
-            ),
-            Row(
-              children: [
-                RowIconButton(
-                    onTap: () {
-                      print("note $scheduleId");
-                    },
-                    icon: FontAwesomeIcons.filePen,
-                    label: "Add Note"),
-                RowIconButton(
-                    onTap: () {
-                      print("edit $scheduleId");
-                    },
-                    icon: FontAwesomeIcons.pencil,
-                    label: "Edit"),
-                RowIconButton(
-                    onTap: () {
-                      print("remove $scheduleId");
-                    },
-                    icon: FontAwesomeIcons.trash,
-                    label: "Remove"),
-              ],
-            )
+            RowIconButton(
+                onTap: () {
+                  print("done $scheduleId");
+                },
+                icon: FontAwesomeIcons.circleCheck,
+                label: "Done"),
+            RowIconButton(
+                onTap: () {
+                  print("reschedule $scheduleId");
+                },
+                icon: FontAwesomeIcons.rotate,
+                label: "Reschedule"),
+            RowIconButton(
+                onTap: () {
+                  print("cancel $scheduleId");
+                },
+                icon: FontAwesomeIcons.circleXmark,
+                label: "Canceled"),
           ],
         ),
-      ),
-    ],
+        Padding(padding: padding8),
+        Text(
+          "Manage",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontStyle: FontStyle.italic),
+        ),
+        Row(
+          children: [
+            RowIconButton(
+                onTap: () {
+                  print("note $scheduleId");
+                },
+                icon: FontAwesomeIcons.filePen,
+                label: "Add Note"),
+            RowIconButton(
+                onTap: () {
+                  print("edit $scheduleId");
+                },
+                icon: FontAwesomeIcons.pencil,
+                label: "Edit"),
+            RowIconButton(
+                onTap: () {
+                  print("delete $scheduleId");
+                },
+                icon: FontAwesomeIcons.trash,
+                label: "Delete"),
+          ],
+        )
+      ],
+    ),
   );
 }
 

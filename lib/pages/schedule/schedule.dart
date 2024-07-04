@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/schedule/common.dart';
+import 'package:ostinato/pages/schedule/new_schedule.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -25,6 +27,14 @@ class _SchedulePageState extends State<SchedulePage> {
           "Monthly Schedule",
           style: Theme.of(context).textTheme.titleMedium,
         ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => NewSchedulePage()));
+              },
+              icon: const Icon(FontAwesomeIcons.plus))
+        ],
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(

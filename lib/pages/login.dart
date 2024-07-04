@@ -42,26 +42,12 @@ class _LoginPageState extends State<LoginPage> {
               inputType: TextInputType.visiblePassword,
             ),
             Padding(padding: padding8),
-            TextButton(
-              style: TextButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  shape: LinearBorder(),
-                  padding: padding8),
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => NavigationPage()));
-              },
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width / 3,
-                    maxWidth: MediaQuery.of(context).size.width),
-                child: Text(
-                  "Login",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displayMedium,
-                ),
-              ),
-            ),
+            SolidButton(
+                action: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NavigationPage()));
+                },
+                text: "Login"),
             Text(
               "- or -",
               style: Theme.of(context)
@@ -69,26 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                   .bodyMedium!
                   .merge(const TextStyle(fontStyle: FontStyle.italic)),
             ),
-            TextButton(
-              style: TextButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                      side: BorderSide(width: 1.0, color: Colors.black)),
-                  padding: padding8),
-              onPressed: () {},
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                    minWidth: MediaQuery.of(context).size.width / 3,
-                    maxWidth: MediaQuery.of(context).size.width),
-                child: Text(
-                  "Sign Up",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium!
-                      .merge(const TextStyle(color: Colors.black)),
-                ),
-              ),
-            ),
+            OutlineButton(action: () {}, text: "Sign Up")
           ],
         ),
       ),
