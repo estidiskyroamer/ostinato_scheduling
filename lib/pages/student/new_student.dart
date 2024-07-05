@@ -7,20 +7,23 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 
-class NewSchedulePage extends StatefulWidget {
-  const NewSchedulePage({super.key});
+class NewStudentPage extends StatefulWidget {
+  const NewStudentPage({super.key});
 
   @override
-  State<NewSchedulePage> createState() => _NewSchedulePageState();
+  State<NewStudentPage> createState() => _NewStudentPageState();
 }
 
-class _NewSchedulePageState extends State<NewSchedulePage> {
+class _NewStudentPageState extends State<NewStudentPage> {
   TextEditingController studentNameController = TextEditingController();
+  TextEditingController studentAddressController = TextEditingController();
   TextEditingController teacherNameController = TextEditingController();
   TextEditingController instrumentController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
+  DateTime studentBirthDate =
+      DateTime.now().subtract(const Duration(days: 365 * 10));
   DateTime selectedScheduleStartDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
@@ -29,6 +32,14 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  void setBirthDate(DateTime selectedDate) {
+    if (mounted) {
+      setState(() {
+        studentBirthDate = selectedDate;
+      });
+    }
   }
 
   void setStartDate(DateTime selectedDate) {
@@ -60,7 +71,7 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "New Schedule",
+          "New Student",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -70,29 +81,33 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
           child: Column(
             children: [
               InputField(
-                  textEditingController: teacherNameController,
-                  hintText: "Teacher name"),
-              InputField(
                   textEditingController: studentNameController,
                   hintText: "Student name"),
               InputField(
-                  textEditingController: instrumentController,
-                  hintText: "Instrument"),
-              Padding(padding: padding8),
-              InputField(
                 textEditingController: dateController,
-                hintText: "Start date",
+                hintText: "Birth date",
                 onTap: () async {
                   final result = await dateTimePicker(
-                      context, "Start Date", selectedScheduleStartDate);
+                      context, "Birth Date", studentBirthDate);
                   if (result != null) {
                     dateController.text =
-                        DateFormat("EEEE, dd MMMM yyyy").format(result);
+                        DateFormat("dd MMMM yyyy").format(result);
                     setStartDate(result);
                   }
                 },
                 isReadOnly: true,
               ),
+              InputField(
+                  textEditingController: studentNameController,
+                  hintText: "Student address"),
+              Padding(padding: padding8),
+              InputField(
+                  textEditingController: instrumentController,
+                  hintText: "Instrument"),
+              InputField(
+                  textEditingController: teacherNameController,
+                  hintText: "Teacher name"),
+              Padding(padding: padding8),
               Row(
                 children: [
                   Expanded(

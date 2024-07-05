@@ -53,8 +53,8 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
                 onTap: () {
                   print("note $scheduleId");
                 },
-                icon: FontAwesomeIcons.filePen,
-                label: "Add Note"),
+                icon: FontAwesomeIcons.file,
+                label: "Notes"),
             RowIconButton(
                 onTap: () {
                   print("edit $scheduleId");

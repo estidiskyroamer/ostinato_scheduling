@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/student/common.dart';
+import 'package:ostinato/pages/student/new_student.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -21,6 +22,14 @@ class _StudentPageState extends State<StudentPage> {
             "Student List",
             style: Theme.of(context).textTheme.titleMedium,
           ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NewStudentPage()));
+                },
+                icon: const Icon(FontAwesomeIcons.plus))
+          ],
           automaticallyImplyLeading: false,
         ),
         body: Column(

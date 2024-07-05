@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
             InputField(
               textEditingController: passwordController,
               hintText: "Password",
-              inputType: TextInputType.visiblePassword,
+              isPassword: true,
             ),
             Padding(padding: padding8),
             SolidButton(

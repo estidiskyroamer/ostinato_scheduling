@@ -7,20 +7,23 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 
-class NewSchedulePage extends StatefulWidget {
-  const NewSchedulePage({super.key});
+class EditStudentPage extends StatefulWidget {
+  const EditStudentPage({super.key});
 
   @override
-  State<NewSchedulePage> createState() => _NewSchedulePageState();
+  State<EditStudentPage> createState() => _EditStudentPageState();
 }
 
-class _NewSchedulePageState extends State<NewSchedulePage> {
+class _EditStudentPageState extends State<EditStudentPage> {
   TextEditingController studentNameController = TextEditingController();
+  TextEditingController studentAddressController = TextEditingController();
   TextEditingController teacherNameController = TextEditingController();
   TextEditingController instrumentController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
+  DateTime studentBirthDate =
+      DateTime.now().subtract(const Duration(days: 365 * 10));
   DateTime selectedScheduleStartDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
@@ -29,6 +32,14 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+  }
+
+  void setBirthDate(DateTime selectedDate) {
+    if (mounted) {
+      setState(() {
+        studentBirthDate = selectedDate;
+      });
+    }
   }
 
   void setStartDate(DateTime selectedDate) {
@@ -60,7 +71,7 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "New Schedule",
+          "Edit Student Data",
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -70,66 +81,32 @@ class _NewSchedulePageState extends State<NewSchedulePage> {
           child: Column(
             children: [
               InputField(
-                  textEditingController: teacherNameController,
-                  hintText: "Teacher name"),
-              InputField(
                   textEditingController: studentNameController,
                   hintText: "Student name"),
               InputField(
-                  textEditingController: instrumentController,
-                  hintText: "Instrument"),
-              Padding(padding: padding8),
-              InputField(
                 textEditingController: dateController,
-                hintText: "Start date",
+                hintText: "Birth date",
                 onTap: () async {
                   final result = await dateTimePicker(
-                      context, "Start Date", selectedScheduleStartDate);
+                      context, "Birth Date", studentBirthDate);
                   if (result != null) {
                     dateController.text =
-                        DateFormat("EEEE, dd MMMM yyyy").format(result);
+                        DateFormat("dd MMMM yyyy").format(result);
                     setStartDate(result);
                   }
                 },
                 isReadOnly: true,
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: InputField(
-                      textEditingController: startTimeController,
-                      hintText: "Start time",
-                      onTap: () async {
-                        final result = await dateTimePicker(
-                            context, "Start Time", selectedScheduleStartTime);
-                        if (result != null) {
-                          startTimeController.text =
-                              DateFormat("HH:mm").format(result);
-                          setStartTime(result);
-                        }
-                      },
-                      isReadOnly: true,
-                    ),
-                  ),
-                  Padding(padding: padding8),
-                  Expanded(
-                    child: InputField(
-                      textEditingController: endTimeController,
-                      hintText: "End time",
-                      onTap: () async {
-                        final result = await dateTimePicker(
-                            context, "End Time", selectedScheduleEndTime);
-                        if (result != null) {
-                          endTimeController.text =
-                              DateFormat("HH:mm").format(result);
-                          setEndTime(result);
-                        }
-                      },
-                      isReadOnly: true,
-                    ),
-                  ),
-                ],
-              ),
+              InputField(
+                  textEditingController: studentNameController,
+                  hintText: "Student address"),
+              Padding(padding: padding8),
+              InputField(
+                  textEditingController: instrumentController,
+                  hintText: "Instrument"),
+              InputField(
+                  textEditingController: teacherNameController,
+                  hintText: "Teacher name"),
               Padding(padding: padding16),
               SolidButton(
                   action: () {

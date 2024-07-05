@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/schedule/schedule.dart';
+import 'package:ostinato/pages/student/edit_student.dart';
+import 'package:ostinato/pages/student/student_schedule.dart';
 
 Widget studentItem(BuildContext context, String name) {
   return Container(
@@ -44,16 +47,19 @@ Widget bottomSheet(BuildContext context, String studentId) {
           children: [
             RowIconButton(
                 onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => StudentSchedulePage()));
+                },
+                icon: FontAwesomeIcons.clipboardCheck,
+                label: "Schedule"),
+            RowIconButton(
+                onTap: () {
+                  Navigator.pop(context);
                   print("payment $studentId");
                 },
                 icon: FontAwesomeIcons.moneyBillTransfer,
                 label: "Payment"),
-            RowIconButton(
-                onTap: () {
-                  print("schedule $studentId");
-                },
-                icon: FontAwesomeIcons.clipboardCheck,
-                label: "Attendance"),
           ],
         ),
         Text(
@@ -67,18 +73,22 @@ Widget bottomSheet(BuildContext context, String studentId) {
           children: [
             RowIconButton(
                 onTap: () {
+                  Navigator.pop(context);
                   print("done $studentId");
                 },
                 icon: FontAwesomeIcons.magnifyingGlass,
                 label: "Detail"),
             RowIconButton(
                 onTap: () {
-                  print("reschedule $studentId");
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => EditStudentPage()));
                 },
                 icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
             RowIconButton(
                 onTap: () {
+                  Navigator.pop(context);
                   print("cancel $studentId");
                 },
                 icon: FontAwesomeIcons.trash,

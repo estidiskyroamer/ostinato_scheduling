@@ -12,6 +12,8 @@ class InputField extends StatefulWidget {
   final Color borderColor;
   final TextInputType inputType;
   final VoidCallback? onTap;
+  final bool isReadOnly;
+  final bool isPassword;
 
   const InputField(
       {super.key,
@@ -21,7 +23,9 @@ class InputField extends StatefulWidget {
       this.marginBottom = 6.0,
       this.borderColor = Colors.black,
       this.inputType = TextInputType.text,
-      this.onTap});
+      this.onTap,
+      this.isReadOnly = false,
+      this.isPassword = false});
 
   @override
   State<InputField> createState() => _InputFieldState();
@@ -54,9 +58,9 @@ class _InputFieldState extends State<InputField> {
         ),
         controller: widget.textEditingController,
         keyboardType: widget.inputType,
-        obscureText:
-            widget.inputType == TextInputType.visiblePassword ? true : false,
+        obscureText: widget.isPassword,
         style: Theme.of(context).textTheme.bodyMedium,
+        readOnly: widget.isReadOnly,
       ),
     );
   }
@@ -192,6 +196,8 @@ Future<DateTime?> dateTimePicker(
         startDayOfWeek: DateTime.sunday,
         pickerFormat: PickerFormat.ymd,
         boardTitle: title,
-        boardTitleTextStyle: Theme.of(context).textTheme.titleSmall),
+        boardTitleTextStyle: Theme.of(context).textTheme.titleSmall,
+        pickerSubTitles: const BoardDateTimeItemTitles(
+            year: "Year", month: "Month", day: "Date")),
   );
 }
