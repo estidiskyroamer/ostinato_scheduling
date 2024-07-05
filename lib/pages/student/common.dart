@@ -37,32 +37,6 @@ Widget bottomSheet(BuildContext context, String studentId) {
     child: Column(
       children: [
         Text(
-          "Status",
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontStyle: FontStyle.italic),
-        ),
-        Row(
-          children: [
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => StudentSchedulePage()));
-                },
-                icon: FontAwesomeIcons.clipboardCheck,
-                label: "Schedule"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  print("payment $studentId");
-                },
-                icon: FontAwesomeIcons.moneyBillTransfer,
-                label: "Payment"),
-          ],
-        ),
-        Text(
           "Manage",
           style: Theme.of(context)
               .textTheme

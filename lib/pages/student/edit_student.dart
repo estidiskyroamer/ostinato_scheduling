@@ -100,13 +100,6 @@ class _EditStudentPageState extends State<EditStudentPage> {
               InputField(
                   textEditingController: studentNameController,
                   hintText: "Student address"),
-              Padding(padding: padding8),
-              InputField(
-                  textEditingController: instrumentController,
-                  hintText: "Instrument"),
-              InputField(
-                  textEditingController: teacherNameController,
-                  hintText: "Teacher name"),
               Padding(padding: padding16),
               SolidButton(
                   action: () {
