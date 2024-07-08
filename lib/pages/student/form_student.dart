@@ -7,18 +7,19 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 
-class EditStudentPage extends StatefulWidget {
-  const EditStudentPage({super.key});
+class FormStudentPage extends StatefulWidget {
+  final String? studentId;
+  const FormStudentPage({super.key, this.studentId});
 
   @override
-  State<EditStudentPage> createState() => _EditStudentPageState();
+  State<FormStudentPage> createState() => _FormStudentPageState();
 }
 
-class _EditStudentPageState extends State<EditStudentPage> {
+class _FormStudentPageState extends State<FormStudentPage> {
   TextEditingController studentNameController = TextEditingController();
   TextEditingController studentAddressController = TextEditingController();
-  TextEditingController teacherNameController = TextEditingController();
-  TextEditingController instrumentController = TextEditingController();
+  TextEditingController studentPhoneController = TextEditingController();
+  TextEditingController studentEmailController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
@@ -27,11 +28,22 @@ class _EditStudentPageState extends State<EditStudentPage> {
   DateTime selectedScheduleStartDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
+  String pageTitle = "New Student";
 
   @override
   void initState() {
-    // TODO: implement initState
+    setEdit();
     super.initState();
+  }
+
+  void setEdit() {
+    if (mounted) {
+      if (widget.studentId != null) {
+        setState(() {
+          pageTitle = "Edit Student";
+        });
+      }
+    }
   }
 
   void setBirthDate(DateTime selectedDate) {
@@ -71,7 +83,7 @@ class _EditStudentPageState extends State<EditStudentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Edit Student Data",
+          pageTitle,
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -98,8 +110,16 @@ class _EditStudentPageState extends State<EditStudentPage> {
                 isReadOnly: true,
               ),
               InputField(
-                  textEditingController: studentNameController,
-                  hintText: "Student address"),
+                  textEditingController: studentAddressController,
+                  hintText: "Home address"),
+              InputField(
+                  textEditingController: studentEmailController,
+                  hintText: "E-mail"),
+              InputField(
+                textEditingController: studentPhoneController,
+                hintText: "Phone number",
+                inputType: TextInputType.phone,
+              ),
               Padding(padding: padding16),
               SolidButton(
                   action: () {

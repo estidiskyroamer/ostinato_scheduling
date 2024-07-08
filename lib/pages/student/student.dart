@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/student/common.dart';
-import 'package:ostinato/pages/student/new_student.dart';
+import 'package:ostinato/pages/student/form_student.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -26,7 +26,7 @@ class _StudentPageState extends State<StudentPage> {
             IconButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NewStudentPage()));
+                      builder: (context) => FormStudentPage()));
                 },
                 icon: const Icon(FontAwesomeIcons.plus))
           ],

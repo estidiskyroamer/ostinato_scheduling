@@ -7,38 +7,39 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 
-class NewStudentPage extends StatefulWidget {
-  const NewStudentPage({super.key});
+class FormSchedulePage extends StatefulWidget {
+  final String? scheduleId;
+  const FormSchedulePage({super.key, this.scheduleId});
 
   @override
-  State<NewStudentPage> createState() => _NewStudentPageState();
+  State<FormSchedulePage> createState() => _FormSchedulePageState();
 }
 
-class _NewStudentPageState extends State<NewStudentPage> {
+class _FormSchedulePageState extends State<FormSchedulePage> {
   TextEditingController studentNameController = TextEditingController();
-  TextEditingController studentAddressController = TextEditingController();
   TextEditingController teacherNameController = TextEditingController();
   TextEditingController instrumentController = TextEditingController();
   TextEditingController dateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
-  DateTime studentBirthDate =
-      DateTime.now().subtract(const Duration(days: 365 * 10));
   DateTime selectedScheduleStartDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
+  String pageTitle = "New Schedule";
 
   @override
   void initState() {
-    // TODO: implement initState
+    setEdit();
     super.initState();
   }
 
-  void setBirthDate(DateTime selectedDate) {
+  void setEdit() {
     if (mounted) {
-      setState(() {
-        studentBirthDate = selectedDate;
-      });
+      if (widget.scheduleId != null) {
+        setState(() {
+          pageTitle = "Edit Schedule";
+        });
+      }
     }
   }
 
@@ -71,7 +72,7 @@ class _NewStudentPageState extends State<NewStudentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "New Student",
+          pageTitle,
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
@@ -81,33 +82,29 @@ class _NewStudentPageState extends State<NewStudentPage> {
           child: Column(
             children: [
               InputField(
+                  textEditingController: teacherNameController,
+                  hintText: "Teacher name"),
+              InputField(
                   textEditingController: studentNameController,
                   hintText: "Student name"),
               InputField(
+                  textEditingController: instrumentController,
+                  hintText: "Instrument"),
+              Padding(padding: padding8),
+              InputField(
                 textEditingController: dateController,
-                hintText: "Birth date",
+                hintText: "Start date",
                 onTap: () async {
                   final result = await dateTimePicker(
-                      context, "Birth Date", studentBirthDate);
+                      context, "Start Date", selectedScheduleStartDate);
                   if (result != null) {
                     dateController.text =
-                        DateFormat("dd MMMM yyyy").format(result);
+                        DateFormat("EEEE, dd MMMM yyyy").format(result);
                     setStartDate(result);
                   }
                 },
                 isReadOnly: true,
               ),
-              InputField(
-                  textEditingController: studentNameController,
-                  hintText: "Student address"),
-              Padding(padding: padding8),
-              InputField(
-                  textEditingController: instrumentController,
-                  hintText: "Instrument"),
-              InputField(
-                  textEditingController: teacherNameController,
-                  hintText: "Teacher name"),
-              Padding(padding: padding8),
               Row(
                 children: [
                   Expanded(
@@ -116,7 +113,10 @@ class _NewStudentPageState extends State<NewStudentPage> {
                       hintText: "Start time",
                       onTap: () async {
                         final result = await dateTimePicker(
-                            context, "Start Time", selectedScheduleStartTime);
+                            context,
+                            "Start Time",
+                            selectedScheduleStartTime,
+                            DateTimePickerType.time);
                         if (result != null) {
                           startTimeController.text =
                               DateFormat("HH:mm").format(result);
@@ -132,8 +132,8 @@ class _NewStudentPageState extends State<NewStudentPage> {
                       textEditingController: endTimeController,
                       hintText: "End time",
                       onTap: () async {
-                        final result = await dateTimePicker(
-                            context, "End Time", selectedScheduleEndTime);
+                        final result = await dateTimePicker(context, "End Time",
+                            selectedScheduleEndTime, DateTimePickerType.time);
                         if (result != null) {
                           endTimeController.text =
                               DateFormat("HH:mm").format(result);

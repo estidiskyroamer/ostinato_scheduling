@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/schedule/common.dart';
-import 'package:ostinato/pages/schedule/new_schedule.dart';
+import 'package:ostinato/pages/schedule/form_schedule.dart';
 
 class StudentSchedulePage extends StatefulWidget {
   const StudentSchedulePage({super.key});
@@ -30,8 +30,8 @@ class _StudentSchedulePageState extends State<StudentSchedulePage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => NewSchedulePage()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => FormSchedulePage()));
               },
               icon: const Icon(FontAwesomeIcons.plus))
         ],

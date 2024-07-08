@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
-import 'package:ostinato/pages/schedule/form_schedule.dart';
 
 Widget bottomSheet(BuildContext context, String scheduleId) {
   return ItemBottomSheet(
@@ -63,10 +60,7 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const FormSchedulePage(
-                            scheduleId: "1",
-                          )));
+                  print("edit $scheduleId");
                 },
                 icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
@@ -84,15 +78,14 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
   );
 }
 
-Widget studentTime(BuildContext context, String scheduleId, DateTime time,
-    String studentName, String instrument) {
+Widget dashboardStudentTime(BuildContext context, String scheduleId,
+    DateTime time, String studentName, String instrument) {
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
     margin: const EdgeInsets.only(top: 8, left: 32),
     decoration: const BoxDecoration(
-        border: Border(
-      bottom: BorderSide(color: Colors.black38),
-    )),
+      border: Border(bottom: BorderSide(color: Colors.black38)),
+    ),
     child: Row(
       children: [
         Expanded(
@@ -120,30 +113,6 @@ Widget studentTime(BuildContext context, String scheduleId, DateTime time,
             },
           ),
         ),
-      ],
-    ),
-  );
-}
-
-Widget scheduleDate(BuildContext context, DateTime date) {
-  return Container(
-    padding: padding16,
-    decoration: BoxDecoration(color: Colors.black12),
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          DateFormat("dd MMMM yyyy").format(date),
-          style: Theme.of(context).textTheme.titleSmall,
-        ),
-        Text(
-          DateFormat("EEEE").format(date),
-          style: Theme.of(context)
-              .textTheme
-              .titleSmall!
-              .copyWith(color: Colors.black45),
-        )
       ],
     ),
   );

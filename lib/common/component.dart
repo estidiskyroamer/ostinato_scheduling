@@ -181,10 +181,12 @@ class OutlineButton extends StatelessWidget {
 }
 
 Future<DateTime?> dateTimePicker(
-    BuildContext context, String title, DateTime initialDate) {
+    BuildContext context, String title, DateTime initialDate,
+    [DateTimePickerType? pickerType]) {
+  pickerType = pickerType ?? DateTimePickerType.date;
   return showBoardDateTimePicker(
     context: context,
-    pickerType: DateTimePickerType.date,
+    pickerType: pickerType,
     initialDate: initialDate,
     options: BoardDateTimeOptions(
         backgroundColor: HexColor("#E6F2FF"),

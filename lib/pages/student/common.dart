@@ -3,7 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';
-import 'package:ostinato/pages/student/edit_student.dart';
+import 'package:ostinato/pages/student/form_student.dart';
 import 'package:ostinato/pages/student/student_schedule.dart';
 
 Widget studentItem(BuildContext context, String name) {
@@ -56,7 +56,9 @@ Widget bottomSheet(BuildContext context, String studentId) {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditStudentPage()));
+                      builder: (context) => const FormStudentPage(
+                            studentId: "1",
+                          )));
                 },
                 icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
