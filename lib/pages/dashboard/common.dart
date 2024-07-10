@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/schedule/form_schedule.dart';
+import 'package:ostinato/pages/schedule/schedule_notes.dart';
 
 Widget bottomSheet(BuildContext context, String scheduleId) {
   return ItemBottomSheet(
@@ -53,14 +55,18 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  print("note $scheduleId");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ScheduleNotesPage()));
                 },
                 icon: FontAwesomeIcons.file,
                 label: "Notes"),
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  print("edit $scheduleId");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const FormSchedulePage(
+                            scheduleId: "1",
+                          )));
                 },
                 icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
@@ -73,6 +79,24 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
                 label: "Delete"),
           ],
         )
+      ],
+    ),
+  );
+}
+
+Widget dashboardTitle(BuildContext context, String title) {
+  return Container(
+    padding: padding16,
+    margin: const EdgeInsets.only(top: 16),
+    decoration: const BoxDecoration(color: Colors.black12),
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleSmall,
+        ),
       ],
     ),
   );

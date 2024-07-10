@@ -14,6 +14,7 @@ class InputField extends StatefulWidget {
   final VoidCallback? onTap;
   final bool isReadOnly;
   final bool isPassword;
+  final int maxLines;
 
   const InputField(
       {super.key,
@@ -25,7 +26,8 @@ class InputField extends StatefulWidget {
       this.inputType = TextInputType.text,
       this.onTap,
       this.isReadOnly = false,
-      this.isPassword = false});
+      this.isPassword = false,
+      this.maxLines = 1});
 
   @override
   State<InputField> createState() => _InputFieldState();
@@ -61,6 +63,7 @@ class _InputFieldState extends State<InputField> {
         obscureText: widget.isPassword,
         style: Theme.of(context).textTheme.bodyMedium,
         readOnly: widget.isReadOnly,
+        maxLines: widget.maxLines,
       ),
     );
   }

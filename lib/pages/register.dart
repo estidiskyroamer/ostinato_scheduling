@@ -3,17 +3,18 @@ import 'package:flutter/widgets.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/navigation.dart';
-import 'package:ostinato/pages/register.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   @override
@@ -28,21 +29,27 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               Image(
                   width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/login.jpeg')),
+                  image: const AssetImage('assets/images/register.jpeg')),
               Padding(padding: padding16),
               Text(
-                "Ostinato",
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Text(
-                "Music Lesson Scheduling",
-                style: Theme.of(context).textTheme.labelMedium,
+                "Register as Teacher",
+                style: Theme.of(context).textTheme.titleMedium,
               ),
               Padding(padding: padding16),
+              InputField(
+                textEditingController: nameController,
+                hintText: "Full name",
+                inputType: TextInputType.name,
+              ),
               InputField(
                 textEditingController: emailController,
                 hintText: "Email",
                 inputType: TextInputType.emailAddress,
+              ),
+              InputField(
+                textEditingController: phoneController,
+                hintText: "Phone number",
+                inputType: TextInputType.phone,
               ),
               InputField(
                 textEditingController: passwordController,
@@ -55,20 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => NavigationPage()));
                   },
-                  text: "Login"),
-              Text(
-                "- or -",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .merge(const TextStyle(fontStyle: FontStyle.italic)),
-              ),
-              OutlineButton(
-                  action: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RegisterPage()));
-                  },
-                  text: "Register")
+                  text: "Register"),
             ],
           ),
         ),

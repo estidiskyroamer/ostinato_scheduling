@@ -61,39 +61,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
             ),
-            Container(
-              color: Colors.black12,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                    child: Text(
-                      "Currently Teaching",
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                  dashboardStudentTime(context, "1",
-                      DateTime(2024, 7, 8, 17, 0), "Cayleen", "Violin"),
-                ],
-              ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                dashboardTitle(context, "Currently Teaching"),
+                dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 17, 0),
+                    "Cayleen", "Violin"),
+              ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                  child: Text(
-                    "Previously Today",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontStyle: FontStyle.italic),
-                  ),
-                ),
+                dashboardTitle(context, "Previous"),
                 dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 16, 0),
                     "Cayleen", "Piano"),
                 dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 16, 30),
@@ -103,16 +82,7 @@ class _DashboardPageState extends State<DashboardPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-                  child: Text(
-                    "Upcoming Today",
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyLarge!
-                        .copyWith(fontStyle: FontStyle.italic),
-                  ),
-                ),
+                dashboardTitle(context, "Upcoming"),
                 dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 18, 0),
                     "Velove", "Piano"),
               ],

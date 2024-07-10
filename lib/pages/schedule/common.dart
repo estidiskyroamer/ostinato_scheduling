@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
+import 'package:ostinato/pages/schedule/form_schedule_note.dart';
+import 'package:ostinato/pages/schedule/schedule_notes.dart';
 
 Widget bottomSheet(BuildContext context, String scheduleId) {
   return ItemBottomSheet(
@@ -56,7 +58,8 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  print("note $scheduleId");
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const ScheduleNotesPage()));
                 },
                 icon: FontAwesomeIcons.file,
                 label: "Notes"),
@@ -74,6 +77,43 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
                 onTap: () {
                   Navigator.pop(context);
                   print("delete $scheduleId");
+                },
+                icon: FontAwesomeIcons.trash,
+                label: "Delete"),
+          ],
+        )
+      ],
+    ),
+  );
+}
+
+Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
+  return ItemBottomSheet(
+    child: Column(
+      children: [
+        Text(
+          "Manage",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontStyle: FontStyle.italic),
+        ),
+        Row(
+          children: [
+            RowIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const FormScheduleNotePage(
+                            scheduleNoteId: "1",
+                          )));
+                },
+                icon: FontAwesomeIcons.pencil,
+                label: "Edit"),
+            RowIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                  print("delete $scheduleNoteId");
                 },
                 icon: FontAwesomeIcons.trash,
                 label: "Delete"),
@@ -128,7 +168,8 @@ Widget studentTime(BuildContext context, String scheduleId, DateTime time,
 Widget scheduleDate(BuildContext context, DateTime date) {
   return Container(
     padding: padding16,
-    decoration: BoxDecoration(color: Colors.black12),
+    margin: const EdgeInsets.only(top: 16),
+    decoration: const BoxDecoration(color: Colors.black12),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,6 +185,53 @@ Widget scheduleDate(BuildContext context, DateTime date) {
               .titleSmall!
               .copyWith(color: Colors.black45),
         )
+      ],
+    ),
+  );
+}
+
+Widget noteItem(BuildContext context, String scheduleNoteId, String note,
+    DateTime createdAt) {
+  return Container(
+    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+    margin: const EdgeInsets.only(top: 8, left: 32),
+    decoration: const BoxDecoration(
+        border: Border(
+      bottom: BorderSide(color: Colors.black38),
+    )),
+    child: Row(
+      children: [
+        Expanded(
+            flex: 6,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(note),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
+                  child: Text(
+                    DateFormat("dd MMMM yyyy HH:mm").format(createdAt),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ),
+              ],
+            )),
+        Expanded(
+          flex: 1,
+          child: IconButton(
+            icon: const Icon(
+              FontAwesomeIcons.ellipsisVertical,
+              color: Colors.black54,
+            ),
+            onPressed: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  builder: (context) {
+                    return noteBottomSheet(context, scheduleNoteId);
+                  });
+            },
+          ),
+        ),
       ],
     ),
   );

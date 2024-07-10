@@ -92,6 +92,10 @@ class _FormStudentPageState extends State<FormStudentPage> {
           padding: padding16,
           child: Column(
             children: [
+              Image(
+                  width: MediaQuery.sizeOf(context).width / 2,
+                  image: const AssetImage('assets/images/student.jpeg')),
+              Padding(padding: padding16),
               InputField(
                   textEditingController: studentNameController,
                   hintText: "Student name"),

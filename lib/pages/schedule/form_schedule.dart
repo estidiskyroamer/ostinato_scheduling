@@ -81,6 +81,10 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
           padding: padding16,
           child: Column(
             children: [
+              Image(
+                  width: MediaQuery.sizeOf(context).width / 2,
+                  image: const AssetImage('assets/images/schedule.jpeg')),
+              Padding(padding: padding16),
               InputField(
                   textEditingController: teacherNameController,
                   hintText: "Teacher name"),
