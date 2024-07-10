@@ -52,14 +52,11 @@ class _FormScheduleNotePageState extends State<FormScheduleNotePage> {
             children: [
               Image(
                   width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/schedule.jpeg')),
+                  image: const AssetImage('assets/images/notes.jpeg')),
               Padding(padding: padding16),
               InputField(
-                  textEditingController: titleController,
-                  hintText: "Note title"),
-              InputField(
                   textEditingController: noteController,
-                  maxLines: 5,
+                  maxLines: 7,
                   hintText: "Write notes on this lesson..."),
               Padding(padding: padding16),
               SolidButton(
