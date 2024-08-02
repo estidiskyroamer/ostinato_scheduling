@@ -6,8 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
-import 'package:ostinato/pages/schedule/form_schedule_note.dart';
-import 'package:ostinato/pages/schedule/schedule_notes.dart';
+import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
+import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 
 Widget bottomSheet(BuildContext context, String scheduleId) {
   return ItemBottomSheet(
@@ -59,7 +59,7 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ScheduleNotesPage()));
+                      builder: (context) => const ScheduleNotePage()));
                 },
                 icon: FontAwesomeIcons.file,
                 label: "Notes"),

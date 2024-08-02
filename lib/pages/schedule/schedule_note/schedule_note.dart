@@ -3,17 +3,17 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/schedule/common.dart';
-import 'package:ostinato/pages/schedule/form_schedule_note.dart';
+import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
 
-class ScheduleNotesPage extends StatefulWidget {
+class ScheduleNotePage extends StatefulWidget {
   final String? scheduleId;
-  const ScheduleNotesPage({super.key, this.scheduleId});
+  const ScheduleNotePage({super.key, this.scheduleId});
 
   @override
-  State<ScheduleNotesPage> createState() => _ScheduleNotesPageState();
+  State<ScheduleNotePage> createState() => _ScheduleNotePageState();
 }
 
-class _ScheduleNotesPageState extends State<ScheduleNotesPage> {
+class _ScheduleNotePageState extends State<ScheduleNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

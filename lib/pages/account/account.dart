@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:ostinato/common/component.dart';
+import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/account/summary.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -13,13 +16,33 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "Account Settings",
+          "Account",
           style: Theme.of(context).textTheme.titleMedium,
         ),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: Column(),
+      body: Container(
+        width: double.infinity,
+        padding: padding16,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Image(
+                width: MediaQuery.sizeOf(context).width / 2,
+                image: const AssetImage('assets/images/account.jpeg')),
+            Padding(padding: padding16),
+            StyledTextButton(
+                action: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const SummaryPage()));
+                },
+                text: "Summary"),
+            StyledTextButton(action: () {}, text: "Tutorials"),
+            StyledTextButton(action: () {}, text: "Change E-mail"),
+            StyledTextButton(action: () {}, text: "Change Password"),
+            StyledTextButton(action: () {}, text: "Logout"),
+          ],
+        ),
       ),
     );
   }

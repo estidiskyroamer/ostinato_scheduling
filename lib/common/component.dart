@@ -183,6 +183,38 @@ class OutlineButton extends StatelessWidget {
   }
 }
 
+class StyledTextButton extends StatelessWidget {
+  final VoidCallback action;
+  final String text;
+
+  const StyledTextButton({super.key, required this.action, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      style: TextButton.styleFrom(
+          shape: const LinearBorder(
+              side: BorderSide(width: 1.0, color: Colors.black),
+              bottom: LinearBorderEdge(size: 1.0)),
+          padding: padding16),
+      onPressed: action,
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width / 2,
+            maxWidth: MediaQuery.of(context).size.width),
+        child: Text(
+          text,
+          textAlign: TextAlign.center,
+          style: Theme.of(context)
+              .textTheme
+              .displayMedium!
+              .merge(const TextStyle(color: Colors.black)),
+        ),
+      ),
+    );
+  }
+}
+
 Future<DateTime?> dateTimePicker(
     BuildContext context, String title, DateTime initialDate,
     [DateTimePickerType? pickerType]) {

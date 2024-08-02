@@ -72,19 +72,17 @@ class _DashboardPageState extends State<DashboardPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                dashboardTitle(context, "Previous"),
-                dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 16, 0),
-                    "Cayleen", "Piano"),
-                dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 16, 30),
-                    "Clarice", "Piano"),
+                dashboardTitle(context, "Upcoming"),
+                dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 18, 0),
+                    "Velove", "Piano"),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                dashboardTitle(context, "Upcoming"),
-                dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 18, 0),
-                    "Velove", "Piano"),
+                dashboardTitle(context, "Previous"),
+                dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 16, 30),
+                    "Clarice", "Piano"),
               ],
             ),
           ],
