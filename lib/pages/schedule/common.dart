@@ -128,7 +128,7 @@ Widget studentTime(BuildContext context, String scheduleId, DateTime time,
     String studentName, String instrument) {
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-    margin: const EdgeInsets.only(top: 8, left: 32),
+    margin: const EdgeInsets.only(left: 32),
     decoration: const BoxDecoration(
         border: Border(
       bottom: BorderSide(color: Colors.black38),

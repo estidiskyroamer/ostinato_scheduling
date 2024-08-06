@@ -8,7 +8,7 @@ Widget summaryItem(BuildContext context, String value, String title) {
       children: [
         Text(value,
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleLarge),
+            style: Theme.of(context).textTheme.titleMedium),
         Padding(padding: padding8),
         Text(title,
             textAlign: TextAlign.center,

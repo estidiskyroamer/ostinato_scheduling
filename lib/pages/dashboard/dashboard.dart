@@ -69,6 +69,7 @@ class _DashboardPageState extends State<DashboardPage> {
                     "Cayleen", "Violin"),
               ],
             ),
+            Padding(padding: padding8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

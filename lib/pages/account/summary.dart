@@ -38,13 +38,14 @@ class _SummaryPageState extends State<SummaryPage> {
                   Text("Monthly Summary for Teacher",
                       style: Theme.of(context)
                           .textTheme
-                          .displaySmall!
+                          .labelSmall!
                           .merge(const TextStyle(color: Colors.black))),
                 ],
               ),
             ),
             Column(
               children: [
+                Padding(padding: padding16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

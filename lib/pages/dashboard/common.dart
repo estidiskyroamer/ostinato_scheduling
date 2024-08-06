@@ -87,7 +87,7 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
 Widget dashboardTitle(BuildContext context, String title) {
   return Container(
     padding: padding16,
-    margin: const EdgeInsets.only(top: 16),
+    margin: const EdgeInsets.only(top: 8),
     decoration: const BoxDecoration(color: Colors.black12),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,7 +106,7 @@ Widget dashboardStudentTime(BuildContext context, String scheduleId,
     DateTime time, String studentName, String instrument) {
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-    margin: const EdgeInsets.only(top: 8, left: 32),
+    margin: const EdgeInsets.only(bottom: 8, left: 32),
     decoration: const BoxDecoration(
       border: Border(bottom: BorderSide(color: Colors.black38)),
     ),
