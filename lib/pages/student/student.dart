@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/student/common.dart';
 import 'package:ostinato/pages/student/form_student.dart';
+import 'package:ostinato/services/student_service.dart';
 
 class StudentPage extends StatefulWidget {
   const StudentPage({super.key});
@@ -14,6 +18,14 @@ class StudentPage extends StatefulWidget {
 
 class _StudentPageState extends State<StudentPage> {
   TextEditingController searchController = TextEditingController();
+  late Future<StudentList?> _studentList;
+
+  @override
+  void initState() {
+    super.initState();
+    _studentList = StudentService().getStudents();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,30 +54,38 @@ class _StudentPageState extends State<StudentPage> {
             ),
             Expanded(
               child: SingleChildScrollView(
-                  padding: padding16,
-                  child: ListView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    children: [
-                      studentItem(context, "Cayleen"),
-                      studentItem(context, "Clarice"),
-                      studentItem(context, "Velove"),
-                      studentItem(context, "Vrilla"),
-                      studentItem(context, "Sierra"),
-                      studentItem(context, "Susie"),
-                      studentItem(context, "Hikaru"),
-                      studentItem(context, "Damar"),
-                      studentItem(context, "Gian"),
-                      studentItem(context, "Andrea Taylor"),
-                      studentItem(context, "Jocelyn"),
-                      studentItem(context, "Felicia"),
-                      studentItem(context, "Erci"),
-                      studentItem(context, "Ben"),
-                      studentItem(context, "Yoshiko"),
-                      studentItem(context, "Natasha"),
-                      studentItem(context, "Given"),
-                    ],
-                  )),
+                padding: padding16,
+                child: FutureBuilder(
+                  future: _studentList,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<StudentList?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 6,
+                          child: Config().loadingIndicator,
+                        ),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    if (!snapshot.hasData) {
+                      return const Center(child: Text('No students yet'));
+                    }
+                    final students = snapshot.data!.data;
+                    return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: students.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Student student = students[index];
+                        return studentItem(context, student);
+                      },
+                    );
+                  },
+                ),
+              ),
             )
           ],
         ));

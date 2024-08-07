@@ -7,14 +7,7 @@ class Config {
   String apiKey = "8accedf111e59fb160ff3561c7c90e0e";
   String accessToken =
       "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YWNjZWRmMTExZTU5ZmIxNjBmZjM1NjFjN2M5MGUwZSIsInN1YiI6IjYxYmE4ZDk3MjhkN2ZlMDA0M2VjZjgzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Geq8PJdk6by2Xl5fG0SOicHJFvUlxHpg_-xif7kn47Y";
-  String baseUrl = "https://api.themoviedb.org/3";
-  String imageUrl = "https://image.tmdb.org/t/p/";
-  String backdropSizeLarge = "w1280";
-  String backdropSize = "w780";
-  String posterSize = "w500";
-  String stillSize = "w300";
-  String logoSize = "w92";
-  String profileSize = "w185";
+  String baseUrl = "http://localhost:8000";
   Dio dio = Dio()
         ..interceptors.add(InterceptorsWrapper(onRequest: ((options, handler) {
           options.headers['accept'] = "application/json";
@@ -33,9 +26,9 @@ class Config {
   LoadingIndicator loadingIndicator = LoadingIndicator(
     indicatorType: Indicator.ballPulseSync,
     colors: [
-      Colors.white.withAlpha(50),
-      Colors.white.withAlpha(125),
-      Colors.white
+      Colors.grey.withAlpha(50),
+      Colors.grey.withAlpha(125),
+      Colors.grey
     ],
   );
 }

@@ -4,19 +4,20 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';
 import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/pages/student/form_student.dart';
 import 'package:ostinato/pages/student/student_schedule.dart';
 
-Widget studentItem(BuildContext context, String name) {
+Widget studentItem(BuildContext context, Student student) {
   return Container(
     decoration: const BoxDecoration(
         border: Border(bottom: BorderSide(color: Colors.black38))),
     child: Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(name),
+        Text(student.name),
         IconButton(
           icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
@@ -26,7 +27,7 @@ Widget studentItem(BuildContext context, String name) {
             showModalBottomSheet<void>(
                 context: context,
                 builder: (context) {
-                  return bottomSheet(context, '1');
+                  return bottomSheet(context, student.id);
                 });
           },
         ),
@@ -52,8 +53,8 @@ Widget bottomSheet(BuildContext context, String studentId) {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const DetailStudentPage(
-                            studentId: "1",
+                      builder: (context) => DetailStudentPage(
+                            studentId: studentId,
                           )));
                 },
                 icon: FontAwesomeIcons.magnifyingGlass,
@@ -62,8 +63,8 @@ Widget bottomSheet(BuildContext context, String studentId) {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const FormStudentPage(
-                            studentId: "1",
+                      builder: (context) => FormStudentPage(
+                            studentId: studentId,
                           )));
                 },
                 icon: FontAwesomeIcons.pencil,
