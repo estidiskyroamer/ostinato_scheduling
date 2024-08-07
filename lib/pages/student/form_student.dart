@@ -125,11 +125,17 @@ class _FormStudentPageState extends State<FormStudentPage> {
                 inputType: TextInputType.phone,
               ),
               Padding(padding: padding16),
-              SolidButton(
-                  action: () {
-                    Navigator.pop(context);
-                  },
-                  text: "Save"),
+              widget.studentId != null
+                  ? SolidButton(
+                      action: () {
+                        Navigator.pop(context);
+                      },
+                      text: "Update")
+                  : SolidButton(
+                      action: () {
+                        Navigator.pop(context);
+                      },
+                      text: "Add Student")
             ],
           ),
         ),

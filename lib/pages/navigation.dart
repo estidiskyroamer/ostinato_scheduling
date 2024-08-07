@@ -27,17 +27,49 @@ class _NavigationPageState extends State<NavigationPage> {
         selectedIndex: currentIndex,
         destinations: const [
           NavigationDestination(
-              icon: Icon(FontAwesomeIcons.house), label: 'Dashboard'),
+              icon: Icon(
+                FontAwesomeIcons.house,
+                color: Colors.black54,
+              ),
+              selectedIcon: Icon(
+                FontAwesomeIcons.house,
+                color: Colors.black,
+              ),
+              label: 'Dashboard'),
           NavigationDestination(
-              icon: Icon(FontAwesomeIcons.child), label: 'Students'),
+              icon: Icon(
+                FontAwesomeIcons.child,
+                color: Colors.black54,
+              ),
+              selectedIcon: Icon(
+                FontAwesomeIcons.child,
+                color: Colors.black,
+              ),
+              label: 'Students'),
           NavigationDestination(
-              icon: Icon(FontAwesomeIcons.listOl), label: 'Schedule'),
+              icon: Icon(
+                FontAwesomeIcons.listOl,
+                color: Colors.black54,
+              ),
+              selectedIcon: Icon(
+                FontAwesomeIcons.listOl,
+                color: Colors.black,
+              ),
+              label: 'Schedule'),
           NavigationDestination(
-              icon: Icon(FontAwesomeIcons.userGear), label: 'Account'),
+              icon: Icon(
+                FontAwesomeIcons.userGear,
+                color: Colors.black54,
+              ),
+              selectedIcon: Icon(
+                FontAwesomeIcons.userGear,
+                color: Colors.black,
+              ),
+              label: 'Account'),
         ],
         elevation: 0,
         backgroundColor: HexColor("#E6F2FF"),
-        indicatorColor: HexColor("#CDD9E5"),
+        indicatorColor: HexColor("#DFEBF8"),
         indicatorShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),

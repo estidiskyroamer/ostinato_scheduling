@@ -1,88 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
-
-Widget bottomSheet(BuildContext context, String scheduleId) {
-  return ItemBottomSheet(
-    child: Column(
-      children: [
-        Text(
-          "Status",
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontStyle: FontStyle.italic),
-        ),
-        Row(
-          children: [
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  print("done $scheduleId");
-                },
-                icon: FontAwesomeIcons.circleCheck,
-                label: "Done"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  print("reschedule $scheduleId");
-                },
-                icon: FontAwesomeIcons.rotate,
-                label: "Reschedule"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  print("cancel $scheduleId");
-                },
-                icon: FontAwesomeIcons.circleXmark,
-                label: "Canceled"),
-          ],
-        ),
-        Padding(padding: padding8),
-        Text(
-          "Manage",
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontStyle: FontStyle.italic),
-        ),
-        Row(
-          children: [
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ScheduleNotePage()));
-                },
-                icon: FontAwesomeIcons.file,
-                label: "Notes"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const FormSchedulePage(
-                            scheduleId: "1",
-                          )));
-                },
-                icon: FontAwesomeIcons.pencil,
-                label: "Edit"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  print("delete $scheduleId");
-                },
-                icon: FontAwesomeIcons.trash,
-                label: "Delete"),
-          ],
-        )
-      ],
-    ),
-  );
-}
 
 Widget dashboardTitle(BuildContext context, String title) {
   return Container(

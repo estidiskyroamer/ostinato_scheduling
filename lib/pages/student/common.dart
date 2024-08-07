@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
@@ -70,6 +71,19 @@ Widget bottomSheet(BuildContext context, String studentId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialog(
+                        action: () {
+                          Navigator.pop(context);
+                        },
+                        contentText:
+                            "Are you sure you want to delete this data?",
+                        actionText: "Delete",
+                      );
+                    },
+                  );
                   print("cancel $studentId");
                 },
                 icon: FontAwesomeIcons.trash,

@@ -5,6 +5,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
@@ -25,6 +26,19 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialog(
+                        action: () {
+                          Navigator.pop(context);
+                        },
+                        contentText:
+                            "Are you sure you want to mark this schedule as done?",
+                        actionText: "Mark as Done",
+                      );
+                    },
+                  );
                   print("done $scheduleId");
                 },
                 icon: FontAwesomeIcons.circleCheck,
@@ -32,6 +46,20 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialog(
+                        action: () {
+                          Navigator.pop(context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => FormReschedulePage()));
+                        },
+                        contentText: "Are you sure you want to reschedule?",
+                        actionText: "Reschedule",
+                      );
+                    },
+                  );
                   print("reschedule $scheduleId");
                 },
                 icon: FontAwesomeIcons.rotate,
@@ -39,7 +67,19 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  print("cancel $scheduleId");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialog(
+                        action: () {
+                          Navigator.pop(context);
+                        },
+                        contentText:
+                            "Are you sure you want to mark this schedule as canceled?",
+                        actionText: "Mark as Canceled",
+                      );
+                    },
+                  );
                 },
                 icon: FontAwesomeIcons.circleXmark,
                 label: "Canceled"),
@@ -76,7 +116,19 @@ Widget bottomSheet(BuildContext context, String scheduleId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  print("delete $scheduleId");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialog(
+                        action: () {
+                          Navigator.pop(context);
+                        },
+                        contentText:
+                            "Are you sure you want to delete this data?",
+                        actionText: "Delete",
+                      );
+                    },
+                  );
                 },
                 icon: FontAwesomeIcons.trash,
                 label: "Delete"),
@@ -113,7 +165,19 @@ Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  print("delete $scheduleNoteId");
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialog(
+                        action: () {
+                          Navigator.pop(context);
+                        },
+                        contentText:
+                            "Are you sure you want to delete this data?",
+                        actionText: "Delete",
+                      );
+                    },
+                  );
                 },
                 icon: FontAwesomeIcons.trash,
                 label: "Delete"),

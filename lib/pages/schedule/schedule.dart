@@ -31,7 +31,7 @@ class _SchedulePageState extends State<SchedulePage> {
           IconButton(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => FormSchedulePage()));
+                    builder: (context) => const FormSchedulePage()));
               },
               icon: const Icon(FontAwesomeIcons.plus))
         ],

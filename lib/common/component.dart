@@ -104,7 +104,7 @@ class RowIconButton extends StatelessWidget {
           margin: padding8,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: HexColor("#CDD9E5"),
+            color: HexColor("#D8E4F0"),
           ),
           child: Column(
             children: [
@@ -192,15 +192,10 @@ class StyledTextButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      style: TextButton.styleFrom(
-          shape: const LinearBorder(
-              side: BorderSide(width: 1.0, color: Colors.black),
-              bottom: LinearBorderEdge(size: 1.0)),
-          padding: padding16),
       onPressed: action,
       child: ConstrainedBox(
         constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width / 2,
+            minWidth: MediaQuery.of(context).size.width / 4,
             maxWidth: MediaQuery.of(context).size.width),
         child: Text(
           text,
@@ -209,6 +204,49 @@ class StyledTextButton extends StatelessWidget {
               .textTheme
               .displayMedium!
               .merge(const TextStyle(color: Colors.black)),
+        ),
+      ),
+    );
+  }
+}
+
+class ActionDialog extends StatelessWidget {
+  final VoidCallback action;
+  final String contentText;
+  final String actionText;
+
+  const ActionDialog(
+      {super.key,
+      required this.action,
+      required this.contentText,
+      required this.actionText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+      elevation: 0,
+      backgroundColor: HexColor("#E6F2FF"),
+      insetPadding: EdgeInsets.zero,
+      child: Container(
+        padding: padding16,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(contentText),
+            Padding(padding: padding16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                StyledTextButton(
+                    action: () {
+                      Navigator.pop(context);
+                    },
+                    text: "Cancel"),
+                SolidButton(action: action, text: actionText),
+              ],
+            )
+          ],
         ),
       ),
     );
@@ -225,8 +263,8 @@ Future<DateTime?> dateTimePicker(
     initialDate: initialDate,
     options: BoardDateTimeOptions(
         backgroundColor: HexColor("#E6F2FF"),
-        foregroundColor: HexColor("#CDD9E5"),
-        activeColor: HexColor("#CDD9E5"),
+        foregroundColor: HexColor("#DFEBF8"),
+        activeColor: HexColor("#DFEBF8"),
         activeTextColor: Colors.black,
         backgroundDecoration: BoxDecoration(borderRadius: BorderRadius.zero),
         showDateButton: false,

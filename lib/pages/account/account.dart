@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/account/form_account.dart';
 import 'package:ostinato/pages/account/summary.dart';
 
 class AccountPage extends StatefulWidget {
@@ -38,9 +39,17 @@ class _AccountPageState extends State<AccountPage> {
                 },
                 text: "Summary"),
             StyledTextButton(action: () {}, text: "Tutorials"),
-            StyledTextButton(action: () {}, text: "Change E-mail"),
-            StyledTextButton(action: () {}, text: "Change Password"),
-            StyledTextButton(action: () {}, text: "Logout"),
+            StyledTextButton(
+                action: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => FormAccountPage()));
+                },
+                text: "Edit Account"),
+            StyledTextButton(
+                action: () {
+                  Navigator.pop(context);
+                },
+                text: "Logout"),
           ],
         ),
       ),
