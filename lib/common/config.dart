@@ -2,17 +2,16 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:ostinato/services/auth_service.dart';
 
 class Config {
-  String apiKey = "8accedf111e59fb160ff3561c7c90e0e";
-  String accessToken =
-      "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YWNjZWRmMTExZTU5ZmIxNjBmZjM1NjFjN2M5MGUwZSIsInN1YiI6IjYxYmE4ZDk3MjhkN2ZlMDA0M2VjZjgzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Geq8PJdk6by2Xl5fG0SOicHJFvUlxHpg_-xif7kn47Y";
-  String baseUrl =
-      "https://qp7ek3rdzjlobstnvgzamvq4jy0koadp.lambda-url.ap-southeast-3.on.aws/api";
+  String baseUrl = "http://localhost:8000/api";
   Dio dio = Dio()
-        ..interceptors.add(InterceptorsWrapper(onRequest: ((options, handler) {
+        ..interceptors
+            .add(InterceptorsWrapper(onRequest: ((options, handler) async {
+          String? token = await AuthService().getToken();
           options.headers['accept'] = "application/json";
-          options.headers['Authorization'] = "Bearer ${Config().accessToken}";
+          options.headers['Authorization'] = "Bearer $token";
           return handler.next(options);
         })))
       /* ..interceptors.add(PrettyDioLogger(

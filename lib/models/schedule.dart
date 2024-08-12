@@ -46,42 +46,42 @@ class ScheduleList {
 
 class Schedule {
   final String id;
-  final String studentId;
-  final String? studentName;
-  final String teacherId;
-  final String? teacherName;
-  final String instrumentId;
-  final String? instrumentName;
+  final String? studentId;
+  final String studentName;
+  final String? teacherId;
+  final String teacherName;
+  final String? instrumentId;
+  final String instrumentName;
   final DateTime date;
-  final dynamic createdBy;
-  final dynamic statusId;
+  final String? createdBy;
+  final String? statusId;
   final String startTime;
   final String endTime;
 
   Schedule({
     required this.id,
-    required this.studentId,
+    this.studentId,
     required this.studentName,
-    required this.teacherId,
+    this.teacherId,
     required this.teacherName,
-    required this.instrumentId,
+    this.instrumentId,
     required this.instrumentName,
     required this.date,
-    required this.createdBy,
-    required this.statusId,
+    this.createdBy,
+    this.statusId,
     required this.startTime,
     required this.endTime,
   });
 
   factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
         id: json["id"],
-        studentId: json["studentId"],
-        studentName: json['studentName'] == null ? null : json["studentName"],
-        teacherId: json["teacherId"],
-        teacherName: json['teacherName'] == null ? null : json["teacherName"],
-        instrumentId: json["instrumentId"],
-        instrumentName:
-            json['instrumentName'] == null ? null : json["instrumentName"],
+        studentId: json['studentId'] == null ? null : json["studentId"],
+        studentName: json["studentName"],
+        teacherId: json['teacherId'] == null ? null : json["teacherId"],
+        teacherName: json["teacherName"],
+        instrumentId:
+            json['instrumentId'] == null ? null : json["instrumentId"],
+        instrumentName: json["instrumentName"],
         date: DateTime.parse(json["date"]),
         createdBy: json["createdBy"],
         statusId: json["statusId"],
@@ -91,12 +91,12 @@ class Schedule {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "studentId": studentId,
-        "studentName": studentName?.toString(),
-        "teacherId": teacherId,
-        "teacherName": teacherName?.toString(),
-        "instrumentId": instrumentId,
-        "instrumentName": instrumentName?.toString(),
+        "studentId": studentId?.toString(),
+        "studentName": studentName.toString(),
+        "teacherId": teacherId?.toString(),
+        "teacherName": teacherName.toString(),
+        "instrumentId": instrumentId?.toString(),
+        "instrumentName": instrumentName.toString(),
         "date": date.toString(),
         "createdBy": createdBy,
         "statusId": statusId,

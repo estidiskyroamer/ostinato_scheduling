@@ -3,6 +3,7 @@ import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/navigation.dart';
 import 'package:ostinato/pages/register.dart';
+import 'package:ostinato/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -14,6 +15,26 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  void doLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    bool loginSuccess = await AuthService()
+        .login(emailController.text, passwordController.text);
+
+    setState(() {
+      _isLoading = false;
+    });
+    if (loginSuccess) {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => NavigationPage()));
+    } else {
+      print("LOgin failed");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +72,12 @@ class _LoginPageState extends State<LoginPage> {
               Padding(padding: padding8),
               SolidButton(
                   action: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NavigationPage()));
+                    if (emailController.text.isNotEmpty &&
+                        passwordController.text.isNotEmpty) {
+                      doLogin();
+                    } else {
+                      null;
+                    }
                   },
                   text: "Login"),
               Text(

@@ -5,6 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
+import 'package:ostinato/pages/schedule/common.dart';
+import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';
 import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/pages/student/form_student.dart';
@@ -140,6 +142,7 @@ Widget detailItem(BuildContext context, String title, String content) {
 
 Widget detailScheduleDate(BuildContext context, DateTime date) {
   return Container(
+    color: Colors.grey[200],
     padding: padding16,
     margin: const EdgeInsets.only(top: 16),
     child: Row(
@@ -175,13 +178,12 @@ Widget detailStudentTime(BuildContext context, String scheduleId, String time,
     child: Row(
       children: [
         Expanded(
-            flex: 2,
-            child: Container(
-              child: Text(
-                formattedTime,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-            )),
+          flex: 2,
+          child: Text(
+            formattedTime,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         Expanded(flex: 6, child: Text("$studentName ($instrument)")),
         Expanded(
           flex: 1,
@@ -194,10 +196,70 @@ Widget detailStudentTime(BuildContext context, String scheduleId, String time,
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return bottomSheet(context, scheduleId);
+                    return scheduleBottomSheet(context, scheduleId);
                   });
             },
           ),
+        ),
+      ],
+    ),
+  );
+}
+
+Widget detailBottomSheet(BuildContext context, String studentId) {
+  return ItemBottomSheet(
+    child: Column(
+      children: [
+        Text(
+          "Manage",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontStyle: FontStyle.italic),
+        ),
+        Row(
+          children: [
+            RowIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => FormStudentPage(
+                            studentId: studentId,
+                          )));
+                },
+                icon: FontAwesomeIcons.magnifyingGlass,
+                label: "Edit"),
+            RowIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => FormSchedulePage(
+                          //studentId: studentId,
+                          )));
+                },
+                icon: FontAwesomeIcons.calendarPlus,
+                label: "Add Schedule"),
+            RowIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return ActionDialog(
+                        action: () {
+                          Navigator.pop(context);
+                        },
+                        contentText:
+                            "Are you sure you want to delete this data?",
+                        actionText: "Delete",
+                      );
+                    },
+                  );
+                  print("cancel $studentId");
+                },
+                icon: FontAwesomeIcons.trash,
+                label: "Delete"),
+          ],
         ),
       ],
     ),

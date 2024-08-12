@@ -9,7 +9,7 @@ import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 
-Widget bottomSheet(BuildContext context, String scheduleId) {
+Widget scheduleBottomSheet(BuildContext context, String scheduleId) {
   return ItemBottomSheet(
     child: Column(
       children: [
@@ -218,7 +218,7 @@ Widget studentTime(BuildContext context, String scheduleId, DateTime time,
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return bottomSheet(context, scheduleId);
+                    return scheduleBottomSheet(context, scheduleId);
                   });
             },
           ),

@@ -6,6 +6,8 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/student.dart';
+import 'package:ostinato/services/student_service.dart';
 
 class FormStudentPage extends StatefulWidget {
   final String? studentId;
@@ -30,10 +32,12 @@ class _FormStudentPageState extends State<FormStudentPage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Student";
 
+  Future<StudentDetail?>? _studentDetail;
+
   @override
   void initState() {
-    setEdit();
     super.initState();
+    setEdit();
   }
 
   void setEdit() {
@@ -41,6 +45,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
       if (widget.studentId != null) {
         setState(() {
           pageTitle = "Edit Student";
+          _studentDetail = StudentService().getStudentDetail(widget.studentId!);
         });
       }
     }
@@ -96,50 +101,84 @@ class _FormStudentPageState extends State<FormStudentPage> {
                   width: MediaQuery.sizeOf(context).width / 2,
                   image: const AssetImage('assets/images/student.jpeg')),
               Padding(padding: padding16),
-              InputField(
-                  textEditingController: studentNameController,
-                  hintText: "Student name"),
-              InputField(
-                textEditingController: dateController,
-                hintText: "Birth date",
-                onTap: () async {
-                  final result = await dateTimePicker(
-                      context, "Birth Date", studentBirthDate);
-                  if (result != null) {
-                    dateController.text =
-                        DateFormat("dd MMMM yyyy").format(result);
-                    setStartDate(result);
+              FutureBuilder(
+                future: _studentDetail,
+                builder: (BuildContext context,
+                    AsyncSnapshot<StudentDetail?> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 6,
+                        child: Config().loadingIndicator,
+                      ),
+                    );
                   }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  if (snapshot.hasData) {
+                    Student student = snapshot.data!.data;
+                    studentNameController.text = student.name;
+                    studentAddressController.text = student.address;
+                    studentPhoneController.text = student.phoneNumber;
+                    studentEmailController.text = student.email;
+                    studentBirthDate = student.birthDate;
+                    dateController.text =
+                        DateFormat("dd MMMM yyyy").format(student.birthDate);
+                  }
+
+                  return buildForm(context);
                 },
-                isReadOnly: true,
               ),
-              InputField(
-                  textEditingController: studentAddressController,
-                  hintText: "Home address"),
-              InputField(
-                  textEditingController: studentEmailController,
-                  hintText: "E-mail"),
-              InputField(
-                textEditingController: studentPhoneController,
-                hintText: "Phone number",
-                inputType: TextInputType.phone,
-              ),
-              Padding(padding: padding16),
-              widget.studentId != null
-                  ? SolidButton(
-                      action: () {
-                        Navigator.pop(context);
-                      },
-                      text: "Update")
-                  : SolidButton(
-                      action: () {
-                        Navigator.pop(context);
-                      },
-                      text: "Add Student")
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget buildForm(BuildContext context) {
+    return Column(
+      children: [
+        InputField(
+            textEditingController: studentNameController,
+            hintText: "Student name"),
+        InputField(
+          textEditingController: dateController,
+          hintText: "Birth date",
+          onTap: () async {
+            final result =
+                await dateTimePicker(context, "Birth Date", studentBirthDate);
+            if (result != null) {
+              dateController.text = DateFormat("dd MMMM yyyy").format(result);
+              setStartDate(result);
+            }
+          },
+          isReadOnly: true,
+        ),
+        InputField(
+            textEditingController: studentAddressController,
+            hintText: "Home address"),
+        InputField(
+            textEditingController: studentEmailController, hintText: "E-mail"),
+        InputField(
+          textEditingController: studentPhoneController,
+          hintText: "Phone number",
+          inputType: TextInputType.phone,
+        ),
+        Padding(padding: padding16),
+        widget.studentId != null
+            ? SolidButton(
+                action: () {
+                  Navigator.pop(context);
+                },
+                text: "Update")
+            : SolidButton(
+                action: () {
+                  Navigator.pop(context);
+                },
+                text: "Add Student")
+      ],
     );
   }
 }

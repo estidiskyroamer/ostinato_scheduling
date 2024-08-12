@@ -75,24 +75,26 @@ class Student {
   final String userId;
   final String name;
   final String email;
+  final String address;
   final String phoneNumber;
   final DateTime birthDate;
   final int isActive;
   final DateTime activeDate;
   final DateTime? inactiveDate;
-  List<Schedule> schedules;
+  List<Schedule>? schedules;
 
   Student({
     required this.id,
     required this.userId,
     required this.name,
     required this.email,
+    required this.address,
     required this.phoneNumber,
     required this.birthDate,
     required this.isActive,
     required this.activeDate,
     required this.inactiveDate,
-    required this.schedules,
+    this.schedules,
   });
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
@@ -100,6 +102,7 @@ class Student {
         userId: json["userId"],
         name: json["name"],
         email: json["email"],
+        address: json["address"],
         phoneNumber: json["phoneNumber"],
         birthDate: DateTime.parse(json["birthDate"]),
         isActive: json["isActive"],
@@ -107,8 +110,10 @@ class Student {
         inactiveDate: json['inactiveDate'] == null
             ? null
             : DateTime.parse(json['inactiveDate']),
-        schedules: List<Schedule>.from(
-            json["schedules"].map((x) => Schedule.fromJson(x))),
+        schedules: json['schedules'] == null
+            ? null
+            : List<Schedule>.from(
+                json["schedules"].map((x) => Schedule.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -116,11 +121,14 @@ class Student {
         "userId": userId,
         "name": name,
         "email": email,
+        "address": address,
         "phoneNumber": phoneNumber,
         "birthDate": birthDate.toString(),
         "isActive": isActive,
         "activeDate": activeDate.toString(),
         "inactiveDate": inactiveDate?.toString(),
-        "schedules": List<dynamic>.from(schedules.map((x) => x.toJson())),
+        "schedules": schedules == null
+            ? null
+            : List<dynamic>.from(schedules!.map((x) => x.toJson())),
       };
 }

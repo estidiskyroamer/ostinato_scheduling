@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
@@ -34,6 +35,21 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
           "Student Detail",
           style: Theme.of(context).textTheme.titleMedium,
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(
+              FontAwesomeIcons.ellipsisVertical,
+              color: Colors.black54,
+            ),
+            onPressed: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  builder: (context) {
+                    return detailBottomSheet(context, widget.studentId);
+                  });
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -68,6 +84,10 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       padding: const EdgeInsets.only(left: 16, top: 8),
                       child: detailItem(context, "Birth date",
                           DateFormat("dd MMMM yyyy").format(student.birthDate)),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 16, top: 8),
+                      child: detailItem(context, "Address", student.address),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
@@ -106,26 +126,32 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   }
 
                   Student student = snapshot.data!.data;
-                  List<Schedule> schedules = snapshot.data!.data.schedules;
-                  return ListView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: schedules.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      Schedule schedule = schedules[index];
-                      return Column(
-                        children: [
-                          detailScheduleDate(context, schedule.date),
-                          Column(
-                            children: [
-                              detailStudentTime(context, schedule.id,
-                                  schedule.startTime, student.name, "Piano"),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  List<Schedule>? schedules = snapshot.data!.data.schedules;
+                  return schedules == null
+                      ? const Center(child: Text('No schedule found'))
+                      : ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: schedules.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            Schedule schedule = schedules[index];
+                            return Column(
+                              children: [
+                                detailScheduleDate(context, schedule.date),
+                                Column(
+                                  children: [
+                                    detailStudentTime(
+                                        context,
+                                        schedule.id,
+                                        schedule.startTime,
+                                        student.name,
+                                        schedule.instrumentName),
+                                  ],
+                                ),
+                              ],
+                            );
+                          },
+                        );
                 },
               ),
             ),

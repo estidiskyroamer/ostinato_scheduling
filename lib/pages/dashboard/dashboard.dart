@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/pages/dashboard/common.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/student/common.dart';
+import 'package:ostinato/services/teacher_service.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -27,13 +29,46 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
+  late Future<TeacherDetail?> _teacherDetail;
+
+  @override
+  void initState() {
+    _teacherDetail = TeacherService().getTeacherDetail();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: /* Text(
           "${greeting()}, Teacher",
           style: Theme.of(context).textTheme.titleMedium,
+        ), */
+            FutureBuilder(
+          future: _teacherDetail,
+          builder:
+              (BuildContext context, AsyncSnapshot<TeacherDetail?> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 6,
+                  child: Config().loadingIndicator,
+                ),
+              );
+            }
+            if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            }
+            if (!snapshot.hasData) {
+              return const Center(child: Text('No teacher found'));
+            }
+            Teacher teacher = snapshot.data!.data;
+            return Text(
+              "${greeting()}, ${teacher.name.split(' ')[0]}",
+              style: Theme.of(context).textTheme.titleMedium,
+            );
+          },
         ),
         automaticallyImplyLeading: false,
       ),

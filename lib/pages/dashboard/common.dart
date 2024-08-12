@@ -56,7 +56,7 @@ Widget dashboardStudentTime(BuildContext context, String scheduleId,
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return bottomSheet(context, scheduleId);
+                    return scheduleBottomSheet(context, scheduleId);
                   });
             },
           ),
