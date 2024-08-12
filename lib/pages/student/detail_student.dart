@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/student/common.dart';
@@ -56,7 +57,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                 if (!snapshot.hasData) {
                   return const Center(child: Text('No student found'));
                 }
-                var student = snapshot.data!.data;
+                Student student = snapshot.data!.data;
                 return Column(
                   children: [
                     Container(
@@ -70,20 +71,20 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child: detailItem(
-                          context, "E-mail address", "student@mail.com"),
+                      child:
+                          detailItem(context, "E-mail address", student.email),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child:
-                          detailItem(context, "Phone number", "628172924920"),
+                      child: detailItem(
+                          context, "Phone number", student.phoneNumber),
                     ),
                   ],
                 );
               },
             ),
             detailTitle(context, "Schedule"),
-            /*  Container(
+            Container(
               padding: const EdgeInsets.only(bottom: 16),
               child: FutureBuilder(
                 future: _studentDetail,
@@ -103,21 +104,22 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   if (!snapshot.hasData) {
                     return const Center(child: Text('No student found'));
                   }
-                  var student = snapshot.data!.data;
+
+                  Student student = snapshot.data!.data;
+                  List<Schedule> schedules = snapshot.data!.data.schedules;
                   return ListView.builder(
-                    itemCount: student.s,
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: schedules.length,
                     itemBuilder: (BuildContext context, int index) {
+                      Schedule schedule = schedules[index];
                       return Column(
                         children: [
-                          detailScheduleDate(context, DateTime(2024, 7, 1)),
+                          detailScheduleDate(context, schedule.date),
                           Column(
                             children: [
-                              detailStudentTime(
-                                  context,
-                                  "1",
-                                  DateTime(2024, 7, 1, 16, 0),
-                                  "Cayleen",
-                                  "Piano"),
+                              detailStudentTime(context, schedule.id,
+                                  schedule.startTime, student.name, "Piano"),
                             ],
                           ),
                         ],
@@ -126,47 +128,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   );
                 },
               ),
-              /* Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  detailScheduleDate(context, DateTime(2024, 7, 1)),
-                  Column(
-                    children: [
-                      detailStudentTime(context, "1",
-                          DateTime(2024, 7, 1, 16, 0), "Cayleen", "Piano"),
-                    ],
-                  ),
-                  detailScheduleDate(context, DateTime(2024, 7, 8)),
-                  Column(
-                    children: [
-                      detailStudentTime(context, "1",
-                          DateTime(2024, 7, 8, 16, 0), "Cayleen", "Piano"),
-                    ],
-                  ),
-                  detailScheduleDate(context, DateTime(2024, 7, 15)),
-                  Column(
-                    children: [
-                      detailStudentTime(context, "1",
-                          DateTime(2024, 7, 15, 16, 0), "Cayleen", "Piano"),
-                    ],
-                  ),
-                  detailScheduleDate(context, DateTime(2024, 7, 22)),
-                  Column(
-                    children: [
-                      detailStudentTime(context, "1",
-                          DateTime(2024, 7, 22, 16, 0), "Cayleen", "Piano"),
-                    ],
-                  ),
-                  detailScheduleDate(context, DateTime(2024, 7, 29)),
-                  Column(
-                    children: [
-                      detailStudentTime(context, "1",
-                          DateTime(2024, 7, 29, 16, 0), "Cayleen", "Piano"),
-                    ],
-                  ),
-                ],
-              ), */
-            ), */
+            ),
           ],
         ),
       ),

@@ -162,8 +162,9 @@ Widget detailScheduleDate(BuildContext context, DateTime date) {
   );
 }
 
-Widget detailStudentTime(BuildContext context, String scheduleId, DateTime time,
+Widget detailStudentTime(BuildContext context, String scheduleId, String time,
     String studentName, String instrument) {
+  String formattedTime = time.substring(0, 5);
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
     margin: const EdgeInsets.only(bottom: 8, left: 32),
@@ -177,8 +178,8 @@ Widget detailStudentTime(BuildContext context, String scheduleId, DateTime time,
             flex: 2,
             child: Container(
               child: Text(
-                DateFormat("HH:mm").format(time),
-                style: TextStyle(fontWeight: FontWeight.bold),
+                formattedTime,
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             )),
         Expanded(flex: 6, child: Text("$studentName ($instrument)")),

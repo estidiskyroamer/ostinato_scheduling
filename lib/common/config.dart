@@ -7,7 +7,8 @@ class Config {
   String apiKey = "8accedf111e59fb160ff3561c7c90e0e";
   String accessToken =
       "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4YWNjZWRmMTExZTU5ZmIxNjBmZjM1NjFjN2M5MGUwZSIsInN1YiI6IjYxYmE4ZDk3MjhkN2ZlMDA0M2VjZjgzNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.Geq8PJdk6by2Xl5fG0SOicHJFvUlxHpg_-xif7kn47Y";
-  String baseUrl = "http://localhost:8000";
+  String baseUrl =
+      "https://qp7ek3rdzjlobstnvgzamvq4jy0koadp.lambda-url.ap-southeast-3.on.aws/api";
   Dio dio = Dio()
         ..interceptors.add(InterceptorsWrapper(onRequest: ((options, handler) {
           options.headers['accept'] = "application/json";

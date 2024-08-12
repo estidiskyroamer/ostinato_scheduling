@@ -47,11 +47,11 @@ class ScheduleList {
 class Schedule {
   final String id;
   final String studentId;
-  final String studentName;
+  final String? studentName;
   final String teacherId;
-  final String teacherName;
+  final String? teacherName;
   final String instrumentId;
-  final String instrumentName;
+  final String? instrumentName;
   final DateTime date;
   final dynamic createdBy;
   final dynamic statusId;
@@ -76,11 +76,12 @@ class Schedule {
   factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
         id: json["id"],
         studentId: json["studentId"],
-        studentName: json["studentName"],
+        studentName: json['studentName'] == null ? null : json["studentName"],
         teacherId: json["teacherId"],
-        teacherName: json["teacherName"],
+        teacherName: json['teacherName'] == null ? null : json["teacherName"],
         instrumentId: json["instrumentId"],
-        instrumentName: json["instrumentName"],
+        instrumentName:
+            json['instrumentName'] == null ? null : json["instrumentName"],
         date: DateTime.parse(json["date"]),
         createdBy: json["createdBy"],
         statusId: json["statusId"],
@@ -91,11 +92,11 @@ class Schedule {
   Map<String, dynamic> toJson() => {
         "id": id,
         "studentId": studentId,
-        "studentName": studentName,
+        "studentName": studentName?.toString(),
         "teacherId": teacherId,
-        "teacherName": teacherName,
+        "teacherName": teacherName?.toString(),
         "instrumentId": instrumentId,
-        "instrumentName": instrumentName,
+        "instrumentName": instrumentName?.toString(),
         "date": date.toString(),
         "createdBy": createdBy,
         "statusId": statusId,
