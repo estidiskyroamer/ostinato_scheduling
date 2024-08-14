@@ -1,12 +1,16 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:ostinato/models/student.dart';
+import 'package:flutter/material.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/main.dart';
+import 'package:ostinato/models/user.dart';
 import 'dart:developer';
+
+import 'package:ostinato/pages/login.dart';
 
 class AuthService {
   String baseUrl = Config().baseUrl;
-  final storage = const FlutterSecureStorage();
 
   Future<bool> login(String email, String password) async {
     try {
@@ -14,10 +18,9 @@ class AuthService {
         'email': email,
         'password': password,
       });
-      inspect(response);
       if (response.statusCode == 200 && response.data['access_token'] != null) {
         String token = response.data['access_token'];
-        await storage.write(key: 'jwt_token', value: token);
+        await Config().storage.write(key: 'jwt_token', value: token);
         return true;
       } else {
         return false;
@@ -28,11 +31,30 @@ class AuthService {
     }
   }
 
+  Future<User?> getMe() async {
+    User? user;
+    try {
+      Response response = await Config().dio.post('$baseUrl/me');
+      user = User.fromJson(response.data);
+      await Config()
+          .storage
+          .write(key: 'user', value: jsonEncode(response.data));
+    } on DioException catch (e) {
+      inspect(e);
+    }
+    return user;
+  }
+
   Future<void> logout() async {
-    await storage.delete(key: 'jwt_token');
+    await Config().storage.delete(key: 'jwt_token');
+
+    navigatorKey.currentState?.pushAndRemoveUntil(
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+      (route) => false,
+    );
   }
 
   Future<String?> getToken() async {
-    return await storage.read(key: 'jwt_token');
+    return await Config().storage.read(key: 'jwt_token');
   }
 }

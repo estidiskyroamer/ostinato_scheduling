@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/teacher.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/navigation.dart';
 import 'package:ostinato/pages/register.dart';
 import 'package:ostinato/services/auth_service.dart';
+import 'package:ostinato/services/teacher_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -17,6 +21,9 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   bool _isLoading = false;
 
+  late TeacherDetail? _teacherDetail;
+  late User? _user;
+
   void doLogin() async {
     setState(() {
       _isLoading = true;
@@ -29,11 +36,23 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = false;
     });
     if (loginSuccess) {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => NavigationPage()));
+      _user = await AuthService().getMe();
+      _teacherDetail = await TeacherService().getTeacherDetail();
+      Teacher teacher = _teacherDetail!.data;
+      Config().storage.write(key: 'teacher_id', value: teacher.id);
+      Config().storage.write(key: 'teacher_name', value: teacher.name);
+      if (mounted) {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const NavigationPage()));
+      }
     } else {
       print("LOgin failed");
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -63,36 +82,47 @@ class _LoginPageState extends State<LoginPage> {
                 textEditingController: emailController,
                 hintText: "Email",
                 inputType: TextInputType.emailAddress,
+                isReadOnly: _isLoading,
               ),
               InputField(
                 textEditingController: passwordController,
                 hintText: "Password",
                 isPassword: true,
+                isReadOnly: _isLoading,
               ),
               Padding(padding: padding8),
-              SolidButton(
-                  action: () {
-                    if (emailController.text.isNotEmpty &&
-                        passwordController.text.isNotEmpty) {
-                      doLogin();
-                    } else {
-                      null;
-                    }
-                  },
-                  text: "Login"),
-              Text(
-                "- or -",
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium!
-                    .merge(const TextStyle(fontStyle: FontStyle.italic)),
-              ),
-              OutlineButton(
-                  action: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => RegisterPage()));
-                  },
-                  text: "Register")
+              _isLoading
+                  ? Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 6,
+                        child: Config().loadingIndicator,
+                      ),
+                    )
+                  : Column(
+                      children: [
+                        SolidButton(
+                            action: () {
+                              if (emailController.text.isNotEmpty &&
+                                  passwordController.text.isNotEmpty) {
+                                doLogin();
+                              } else {
+                                null;
+                              }
+                            },
+                            text: "Login"),
+                        Text(
+                          "- or -",
+                          style: Theme.of(context).textTheme.bodyMedium!.merge(
+                              const TextStyle(fontStyle: FontStyle.italic)),
+                        ),
+                        OutlineButton(
+                            action: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => RegisterPage()));
+                            },
+                            text: "Register")
+                      ],
+                    )
             ],
           ),
         ),

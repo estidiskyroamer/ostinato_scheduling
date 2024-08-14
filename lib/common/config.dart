@@ -1,28 +1,32 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:ostinato/pages/login.dart';
 import 'package:ostinato/services/auth_service.dart';
 
 class Config {
   String baseUrl = "http://localhost:8000/api";
+  final storage = const FlutterSecureStorage();
   Dio dio = Dio()
-        ..interceptors
-            .add(InterceptorsWrapper(onRequest: ((options, handler) async {
+    ..interceptors.add(
+      InterceptorsWrapper(
+        onRequest: ((options, handler) async {
           String? token = await AuthService().getToken();
           options.headers['accept'] = "application/json";
           options.headers['Authorization'] = "Bearer $token";
           return handler.next(options);
-        })))
-      /* ..interceptors.add(PrettyDioLogger(
-        requestHeader: true,
-        requestBody: true,
-        responseBody: true,
-        responseHeader: false,
-        error: true,
-        compact: true,
-        maxWidth: 90)) */
-      ;
+        }),
+        onError: (error, handler) async {
+          if (error.response?.statusCode == 401) {
+            await AuthService().logout();
+          } else {
+            return handler.next(error);
+          }
+        },
+      ),
+    );
   LoadingIndicator loadingIndicator = LoadingIndicator(
     indicatorType: Indicator.ballPulseSync,
     colors: [

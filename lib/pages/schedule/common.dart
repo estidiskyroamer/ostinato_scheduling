@@ -187,7 +187,7 @@ Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
   );
 }
 
-Widget studentTime(BuildContext context, String scheduleId, DateTime time,
+Widget studentTime(BuildContext context, String scheduleId, String time,
     String studentName, String instrument) {
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -202,7 +202,7 @@ Widget studentTime(BuildContext context, String scheduleId, DateTime time,
             flex: 2,
             child: Container(
               child: Text(
-                DateFormat("HH:mm").format(time),
+                time,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             )),

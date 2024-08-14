@@ -3,6 +3,8 @@ import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/account/form_account.dart';
 import 'package:ostinato/pages/account/summary.dart';
+import 'package:ostinato/pages/login.dart';
+import 'package:ostinato/services/auth_service.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -40,14 +42,17 @@ class _AccountPageState extends State<AccountPage> {
                 text: "Summary"),
             StyledTextButton(action: () {}, text: "Tutorials"),
             StyledTextButton(
-                action: () {
+                action: () async {
+                  String? userId = await Config().storage.read(key: "user_id");
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => FormAccountPage()));
+                      builder: (context) => FormAccountPage(
+                            userId: userId,
+                          )));
                 },
                 text: "Edit Account"),
             StyledTextButton(
                 action: () {
-                  Navigator.pop(context);
+                  AuthService().logout();
                 },
                 text: "Logout"),
           ],

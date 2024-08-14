@@ -50,8 +50,7 @@ class _StudentSchedulePageState extends State<StudentSchedulePage> {
                   scheduleDate(context, DateTime(2024, 7, 1)),
                   Column(
                     children: [
-                      studentTime(context, "1", DateTime(2024, 7, 1, 16, 0),
-                          "Cayleen", "Piano"),
+                      studentTime(context, "1", "13:00", "Cayleen", "Piano"),
                     ],
                   )
                 ],
@@ -65,8 +64,7 @@ class _StudentSchedulePageState extends State<StudentSchedulePage> {
                   scheduleDate(context, DateTime(2024, 7, 8)),
                   Column(
                     children: [
-                      studentTime(context, "1", DateTime(2024, 8, 1, 16, 0),
-                          "Cayleen", "Piano"),
+                      studentTime(context, "1", "13:00", "Cayleen", "Piano"),
                     ],
                   )
                 ],
@@ -80,8 +78,7 @@ class _StudentSchedulePageState extends State<StudentSchedulePage> {
                   scheduleDate(context, DateTime(2024, 7, 14)),
                   Column(
                     children: [
-                      studentTime(context, "1", DateTime(2024, 7, 14, 16, 0),
-                          "Cayleen", "Piano"),
+                      studentTime(context, "1", "13:00", "Cayleen", "Piano"),
                     ],
                   )
                 ],
@@ -95,8 +92,7 @@ class _StudentSchedulePageState extends State<StudentSchedulePage> {
                   scheduleDate(context, DateTime(2024, 7, 21)),
                   Column(
                     children: [
-                      studentTime(context, "1", DateTime(2024, 7, 21, 16, 0),
-                          "Cayleen", "Piano"),
+                      studentTime(context, "1", "13:00", "Cayleen", "Piano"),
                     ],
                   )
                 ],
@@ -110,8 +106,7 @@ class _StudentSchedulePageState extends State<StudentSchedulePage> {
                   scheduleDate(context, DateTime(2024, 7, 28)),
                   Column(
                     children: [
-                      studentTime(context, "1", DateTime(2024, 7, 28, 16, 0),
-                          "Cayleen", "Piano"),
+                      studentTime(context, "1", "10.00", "Cayleen", "Piano"),
                     ],
                   )
                 ],

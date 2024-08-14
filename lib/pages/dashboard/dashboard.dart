@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/teacher.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/dashboard/common.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/student/common.dart';
@@ -30,10 +34,12 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   late Future<TeacherDetail?> _teacherDetail;
+  late Future<String?> _user;
 
   @override
   void initState() {
     _teacherDetail = TeacherService().getTeacherDetail();
+    _user = Config().storage.read(key: 'user');
     super.initState();
   }
 
@@ -46,9 +52,8 @@ class _DashboardPageState extends State<DashboardPage> {
           style: Theme.of(context).textTheme.titleMedium,
         ), */
             FutureBuilder(
-          future: _teacherDetail,
-          builder:
-              (BuildContext context, AsyncSnapshot<TeacherDetail?> snapshot) {
+          future: _user,
+          builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: SizedBox(
@@ -63,9 +68,10 @@ class _DashboardPageState extends State<DashboardPage> {
             if (!snapshot.hasData) {
               return const Center(child: Text('No teacher found'));
             }
-            Teacher teacher = snapshot.data!.data;
+            var jsonData = jsonDecode(snapshot.data!);
+            User user = User.fromJson(jsonData);
             return Text(
-              "${greeting()}, ${teacher.name.split(' ')[0]}",
+              "${greeting()}, ${user.name.split(' ')[0]}",
               style: Theme.of(context).textTheme.titleMedium,
             );
           },

@@ -44,6 +44,48 @@ class ScheduleList {
       };
 }
 
+GroupedSchedule groupedScheduleFromJson(String str) =>
+    GroupedSchedule.fromJson(json.decode(str));
+
+String groupedScheduleToJson(GroupedSchedule data) =>
+    json.encode(data.toJson());
+
+class GroupedSchedule {
+  Map<String, List<Schedule>> data;
+  String message;
+  bool success;
+  Links links;
+  Meta meta;
+
+  GroupedSchedule({
+    required this.data,
+    required this.message,
+    required this.success,
+    required this.links,
+    required this.meta,
+  });
+
+  factory GroupedSchedule.fromJson(Map<String, dynamic> json) =>
+      GroupedSchedule(
+        data: Map.from(json["data"]).map((k, v) =>
+            MapEntry<String, List<Schedule>>(
+                k, List<Schedule>.from(v.map((x) => Schedule.fromJson(x))))),
+        message: json["message"],
+        success: json["success"],
+        links: Links.fromJson(json["links"]),
+        meta: Meta.fromJson(json["meta"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "data": Map.from(data).map((k, v) => MapEntry<String, dynamic>(
+            k, List<dynamic>.from(v.map((x) => x.toJson())))),
+        "message": message,
+        "success": success,
+        "links": links.toJson(),
+        "meta": meta.toJson(),
+      };
+}
+
 class Schedule {
   final String id;
   final String? studentId;

@@ -22,8 +22,8 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   void initState() {
-    super.initState();
     _studentList = StudentService().getStudents();
+    super.initState();
   }
 
   @override

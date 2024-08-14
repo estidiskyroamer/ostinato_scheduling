@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
+import 'package:ostinato/services/schedule_service.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -13,14 +17,27 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
+  late Future<GroupedSchedule?> _scheduleList;
+  late DateTime currentTime;
+  late DateTime nextMonthTime;
+  late String currentMonthName;
+  late String nextMonthName;
+
+  @override
+  void initState() {
+    currentTime = DateTime.now();
+    nextMonthTime =
+        DateTime(currentTime.year, currentTime.month + 1, currentTime.day);
+    currentMonthName = DateFormat("MMMM yyyy").format(currentTime);
+    nextMonthName = DateFormat("MMMM yyyy").format(nextMonthTime);
+
+    _scheduleList = ScheduleService()
+        .getGroupedSchedule(month: currentTime.month, year: currentTime.year);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    DateTime currentMonthTime = DateTime.now();
-    DateTime nextMonthTime = DateTime(currentMonthTime.year,
-        currentMonthTime.month + 1, currentMonthTime.day);
-    String currentMonthName = DateFormat("MMMM yyyy").format(currentMonthTime);
-    String nextMonthName = DateFormat("MMMM yyyy").format(nextMonthTime);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -38,117 +55,55 @@ class _SchedulePageState extends State<SchedulePage> {
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
-        child: ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Container(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  scheduleDate(context, DateTime(2024, 7, 1)),
-                  Column(
-                    children: [
-                      studentTime(context, "1", DateTime(2024, 7, 1, 16, 0),
-                          "Cayleen", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 1, 16, 30),
-                          "Clarice", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 1, 17, 0),
-                          "Cayleen", "Violin"),
-                      studentTime(context, "1", DateTime(2024, 7, 1, 18, 0),
-                          "Velove", "Piano"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  scheduleDate(context, DateTime(2024, 7, 2)),
-                  Column(
-                    children: [
-                      studentTime(context, "1", DateTime(2024, 7, 2, 8, 30),
-                          "Sierra", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 10, 0),
-                          "Felicia", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 10, 30),
-                          "Octhania", "Violin"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 11, 30),
-                          "Susie", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 13, 0),
-                          "Hikaru", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 14, 0),
-                          "Damar", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 14, 30),
-                          "Gian", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 16, 0),
-                          "Andrea Taylor", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 17, 0),
-                          "Jocelyn", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 17, 30),
-                          "Erci", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 18, 30),
-                          "Ben", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 2, 19, 0),
-                          "Alene", "Piano"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  scheduleDate(context, DateTime(2024, 7, 4)),
-                  Column(
-                    children: [
-                      studentTime(context, "1", DateTime(2024, 7, 4, 14, 0),
-                          "Yoshiko", "Violin"),
-                      studentTime(context, "1", DateTime(2024, 7, 4, 16, 0),
-                          "Natasha", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 4, 17, 30),
-                          "Given", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 4, 18, 30),
-                          "Kive", "Piano"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  scheduleDate(context, DateTime(2024, 7, 10)),
-                  Column(
-                    children: [
-                      studentTime(context, "1", DateTime(2024, 7, 10, 12, 30),
-                          "Abby", "Violin"),
-                      studentTime(context, "1", DateTime(2024, 7, 10, 13, 30),
-                          "Andrea Taylor", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 10, 15, 30),
-                          "Abel", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 10, 16, 15),
-                          "Vrilla", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 10, 16, 45),
-                          "Andra", "Piano"),
-                      studentTime(context, "1", DateTime(2024, 7, 10, 18, 30),
-                          "Keenan", "Piano"),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+          child: FutureBuilder(
+              future: _scheduleList,
+              builder: (BuildContext context,
+                  AsyncSnapshot<GroupedSchedule?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 6,
+                      child: Config().loadingIndicator,
+                    ),
+                  );
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                if (!snapshot.hasData) {
+                  return const Center(child: Text('No students yet'));
+                }
+                GroupedSchedule scheduleList = snapshot.data!;
+                return ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: scheduleList.data.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    DateTime date =
+                        DateTime.parse(scheduleList.data.keys.elementAt(index));
+                    List<Schedule> schedules =
+                        scheduleList.data.values.elementAt(index);
+                    return Column(
+                      children: [
+                        scheduleDate(context, date),
+                        ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: schedules.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Schedule schedule = schedules[index];
+                              return studentTime(
+                                  context,
+                                  schedule.id,
+                                  schedule.startTime,
+                                  schedule.studentName,
+                                  schedule.instrumentName);
+                            })
+                      ],
+                    );
+                  },
+                );
+              })),
     );
   }
 }

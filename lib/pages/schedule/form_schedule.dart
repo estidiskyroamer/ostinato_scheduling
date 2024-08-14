@@ -27,10 +27,20 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Schedule";
 
+  late String? _teacherId;
+  late String? _teacherName;
+
   @override
   void initState() {
     setEdit();
+    getTeacher();
     super.initState();
+  }
+
+  void getTeacher() async {
+    _teacherId = await Config().storage.read(key: 'teacher_id');
+    _teacherName = await Config().storage.read(key: 'teacher_name');
+    teacherNameController.text = _teacherName!;
   }
 
   void setEdit() {
