@@ -13,6 +13,7 @@ import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:ostinato/services/student_service.dart';
+import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 
 class FormSchedulePage extends StatefulWidget {
   final String? scheduleId;
@@ -116,6 +117,8 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleEndTime = selectedDate;
+        endTimeController.text =
+            DateFormat('HH:mm').format(selectedScheduleEndTime);
       });
     }
   }
@@ -190,13 +193,33 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
             onTap: widget.scheduleId != null
                 ? null
                 : () async {
-                    final result = await dateTimePicker(
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (context) {
+                        return ScrollDateTimePicker(
+                          itemExtent: 54,
+                          visibleItem: 5,
+                          infiniteScroll: false,
+                          dateOption: DateTimePickerOption(
+                            dateFormat: DateFormat('yyyy MM dd'),
+                            minDate: DateTime(2000, 12),
+                            maxDate: DateTime(2024, 12),
+                            initialDate: selectedScheduleEndTime,
+                          ),
+                          onChange: (datetime) {
+                            setEndTime(datetime);
+                            inspect(datetime);
+                          },
+                        );
+                      },
+                    );
+                    /* final result = await dateTimePicker(
                         context, "Start Date", selectedScheduleStartDate);
                     if (result != null) {
                       dateController.text =
                           DateFormat("EEEE, dd MMMM yyyy").format(result);
                       setStartDate(result);
-                    }
+                    } */
                   },
             isReadOnly: true,
           ),
@@ -231,7 +254,27 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                   onTap: widget.scheduleId != null
                       ? null
                       : () async {
-                          final result = await dateTimePicker(
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (context) {
+                              return ScrollDateTimePicker(
+                                itemExtent: 54,
+                                visibleItem: 5,
+                                infiniteScroll: false,
+                                dateOption: DateTimePickerOption(
+                                  dateFormat: DateFormat('HH:mm'),
+                                  minDate: DateTime(2000, 6),
+                                  maxDate: DateTime(2024, 6),
+                                  initialDate: selectedScheduleEndTime,
+                                ),
+                                onChange: (datetime) {
+                                  setEndTime(datetime);
+                                  inspect(datetime);
+                                },
+                              );
+                            },
+                          );
+                          /* final result = await dateTimePicker(
                               context,
                               "End Time",
                               selectedScheduleEndTime,
@@ -240,7 +283,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                             endTimeController.text =
                                 DateFormat("HH:mm").format(result);
                             setEndTime(result);
-                          }
+                          } */
                         },
                   isReadOnly: true,
                 ),
