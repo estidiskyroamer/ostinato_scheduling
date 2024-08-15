@@ -6,6 +6,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/instrument.dart';
+import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/student.dart';
+import 'package:ostinato/pages/schedule/common.dart';
+import 'package:ostinato/services/instrument_service.dart';
+import 'package:ostinato/services/schedule_service.dart';
+import 'package:ostinato/services/student_service.dart';
 
 class FormSchedulePage extends StatefulWidget {
   final String? scheduleId;
@@ -22,6 +29,8 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   TextEditingController dateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
+  TextEditingController repeatController = TextEditingController();
+
   DateTime selectedScheduleStartDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
@@ -29,11 +38,19 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
 
   late String? _teacherId;
   late String? _teacherName;
+  late StudentList? _studentList;
+  late Student selectedStudent;
+  late InstrumentList? _instrumentList;
+  late Instrument selectedInstrument;
+
+  bool isLoading = false;
 
   @override
   void initState() {
     setEdit();
     getTeacher();
+    getStudentList();
+    getInstrumentList();
     super.initState();
   }
 
@@ -43,6 +60,14 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     teacherNameController.text = _teacherName!;
   }
 
+  void getStudentList() async {
+    _studentList = await StudentService().getAllStudents();
+  }
+
+  void getInstrumentList() async {
+    _instrumentList = await InstrumentService().getInstruments();
+  }
+
   void setEdit() {
     if (mounted) {
       if (widget.scheduleId != null) {
@@ -50,6 +75,24 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
           pageTitle = "Edit Schedule";
         });
       }
+    }
+  }
+
+  void setStudent(Student student) {
+    if (mounted) {
+      setState(() {
+        selectedStudent = student;
+        studentNameController.text = selectedStudent.name;
+      });
+    }
+  }
+
+  void setInstrument(Instrument instrument) {
+    if (mounted) {
+      setState(() {
+        selectedInstrument = instrument;
+        instrumentController.text = selectedInstrument.name;
+      });
     }
   }
 
@@ -86,90 +129,152 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: padding16,
-          child: Column(
+      body: SingleChildScrollView(child: buildForm(context)),
+    );
+  }
+
+  Widget buildForm(BuildContext context) {
+    return Container(
+      padding: padding16,
+      child: Column(
+        children: [
+          Image(
+              width: MediaQuery.sizeOf(context).width / 2,
+              image: const AssetImage('assets/images/schedule.jpeg')),
+          Padding(padding: padding16),
+          InputField(
+              textEditingController: teacherNameController,
+              hintText: "Teacher name"),
+          InputField(
+            textEditingController: studentNameController,
+            hintText: "Student name",
+            isReadOnly: true,
+            onTap: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  builder: (context) {
+                    return listBottomSheet<Student>(
+                      context: context,
+                      items: _studentList!.data,
+                      title: "Set student",
+                      onItemSelected: setStudent,
+                      itemContentBuilder: (Student student) =>
+                          Text(student.name),
+                    );
+                  });
+            },
+          ),
+          InputField(
+            textEditingController: instrumentController,
+            hintText: "Instrument",
+            isReadOnly: true,
+            onTap: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  builder: (context) {
+                    return listBottomSheet<Instrument>(
+                      context: context,
+                      items: _instrumentList!.data,
+                      title: "Set instrument",
+                      onItemSelected: setInstrument,
+                      itemContentBuilder: (Instrument instrument) =>
+                          Text(instrument.name),
+                    );
+                  });
+            },
+          ),
+          Padding(padding: padding8),
+          InputField(
+            textEditingController: dateController,
+            hintText: "Start date",
+            onTap: widget.scheduleId != null
+                ? null
+                : () async {
+                    final result = await dateTimePicker(
+                        context, "Start Date", selectedScheduleStartDate);
+                    if (result != null) {
+                      dateController.text =
+                          DateFormat("EEEE, dd MMMM yyyy").format(result);
+                      setStartDate(result);
+                    }
+                  },
+            isReadOnly: true,
+          ),
+          Row(
             children: [
-              Image(
-                  width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/schedule.jpeg')),
-              Padding(padding: padding16),
-              InputField(
-                  textEditingController: teacherNameController,
-                  hintText: "Teacher name"),
-              InputField(
-                  textEditingController: studentNameController,
-                  hintText: "Student name"),
-              InputField(
-                  textEditingController: instrumentController,
-                  hintText: "Instrument"),
+              Expanded(
+                child: InputField(
+                  textEditingController: startTimeController,
+                  hintText: "Start time",
+                  onTap: widget.scheduleId != null
+                      ? null
+                      : () async {
+                          final result = await dateTimePicker(
+                              context,
+                              "Start Time",
+                              selectedScheduleStartTime,
+                              DateTimePickerType.time);
+                          if (result != null) {
+                            startTimeController.text =
+                                DateFormat("HH:mm").format(result);
+                            setStartTime(result);
+                          }
+                        },
+                  isReadOnly: true,
+                ),
+              ),
               Padding(padding: padding8),
-              InputField(
-                textEditingController: dateController,
-                hintText: "Start date",
-                onTap: widget.scheduleId != null
-                    ? null
-                    : () async {
-                        final result = await dateTimePicker(
-                            context, "Start Date", selectedScheduleStartDate);
-                        if (result != null) {
-                          dateController.text =
-                              DateFormat("EEEE, dd MMMM yyyy").format(result);
-                          setStartDate(result);
-                        }
-                      },
-                isReadOnly: true,
+              Expanded(
+                child: InputField(
+                  textEditingController: endTimeController,
+                  hintText: "End time",
+                  onTap: widget.scheduleId != null
+                      ? null
+                      : () async {
+                          final result = await dateTimePicker(
+                              context,
+                              "End Time",
+                              selectedScheduleEndTime,
+                              DateTimePickerType.time);
+                          if (result != null) {
+                            endTimeController.text =
+                                DateFormat("HH:mm").format(result);
+                            setEndTime(result);
+                          }
+                        },
+                  isReadOnly: true,
+                ),
               ),
-              Row(
-                children: [
-                  Expanded(
-                    child: InputField(
-                      textEditingController: startTimeController,
-                      hintText: "Start time",
-                      onTap: widget.scheduleId != null
-                          ? null
-                          : () async {
-                              final result = await dateTimePicker(
-                                  context,
-                                  "Start Time",
-                                  selectedScheduleStartTime,
-                                  DateTimePickerType.time);
-                              if (result != null) {
-                                startTimeController.text =
-                                    DateFormat("HH:mm").format(result);
-                                setStartTime(result);
-                              }
-                            },
-                      isReadOnly: true,
-                    ),
+            ],
+          ),
+          Padding(padding: padding8),
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 2,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text("Repeat for"),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 7,
+                  child: InputField(
+                    textEditingController: repeatController,
+                    hintText: "4",
+                    inputType: TextInputType.number,
                   ),
-                  Padding(padding: padding8),
-                  Expanded(
-                    child: InputField(
-                      textEditingController: endTimeController,
-                      hintText: "End time",
-                      onTap: widget.scheduleId != null
-                          ? null
-                          : () async {
-                              final result = await dateTimePicker(
-                                  context,
-                                  "End Time",
-                                  selectedScheduleEndTime,
-                                  DateTimePickerType.time);
-                              if (result != null) {
-                                endTimeController.text =
-                                    DateFormat("HH:mm").format(result);
-                                setEndTime(result);
-                              }
-                            },
-                      isReadOnly: true,
-                    ),
+                ),
+                const Text("weeks")
+              ],
+            ),
+          ),
+          Padding(padding: padding16),
+          isLoading
+              ? Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 6,
+                    child: Config().loadingIndicator,
                   ),
-                ],
-              ),
-              Padding(padding: padding16),
-              widget.scheduleId != null
+                )
+              : widget.scheduleId != null
                   ? SolidButton(
                       action: () {
                         Navigator.pop(context);
@@ -177,12 +282,33 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                       text: "Update")
                   : SolidButton(
                       action: () {
-                        Navigator.pop(context);
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Schedule create = Schedule(
+                            studentId: selectedStudent.id!,
+                            teacherId: _teacherId!,
+                            instrumentId: selectedInstrument.id,
+                            date: selectedScheduleStartDate,
+                            startTime: DateFormat('H:mm')
+                                .format(selectedScheduleStartTime),
+                            endTime: DateFormat('H:mm')
+                                .format(selectedScheduleEndTime));
+                        ScheduleService()
+                            .createSchedule(create,
+                                repeat: repeatController.text)
+                            .then((result) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          if (result) {
+                            Navigator.pop(context);
+                          }
+                        });
                       },
-                      text: "Add Schedule")
-            ],
-          ),
-        ),
+                      text: "Add Schedule",
+                    )
+        ],
       ),
     );
   }

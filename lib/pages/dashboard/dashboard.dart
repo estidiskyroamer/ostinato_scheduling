@@ -33,12 +33,10 @@ class _DashboardPageState extends State<DashboardPage> {
     }
   }
 
-  late Future<TeacherDetail?> _teacherDetail;
   late Future<String?> _user;
 
   @override
   void initState() {
-    _teacherDetail = TeacherService().getTeacherDetail();
     _user = Config().storage.read(key: 'user');
     super.initState();
   }
@@ -102,7 +100,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 ],
               ),
             ),
-            Column(
+            /* Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 dashboardTitle(context, "Currently Teaching"),
@@ -114,7 +112,7 @@ class _DashboardPageState extends State<DashboardPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                dashboardTitle(context, "Upcoming"),
+                dashboardTitle(context, "Next"),
                 dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 18, 0),
                     "Velove", "Piano"),
               ],
@@ -126,7 +124,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 dashboardStudentTime(context, "1", DateTime(2024, 7, 8, 16, 30),
                     "Clarice", "Piano"),
               ],
-            ),
+            ), */
           ],
         ),
       ),

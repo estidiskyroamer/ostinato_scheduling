@@ -4,13 +4,13 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';
 import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/pages/student/form_student.dart';
-import 'package:ostinato/pages/student/student_schedule.dart';
 
 Widget studentItem(BuildContext context, Student student) {
   return Container(
@@ -29,7 +29,7 @@ Widget studentItem(BuildContext context, Student student) {
             showModalBottomSheet<void>(
                 context: context,
                 builder: (context) {
-                  return bottomSheet(context, student.id);
+                  return bottomSheet(context, student.id!);
                 });
           },
         ),
@@ -165,9 +165,8 @@ Widget detailScheduleDate(BuildContext context, DateTime date) {
   );
 }
 
-Widget detailStudentTime(BuildContext context, String scheduleId, String time,
-    String studentName, String instrument) {
-  String formattedTime = time.substring(0, 5);
+Widget detailStudentTime(BuildContext context, Schedule schedule) {
+  String formattedTime = schedule.startTime.substring(0, 5);
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
     margin: const EdgeInsets.only(bottom: 8, left: 32),
@@ -184,7 +183,10 @@ Widget detailStudentTime(BuildContext context, String scheduleId, String time,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
-        Expanded(flex: 6, child: Text("$studentName ($instrument)")),
+        Expanded(
+            flex: 6,
+            child:
+                Text("${schedule.studentName} (${schedule.instrumentName})")),
         Expanded(
           flex: 1,
           child: IconButton(
@@ -196,7 +198,7 @@ Widget detailStudentTime(BuildContext context, String scheduleId, String time,
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return scheduleBottomSheet(context, scheduleId);
+                    return scheduleBottomSheet(context, schedule);
                   });
             },
           ),

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:ostinato/pages/login.dart';
@@ -16,6 +17,26 @@ class Config {
           String? token = await AuthService().getToken();
           options.headers['accept'] = "application/json";
           options.headers['Authorization'] = "Bearer $token";
+
+          if (options.method == 'POST') {
+            options.data ??= {};
+            String? userId =
+                await const FlutterSecureStorage().read(key: 'user_id');
+            if (userId != null) {
+              options.data['createdBy'] = userId;
+            }
+            switch (options.data['isActive']) {
+              case 1:
+                options.data['activeDate'] =
+                    DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+                break;
+              case 0:
+                options.data['inactiveDate'] =
+                    DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
+              default:
+                break;
+            }
+          }
           return handler.next(options);
         }),
         onError: (error, handler) async {

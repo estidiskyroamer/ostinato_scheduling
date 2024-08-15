@@ -48,11 +48,11 @@ class _NavigationPageState extends State<NavigationPage> {
               label: 'Students'),
           NavigationDestination(
               icon: Icon(
-                FontAwesomeIcons.listOl,
+                FontAwesomeIcons.calendarCheck,
                 color: Colors.black54,
               ),
               selectedIcon: Icon(
-                FontAwesomeIcons.listOl,
+                FontAwesomeIcons.calendarCheck,
                 color: Colors.black,
               ),
               label: 'Schedule'),

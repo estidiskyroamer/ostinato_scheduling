@@ -4,6 +4,7 @@ import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
@@ -26,8 +27,7 @@ Widget dashboardTitle(BuildContext context, String title) {
   );
 }
 
-Widget dashboardStudentTime(BuildContext context, String scheduleId,
-    DateTime time, String studentName, String instrument) {
+Widget dashboardStudentTime(BuildContext context, Schedule schedule) {
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
     margin: const EdgeInsets.only(bottom: 8, left: 32),
@@ -40,11 +40,14 @@ Widget dashboardStudentTime(BuildContext context, String scheduleId,
             flex: 2,
             child: Container(
               child: Text(
-                DateFormat("HH:mm").format(time),
+                schedule.startTime,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             )),
-        Expanded(flex: 6, child: Text("$studentName ($instrument)")),
+        Expanded(
+            flex: 6,
+            child:
+                Text("${schedule.studentName} (${schedule.instrumentName})")),
         Expanded(
           flex: 1,
           child: IconButton(
@@ -56,7 +59,7 @@ Widget dashboardStudentTime(BuildContext context, String scheduleId,
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return scheduleBottomSheet(context, scheduleId);
+                    return scheduleBottomSheet(context, schedule);
                   });
             },
           ),

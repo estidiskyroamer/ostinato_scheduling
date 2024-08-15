@@ -34,18 +34,18 @@ class UserDetail {
 }
 
 class User {
-  String id;
+  String? id;
   String name;
   String email;
   String phoneNumber;
-  String password;
+  String? password;
 
   User({
-    required this.id,
+    this.id,
     required this.name,
     required this.email,
     required this.phoneNumber,
-    required this.password,
+    this.password,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(

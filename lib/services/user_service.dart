@@ -18,4 +18,21 @@ class UserService {
     }
     return student;
   }
+
+  Future<User?> createUser(User user) async {
+    User? newUser;
+    Map<String, dynamic> params = user.toJson();
+    try {
+      Response response =
+          await Config().dio.post('$baseUrl/users', data: params);
+      if (response.statusCode == 200) {
+        UserDetail newUserDetail = UserDetail.fromJson(response.data);
+        newUser = newUserDetail.data;
+      }
+      return newUser;
+    } on DioException catch (e) {
+      inspect(e);
+      return newUser;
+    }
+  }
 }

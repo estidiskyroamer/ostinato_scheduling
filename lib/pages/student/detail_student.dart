@@ -140,12 +140,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                                 detailScheduleDate(context, schedule.date),
                                 Column(
                                   children: [
-                                    detailStudentTime(
-                                        context,
-                                        schedule.id,
-                                        schedule.startTime,
-                                        student.name,
-                                        schedule.instrumentName),
+                                    detailStudentTime(context, schedule),
                                   ],
                                 ),
                               ],

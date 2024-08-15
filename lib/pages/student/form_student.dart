@@ -7,7 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/student_service.dart';
+import 'package:ostinato/services/user_service.dart';
 
 class FormStudentPage extends StatefulWidget {
   final String? studentId;
@@ -33,6 +35,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
   String pageTitle = "New Student";
 
   Future<StudentDetail?>? _studentDetail;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -151,7 +154,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
                 await dateTimePicker(context, "Birth Date", studentBirthDate);
             if (result != null) {
               dateController.text = DateFormat("dd MMMM yyyy").format(result);
-              setStartDate(result);
+              setBirthDate(result);
             }
           },
           isReadOnly: true,
@@ -167,17 +170,57 @@ class _FormStudentPageState extends State<FormStudentPage> {
           inputType: TextInputType.phone,
         ),
         Padding(padding: padding16),
-        widget.studentId != null
-            ? SolidButton(
-                action: () {
-                  Navigator.pop(context);
-                },
-                text: "Update")
-            : SolidButton(
-                action: () {
-                  Navigator.pop(context);
-                },
-                text: "Add Student")
+        isLoading
+            ? Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 6,
+                  child: Config().loadingIndicator,
+                ),
+              )
+            : widget.studentId != null
+                ? SolidButton(
+                    action: () {
+                      //Navigator.pop(context);
+                    },
+                    text: "Update")
+                : SolidButton(
+                    action: () {
+                      setState(() {
+                        isLoading = true;
+                      });
+                      User user = User(
+                        name: studentNameController.text,
+                        email: studentEmailController.text,
+                        phoneNumber: studentPhoneController.text,
+                        password: 'password',
+                      );
+                      UserService().createUser(user).then(
+                        (result) {
+                          if (result != null) {
+                            Student student = Student(
+                              userId: result.id,
+                              name: result.name,
+                              email: result.email,
+                              phoneNumber: result.phoneNumber,
+                              address: studentAddressController.text,
+                              birthDate: studentBirthDate,
+                              isActive: 1,
+                            );
+                            StudentService()
+                                .createStudent(student)
+                                .then((value) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              if (value) {
+                                Navigator.pop(context);
+                              }
+                            });
+                          }
+                        },
+                      );
+                    },
+                    text: "Add Student")
       ],
     );
   }

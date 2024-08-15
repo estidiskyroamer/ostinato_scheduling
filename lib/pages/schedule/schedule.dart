@@ -47,8 +47,12 @@ class _SchedulePageState extends State<SchedulePage> {
         actions: [
           IconButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const FormSchedulePage()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(
+                        builder: (context) => const FormSchedulePage()))
+                    .then((value) {
+                  setState(() {});
+                });
               },
               icon: const Icon(FontAwesomeIcons.plus))
         ],
@@ -67,11 +71,11 @@ class _SchedulePageState extends State<SchedulePage> {
                     ),
                   );
                 }
+                if (!snapshot.hasData) {
+                  return const Center(child: Text('No schedule yet'));
+                }
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
-                }
-                if (!snapshot.hasData) {
-                  return const Center(child: Text('No students yet'));
                 }
                 GroupedSchedule scheduleList = snapshot.data!;
                 return ListView.builder(
@@ -92,12 +96,7 @@ class _SchedulePageState extends State<SchedulePage> {
                             itemCount: schedules.length,
                             itemBuilder: (BuildContext context, int index) {
                               Schedule schedule = schedules[index];
-                              return studentTime(
-                                  context,
-                                  schedule.id,
-                                  schedule.startTime,
-                                  schedule.studentName,
-                                  schedule.instrumentName);
+                              return studentTime(context, schedule);
                             })
                       ],
                     );

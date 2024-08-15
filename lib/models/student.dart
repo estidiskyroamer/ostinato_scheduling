@@ -14,14 +14,12 @@ class StudentList {
   final String message;
   final bool success;
   final Links links;
-  final Meta meta;
 
   StudentList({
     required this.data,
     required this.message,
     required this.success,
     required this.links,
-    required this.meta,
   });
 
   factory StudentList.fromJson(Map<String, dynamic> json) => StudentList(
@@ -29,7 +27,6 @@ class StudentList {
         message: json["message"],
         success: json["success"],
         links: Links.fromJson(json["links"]),
-        meta: Meta.fromJson(json["meta"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,7 +34,6 @@ class StudentList {
         "message": message,
         "success": success,
         "links": links.toJson(),
-        "meta": meta.toJson(),
       };
 }
 
@@ -71,29 +67,29 @@ class StudentDetail {
 }
 
 class Student {
-  final String id;
-  final String userId;
+  String? id;
+  String? userId;
   final String name;
   final String email;
   final String address;
   final String phoneNumber;
   final DateTime birthDate;
   final int isActive;
-  final DateTime activeDate;
+  final DateTime? activeDate;
   final DateTime? inactiveDate;
   List<Schedule>? schedules;
 
   Student({
-    required this.id,
-    required this.userId,
+    this.id,
+    this.userId,
     required this.name,
     required this.email,
     required this.address,
     required this.phoneNumber,
     required this.birthDate,
     required this.isActive,
-    required this.activeDate,
-    required this.inactiveDate,
+    this.activeDate,
+    this.inactiveDate,
     this.schedules,
   });
 
@@ -106,7 +102,9 @@ class Student {
         phoneNumber: json["phoneNumber"],
         birthDate: DateTime.parse(json["birthDate"]),
         isActive: json["isActive"],
-        activeDate: DateTime.parse(json["activeDate"]),
+        activeDate: json['activeDate'] == null
+            ? null
+            : DateTime.parse(json['activeDate']),
         inactiveDate: json['inactiveDate'] == null
             ? null
             : DateTime.parse(json['inactiveDate']),
@@ -123,9 +121,9 @@ class Student {
         "email": email,
         "address": address,
         "phoneNumber": phoneNumber,
-        "birthDate": birthDate.toString(),
+        "birthDate": DateFormat('yyyy-MM-dd').format(birthDate),
         "isActive": isActive,
-        "activeDate": activeDate.toString(),
+        "activeDate": activeDate?.toString(),
         "inactiveDate": inactiveDate?.toString(),
         "schedules": schedules == null
             ? null

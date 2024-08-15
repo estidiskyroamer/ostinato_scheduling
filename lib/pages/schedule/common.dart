@@ -1,15 +1,21 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
+import 'package:ostinato/services/schedule_service.dart';
 
-Widget scheduleBottomSheet(BuildContext context, String scheduleId) {
+Widget scheduleBottomSheet(BuildContext context, Schedule schedule) {
   return ItemBottomSheet(
     child: Column(
       children: [
@@ -38,7 +44,6 @@ Widget scheduleBottomSheet(BuildContext context, String scheduleId) {
                       );
                     },
                   );
-                  print("done $scheduleId");
                 },
                 icon: FontAwesomeIcons.circleCheck,
                 label: "Done"),
@@ -59,7 +64,6 @@ Widget scheduleBottomSheet(BuildContext context, String scheduleId) {
                       );
                     },
                   );
-                  print("reschedule $scheduleId");
                 },
                 icon: FontAwesomeIcons.rotate,
                 label: "Reschedule"),
@@ -106,8 +110,8 @@ Widget scheduleBottomSheet(BuildContext context, String scheduleId) {
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const FormSchedulePage(
-                            scheduleId: "1",
+                      builder: (context) => FormSchedulePage(
+                            scheduleId: schedule.id,
                           )));
                 },
                 icon: FontAwesomeIcons.pencil,
@@ -118,13 +122,24 @@ Widget scheduleBottomSheet(BuildContext context, String scheduleId) {
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
-                      return ActionDialog(
-                        action: () {
-                          Navigator.pop(context);
+                      return StatefulBuilder(
+                        builder: (context, setState) {
+                          return ActionDialog(
+                            action: () {
+                              ScheduleService()
+                                  .deleteSchedule(schedule)
+                                  .then((value) {
+                                setState(
+                                  () {},
+                                );
+                                Navigator.pop(context);
+                              });
+                            },
+                            contentText:
+                                "Are you sure you want to delete this data?",
+                            actionText: "Delete",
+                          );
                         },
-                        contentText:
-                            "Are you sure you want to delete this data?",
-                        actionText: "Delete",
                       );
                     },
                   );
@@ -187,8 +202,7 @@ Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
   );
 }
 
-Widget studentTime(BuildContext context, String scheduleId, String time,
-    String studentName, String instrument) {
+Widget studentTime(BuildContext context, Schedule schedule) {
   return Container(
     padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
     margin: const EdgeInsets.only(left: 32),
@@ -202,11 +216,14 @@ Widget studentTime(BuildContext context, String scheduleId, String time,
             flex: 2,
             child: Container(
               child: Text(
-                time,
+                schedule.startTime,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             )),
-        Expanded(flex: 6, child: Text("$studentName ($instrument)")),
+        Expanded(
+            flex: 6,
+            child:
+                Text("${schedule.studentName} (${schedule.instrumentName})")),
         Expanded(
           flex: 1,
           child: IconButton(
@@ -218,7 +235,7 @@ Widget studentTime(BuildContext context, String scheduleId, String time,
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return scheduleBottomSheet(context, scheduleId);
+                    return scheduleBottomSheet(context, schedule);
                   });
             },
           ),

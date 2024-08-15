@@ -135,7 +135,7 @@ class SolidButton extends StatelessWidget {
     return TextButton(
       style: TextButton.styleFrom(
           backgroundColor: Colors.black,
-          shape: LinearBorder(),
+          shape: const LinearBorder(),
           padding: padding8),
       onPressed: action,
       child: ConstrainedBox(
@@ -274,5 +274,48 @@ Future<DateTime?> dateTimePicker(
         boardTitleTextStyle: Theme.of(context).textTheme.titleSmall,
         pickerSubTitles: const BoardDateTimeItemTitles(
             year: "Year", month: "Month", day: "Date")),
+  );
+}
+
+Widget listBottomSheet<T>(
+    {required BuildContext context,
+    required List<T> items,
+    required String title,
+    required Function(T) onItemSelected,
+    required Widget Function(T) itemContentBuilder}) {
+  return ItemBottomSheet(
+    child: Column(
+      children: [
+        Text(
+          title,
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontStyle: FontStyle.italic),
+        ),
+        Padding(padding: padding16),
+        SizedBox(
+          height: MediaQuery.of(context).size.height / 3,
+          child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (BuildContext context, int index) {
+                T item = items[index];
+                return GestureDetector(
+                  onTap: () {
+                    onItemSelected(item);
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    decoration: const BoxDecoration(
+                        border:
+                            Border(bottom: BorderSide(color: Colors.black38))),
+                    child: itemContentBuilder(item),
+                  ),
+                );
+              }),
+        )
+      ],
+    ),
   );
 }

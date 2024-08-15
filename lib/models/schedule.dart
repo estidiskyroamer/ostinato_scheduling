@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
 import 'package:ostinato/models/common.dart';
 
 ScheduleList scheduleListFromJson(String str) =>
@@ -55,14 +56,12 @@ class GroupedSchedule {
   String message;
   bool success;
   Links links;
-  Meta meta;
 
   GroupedSchedule({
     required this.data,
     required this.message,
     required this.success,
     required this.links,
-    required this.meta,
   });
 
   factory GroupedSchedule.fromJson(Map<String, dynamic> json) =>
@@ -73,7 +72,6 @@ class GroupedSchedule {
         message: json["message"],
         success: json["success"],
         links: Links.fromJson(json["links"]),
-        meta: Meta.fromJson(json["meta"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -82,18 +80,17 @@ class GroupedSchedule {
         "message": message,
         "success": success,
         "links": links.toJson(),
-        "meta": meta.toJson(),
       };
 }
 
 class Schedule {
-  final String id;
-  final String? studentId;
-  final String studentName;
-  final String? teacherId;
-  final String teacherName;
-  final String? instrumentId;
-  final String instrumentName;
+  final String? id;
+  final String studentId;
+  final String? studentName;
+  final String teacherId;
+  final String? teacherName;
+  final String instrumentId;
+  final String? instrumentName;
   final DateTime date;
   final String? createdBy;
   final String? statusId;
@@ -101,13 +98,13 @@ class Schedule {
   final String endTime;
 
   Schedule({
-    required this.id,
-    this.studentId,
-    required this.studentName,
-    this.teacherId,
-    required this.teacherName,
-    this.instrumentId,
-    required this.instrumentName,
+    this.id,
+    required this.studentId,
+    this.studentName,
+    required this.teacherId,
+    this.teacherName,
+    required this.instrumentId,
+    this.instrumentName,
     required this.date,
     this.createdBy,
     this.statusId,
@@ -117,29 +114,26 @@ class Schedule {
 
   factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
         id: json["id"],
-        studentId: json['studentId'] == null ? null : json["studentId"],
-        studentName: json["studentName"],
-        teacherId: json['teacherId'] == null ? null : json["teacherId"],
-        teacherName: json["teacherName"],
-        instrumentId:
-            json['instrumentId'] == null ? null : json["instrumentId"],
-        instrumentName: json["instrumentName"],
+        studentId: json["studentId"],
+        studentName: json['studentName'] == null ? null : json["studentName"],
+        teacherId: json["teacherId"],
+        teacherName: json['teacherName'] == null ? null : json["teacherName"],
+        instrumentId: json["instrumentId"],
+        instrumentName:
+            json['instrumentName'] == null ? null : json["instrumentName"],
         date: DateTime.parse(json["date"]),
-        createdBy: json["createdBy"],
-        statusId: json["statusId"],
+        createdBy: json['createdBy'] == null ? null : json["createdBy"],
+        statusId: json['statusId'] == null ? null : json["statusId"],
         startTime: json["startTime"],
         endTime: json["endTime"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "studentId": studentId?.toString(),
-        "studentName": studentName.toString(),
-        "teacherId": teacherId?.toString(),
-        "teacherName": teacherName.toString(),
-        "instrumentId": instrumentId?.toString(),
-        "instrumentName": instrumentName.toString(),
-        "date": date.toString(),
+        "studentId": studentId.toString(),
+        "teacherId": teacherId.toString(),
+        "instrumentId": instrumentId.toString(),
+        "date": DateFormat('yyyy-MM-dd').format(date),
         "createdBy": createdBy,
         "statusId": statusId,
         "startTime": startTime,
