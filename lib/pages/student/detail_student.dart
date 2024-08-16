@@ -126,7 +126,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   }
 
                   Student student = snapshot.data!.data;
-                  List<Schedule>? schedules = snapshot.data!.data.schedules;
+                  List<Schedule>? schedules = student.schedules;
                   return schedules == null
                       ? const Center(child: Text('No schedule found'))
                       : ListView.builder(

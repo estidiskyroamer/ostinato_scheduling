@@ -85,11 +85,11 @@ class GroupedSchedule {
 
 class Schedule {
   final String? id;
-  final String studentId;
+  final String? studentId;
   final String? studentName;
-  final String teacherId;
+  final String? teacherId;
   final String? teacherName;
-  final String instrumentId;
+  final String? instrumentId;
   final String? instrumentName;
   final DateTime date;
   final String? createdBy;
@@ -99,11 +99,11 @@ class Schedule {
 
   Schedule({
     this.id,
-    required this.studentId,
+    this.studentId,
     this.studentName,
-    required this.teacherId,
+    this.teacherId,
     this.teacherName,
-    required this.instrumentId,
+    this.instrumentId,
     this.instrumentName,
     required this.date,
     this.createdBy,

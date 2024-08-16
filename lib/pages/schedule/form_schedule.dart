@@ -32,7 +32,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   TextEditingController endTimeController = TextEditingController();
   TextEditingController repeatController = TextEditingController();
 
-  DateTime selectedScheduleStartDate = DateTime.now();
+  DateTime selectedScheduleDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Schedule";
@@ -44,6 +44,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   late InstrumentList? _instrumentList;
   late Instrument selectedInstrument;
 
+  DateTime currentTime = DateTime.now();
   bool isLoading = false;
 
   @override
@@ -100,7 +101,9 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   void setStartDate(DateTime selectedDate) {
     if (mounted) {
       setState(() {
-        selectedScheduleStartDate = selectedDate;
+        selectedScheduleDate = selectedDate;
+        dateController.text =
+            DateFormat('dd MMMM yyyy').format(selectedScheduleDate);
       });
     }
   }
@@ -109,6 +112,8 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleStartTime = selectedDate;
+        startTimeController.text =
+            DateFormat('HH:mm').format(selectedScheduleStartTime);
       });
     }
   }
@@ -196,30 +201,13 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                     showModalBottomSheet<void>(
                       context: context,
                       builder: (context) {
-                        return ScrollDateTimePicker(
-                          itemExtent: 54,
-                          visibleItem: 5,
-                          infiniteScroll: false,
-                          dateOption: DateTimePickerOption(
-                            dateFormat: DateFormat('yyyy MM dd'),
-                            minDate: DateTime(2000, 12),
-                            maxDate: DateTime(2024, 12),
-                            initialDate: selectedScheduleEndTime,
-                          ),
-                          onChange: (datetime) {
-                            setEndTime(datetime);
-                            inspect(datetime);
-                          },
-                        );
+                        return inputDateTimePicker(
+                            title: "Set Date",
+                            context: context,
+                            selectedTime: selectedScheduleDate,
+                            setTime: setStartDate);
                       },
                     );
-                    /* final result = await dateTimePicker(
-                        context, "Start Date", selectedScheduleStartDate);
-                    if (result != null) {
-                      dateController.text =
-                          DateFormat("EEEE, dd MMMM yyyy").format(result);
-                      setStartDate(result);
-                    } */
                   },
             isReadOnly: true,
           ),
@@ -232,16 +220,17 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                   onTap: widget.scheduleId != null
                       ? null
                       : () async {
-                          final result = await dateTimePicker(
-                              context,
-                              "Start Time",
-                              selectedScheduleStartTime,
-                              DateTimePickerType.time);
-                          if (result != null) {
-                            startTimeController.text =
-                                DateFormat("HH:mm").format(result);
-                            setStartTime(result);
-                          }
+                          showModalBottomSheet<void>(
+                            context: context,
+                            builder: (context) {
+                              return inputDateTimePicker(
+                                  title: "Set Start Time",
+                                  pickerType: 'time',
+                                  context: context,
+                                  selectedTime: selectedScheduleStartTime,
+                                  setTime: setStartTime);
+                            },
+                          );
                         },
                   isReadOnly: true,
                 ),
@@ -257,33 +246,14 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                           showModalBottomSheet<void>(
                             context: context,
                             builder: (context) {
-                              return ScrollDateTimePicker(
-                                itemExtent: 54,
-                                visibleItem: 5,
-                                infiniteScroll: false,
-                                dateOption: DateTimePickerOption(
-                                  dateFormat: DateFormat('HH:mm'),
-                                  minDate: DateTime(2000, 6),
-                                  maxDate: DateTime(2024, 6),
-                                  initialDate: selectedScheduleEndTime,
-                                ),
-                                onChange: (datetime) {
-                                  setEndTime(datetime);
-                                  inspect(datetime);
-                                },
-                              );
+                              return inputDateTimePicker(
+                                  title: "Set End Time",
+                                  pickerType: 'time',
+                                  context: context,
+                                  selectedTime: selectedScheduleEndTime,
+                                  setTime: setEndTime);
                             },
                           );
-                          /* final result = await dateTimePicker(
-                              context,
-                              "End Time",
-                              selectedScheduleEndTime,
-                              DateTimePickerType.time);
-                          if (result != null) {
-                            endTimeController.text =
-                                DateFormat("HH:mm").format(result);
-                            setEndTime(result);
-                          } */
                         },
                   isReadOnly: true,
                 ),
@@ -332,7 +302,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                             studentId: selectedStudent.id!,
                             teacherId: _teacherId!,
                             instrumentId: selectedInstrument.id,
-                            date: selectedScheduleStartDate,
+                            date: selectedScheduleDate,
                             startTime: DateFormat('H:mm')
                                 .format(selectedScheduleStartTime),
                             endTime: DateFormat('H:mm')

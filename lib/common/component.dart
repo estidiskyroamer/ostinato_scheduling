@@ -1,8 +1,12 @@
+import 'dart:developer';
+
 import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 
 class InputField extends StatefulWidget {
   final TextEditingController textEditingController;
@@ -317,5 +321,88 @@ Widget listBottomSheet<T>(
         )
       ],
     ),
+  );
+}
+
+Widget inputDateTimePicker({
+  required BuildContext context,
+  required String title,
+  String pickerType = 'date',
+  required DateTime selectedTime,
+  required Function setTime,
+}) {
+  assert(pickerType == 'date' || pickerType == 'time');
+  DateFormat dateFormat;
+  switch (pickerType) {
+    case 'date':
+      dateFormat = DateFormat('yyyy MM dd');
+      break;
+    case 'time':
+      dateFormat = DateFormat('HH:mm');
+      break;
+    default:
+      dateFormat = DateFormat('yyyy MM dd');
+      break;
+  }
+  DateTime currentTime = DateTime.now();
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Text(
+        title,
+        style: Theme.of(context)
+            .textTheme
+            .bodyLarge!
+            .copyWith(fontStyle: FontStyle.italic),
+      ),
+      ScrollDateTimePicker(
+        itemExtent: 48,
+        visibleItem: 5,
+        infiniteScroll: false,
+        centerWidget: DateTimePickerCenterWidget(
+          builder: (context, constraints, child) {
+            return Container(
+              margin: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              padding: padding8,
+              decoration: const BoxDecoration(
+                border: Border(
+                  top: BorderSide(color: Colors.black, width: 1.0),
+                  bottom: BorderSide(color: Colors.black, width: 1.0),
+                  left: BorderSide(color: Colors.black, width: 6.0),
+                ),
+              ),
+            );
+          },
+        ),
+        dateOption: DateTimePickerOption(
+          dateFormat: dateFormat,
+          minDate: DateTime(currentTime.year - 100, 1),
+          maxDate: DateTime(currentTime.year + 5, 12),
+          initialDate: selectedTime,
+        ),
+        style: DateTimePickerStyle(
+            activeStyle: const TextStyle(fontWeight: FontWeight.bold)),
+        onChange: (time) {
+          setTime(time);
+        },
+      ),
+      Padding(padding: padding8),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          StyledTextButton(
+              action: () {
+                Navigator.pop(context);
+              },
+              text: "Cancel"),
+          SolidButton(
+              action: () {
+                Navigator.pop(context);
+              },
+              text: "Apply"),
+        ],
+      ),
+      Padding(padding: padding8),
+    ],
   );
 }

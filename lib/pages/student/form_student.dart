@@ -29,7 +29,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
   TextEditingController endTimeController = TextEditingController();
   DateTime studentBirthDate =
       DateTime.now().subtract(const Duration(days: 365 * 10));
-  DateTime selectedScheduleStartDate = DateTime.now();
+  DateTime selectedScheduleDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Student";
@@ -58,30 +58,8 @@ class _FormStudentPageState extends State<FormStudentPage> {
     if (mounted) {
       setState(() {
         studentBirthDate = selectedDate;
-      });
-    }
-  }
-
-  void setStartDate(DateTime selectedDate) {
-    if (mounted) {
-      setState(() {
-        selectedScheduleStartDate = selectedDate;
-      });
-    }
-  }
-
-  void setStartTime(DateTime selectedDate) {
-    if (mounted) {
-      setState(() {
-        selectedScheduleStartTime = selectedDate;
-      });
-    }
-  }
-
-  void setEndTime(DateTime selectedDate) {
-    if (mounted) {
-      setState(() {
-        selectedScheduleEndTime = selectedDate;
+        dateController.text =
+            DateFormat('dd MMMM yyyy').format(studentBirthDate);
       });
     }
   }
@@ -150,12 +128,16 @@ class _FormStudentPageState extends State<FormStudentPage> {
           textEditingController: dateController,
           hintText: "Birth date",
           onTap: () async {
-            final result =
-                await dateTimePicker(context, "Birth Date", studentBirthDate);
-            if (result != null) {
-              dateController.text = DateFormat("dd MMMM yyyy").format(result);
-              setBirthDate(result);
-            }
+            showModalBottomSheet<void>(
+              context: context,
+              builder: (context) {
+                return inputDateTimePicker(
+                    title: "Set Birth Date",
+                    context: context,
+                    selectedTime: studentBirthDate,
+                    setTime: setBirthDate);
+              },
+            );
           },
           isReadOnly: true,
         ),

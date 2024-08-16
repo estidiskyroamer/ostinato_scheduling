@@ -29,25 +29,30 @@ class _LoginPageState extends State<LoginPage> {
       _isLoading = true;
     });
 
-    bool loginSuccess = await AuthService()
-        .login(emailController.text, passwordController.text);
+    AuthService()
+        .login(emailController.text, passwordController.text)
+        .then((value) async {
+      if (value) {
+        _user = await AuthService().getMe();
+        _teacherDetail = await TeacherService().getTeacherDetail();
+        Teacher teacher = _teacherDetail!.data;
+        Config().storage.write(key: 'teacher_id', value: teacher.id);
+        Config().storage.write(key: 'teacher_name', value: teacher.name);
 
-    setState(() {
-      _isLoading = false;
-    });
-    if (loginSuccess) {
-      _user = await AuthService().getMe();
-      _teacherDetail = await TeacherService().getTeacherDetail();
-      Teacher teacher = _teacherDetail!.data;
-      Config().storage.write(key: 'teacher_id', value: teacher.id);
-      Config().storage.write(key: 'teacher_name', value: teacher.name);
-      if (mounted) {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const NavigationPage()));
+        setState(() {
+          _isLoading = false;
+        });
+        if (mounted) {
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const NavigationPage()));
+        }
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        print("LOgin failed");
       }
-    } else {
-      print("LOgin failed");
-    }
+    });
   }
 
   @override
