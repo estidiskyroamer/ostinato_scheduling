@@ -3,13 +3,13 @@ import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/common/config.dart';
 import 'dart:developer';
 
-class TeacherService {
-  String baseUrl = Config().baseUrl;
+import 'package:ostinato/services/config.dart';
 
+class TeacherService {
   Future<TeacherDetail?> getTeacherDetail() async {
     TeacherDetail? teacher;
     try {
-      Response response = await Config().dio.get('$baseUrl/teachers/show');
+      Response response = await ServiceConfig().dio.get('/teachers/show');
       teacher = TeacherDetail.fromJson(response.data);
     } on DioException catch (e) {
       inspect(e);

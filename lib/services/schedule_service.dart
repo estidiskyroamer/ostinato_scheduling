@@ -5,17 +5,17 @@ import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/common/config.dart';
 import 'dart:developer';
 
-class ScheduleService {
-  String baseUrl = Config().baseUrl;
+import 'package:ostinato/services/config.dart';
 
+class ScheduleService {
   Future<GroupedSchedule?> getGroupedSchedule({int? month, int? year}) async {
     GroupedSchedule? schedule;
     try {
-      String url = '$baseUrl/schedules';
+      String url = '/schedules';
       if (month != null && year != null) {
         url += '/$month/$year';
       }
-      Response response = await Config().dio.get(url);
+      Response response = await ServiceConfig().dio.get(url);
       schedule = GroupedSchedule.fromJson(response.data);
     } on DioException catch (e) {
       inspect(e);
@@ -37,7 +37,7 @@ class ScheduleService {
         DateTime newDate = schedule.date.add(Duration(days: addedDays));
         params['date'] = DateFormat('yyyy-MM-dd').format(newDate);
         Response response =
-            await Config().dio.post('$baseUrl/schedules', data: params);
+            await ServiceConfig().dio.post('/schedules', data: params);
         inspect(response);
         if (response.statusCode != 200) {
           success = false;
@@ -55,9 +55,9 @@ class ScheduleService {
   Future<bool> updateSchedule(Schedule schedule) async {
     Map<String, dynamic> params = schedule.toJson();
     try {
-      Response response = await Config()
+      Response response = await ServiceConfig()
           .dio
-          .put('$baseUrl/schedules/schedule/${schedule.id}', data: params);
+          .put('/schedules/schedule/${schedule.id}', data: params);
       inspect(response);
       return true;
     } on DioException catch (e) {
@@ -68,9 +68,9 @@ class ScheduleService {
 
   Future<bool> deleteSchedule(Schedule schedule) async {
     try {
-      Response response = await Config()
+      Response response = await ServiceConfig()
           .dio
-          .delete('$baseUrl/schedules/schedule/${schedule.id}');
+          .delete('/schedules/schedule/${schedule.id}');
       inspect(response);
       return true;
     } on DioException catch (e) {

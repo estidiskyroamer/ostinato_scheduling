@@ -4,13 +4,13 @@ import 'package:ostinato/models/student.dart';
 import 'package:ostinato/common/config.dart';
 import 'dart:developer';
 
-class InstrumentService {
-  String baseUrl = Config().baseUrl;
+import 'package:ostinato/services/config.dart';
 
+class InstrumentService {
   Future<InstrumentList?> getInstruments() async {
     InstrumentList? instrumentList;
     try {
-      Response response = await Config().dio.get('$baseUrl/instruments');
+      Response response = await ServiceConfig().dio.get('/instruments');
       instrumentList = InstrumentList.fromJson(response.data);
     } on DioException catch (e) {
       inspect(e);

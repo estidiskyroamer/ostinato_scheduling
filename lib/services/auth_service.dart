@@ -8,13 +8,15 @@ import 'package:ostinato/models/user.dart';
 import 'dart:developer';
 
 import 'package:ostinato/pages/login.dart';
+import 'package:ostinato/services/config.dart';
 
 class AuthService {
-  String baseUrl = Config().baseUrl;
+  final Dio dio;
+  AuthService([Dio? dioInstance]) : dio = dioInstance ?? Dio();
 
   Future<bool> login(String email, String password) async {
     try {
-      Response response = await Config().dio.post('$baseUrl/login', data: {
+      Response response = await ServiceConfig().dio.post('/login', data: {
         'email': email,
         'password': password,
       });
@@ -31,10 +33,26 @@ class AuthService {
     }
   }
 
+  Future<bool> refresh() async {
+    try {
+      Response response = await ServiceConfig().dio.post('/refresh');
+      if (response.statusCode == 200 && response.data['access_token'] != null) {
+        String token = response.data['access_token'];
+        await Config().storage.write(key: 'jwt_token', value: token);
+        return true;
+      } else {
+        return false;
+      }
+    } on DioException catch (e) {
+      inspect(e);
+      return false;
+    }
+  }
+
   Future<User?> getMe() async {
     User? user;
     try {
-      Response response = await Config().dio.post('$baseUrl/me');
+      Response response = await ServiceConfig().dio.post('/me');
       user = User.fromJson(response.data);
       await Config()
           .storage

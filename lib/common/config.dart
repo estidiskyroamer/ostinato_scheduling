@@ -8,46 +8,7 @@ import 'package:ostinato/pages/login.dart';
 import 'package:ostinato/services/auth_service.dart';
 
 class Config {
-  String baseUrl = "http://localhost:8000/api";
   final storage = const FlutterSecureStorage();
-  Dio dio = Dio()
-    ..interceptors.add(
-      InterceptorsWrapper(
-        onRequest: ((options, handler) async {
-          String? token = await AuthService().getToken();
-          options.headers['accept'] = "application/json";
-          options.headers['Authorization'] = "Bearer $token";
-
-          if (options.method == 'POST') {
-            options.data ??= {};
-            String? userId =
-                await const FlutterSecureStorage().read(key: 'user_id');
-            if (userId != null) {
-              options.data['createdBy'] = userId;
-            }
-            switch (options.data['isActive']) {
-              case 1:
-                options.data['activeDate'] =
-                    DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
-                break;
-              case 0:
-                options.data['inactiveDate'] =
-                    DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now());
-              default:
-                break;
-            }
-          }
-          return handler.next(options);
-        }),
-        onError: (error, handler) async {
-          if (error.response?.statusCode == 401) {
-            await AuthService().logout();
-          } else {
-            return handler.next(error);
-          }
-        },
-      ),
-    );
   LoadingIndicator loadingIndicator = LoadingIndicator(
     indicatorType: Indicator.ballPulseSync,
     colors: [

@@ -3,13 +3,13 @@ import 'package:ostinato/models/student.dart';
 import 'package:ostinato/common/config.dart';
 import 'dart:developer';
 
-class StudentService {
-  String baseUrl = Config().baseUrl;
+import 'package:ostinato/services/config.dart';
 
+class StudentService {
   Future<StudentList?> getAllStudents() async {
     StudentList? studentList;
     try {
-      Response response = await Config().dio.get('$baseUrl/students/all');
+      Response response = await ServiceConfig().dio.get('/students/all');
       studentList = StudentList.fromJson(response.data);
     } on DioException catch (e) {
       inspect(e);
@@ -20,7 +20,7 @@ class StudentService {
   Future<StudentList?> getStudents() async {
     StudentList? studentList;
     try {
-      Response response = await Config().dio.get('$baseUrl/students');
+      Response response = await ServiceConfig().dio.get('/students');
       studentList = StudentList.fromJson(response.data);
     } on DioException catch (e) {
       inspect(e);
@@ -31,7 +31,7 @@ class StudentService {
   Future<StudentDetail?> getStudentDetail(String id) async {
     StudentDetail? student;
     try {
-      Response response = await Config().dio.get('$baseUrl/students/show/$id');
+      Response response = await ServiceConfig().dio.get('/students/show/$id');
       student = StudentDetail.fromJson(response.data);
     } on DioException catch (e) {
       inspect(e);
@@ -43,7 +43,7 @@ class StudentService {
     Map<String, dynamic> params = student.toJson();
     try {
       Response response =
-          await Config().dio.post('$baseUrl/students', data: params);
+          await ServiceConfig().dio.post('/students', data: params);
       if (response.statusCode == 200) {
         return true;
       }
