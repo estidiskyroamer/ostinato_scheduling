@@ -59,7 +59,6 @@ class _StudentPageState extends State<StudentPage> {
                   future: _studentList,
                   builder: (BuildContext context,
                       AsyncSnapshot<StudentList?> snapshot) {
-                    inspect(snapshot);
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: SizedBox(
@@ -74,6 +73,7 @@ class _StudentPageState extends State<StudentPage> {
                     if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
                       return const Center(child: Text('No students yet'));
                     }
+                    inspect(snapshot);
                     final students = snapshot.data!.data;
                     return ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),

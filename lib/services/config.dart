@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -53,7 +55,8 @@ class DioInterceptor extends Interceptor {
         try {
           if (response) {
             String? newToken = await AuthService().getToken();
-            _retry(err.requestOptions, newToken);
+            return (handler
+                .resolve(await _retry(err.requestOptions, newToken)));
           } else {
             await AuthService().logout();
             return handler.next(err);
@@ -62,7 +65,6 @@ class DioInterceptor extends Interceptor {
           await AuthService().logout();
           return handler.next(err);
         }
-        break;
       default:
         break;
     }
@@ -73,13 +75,14 @@ class DioInterceptor extends Interceptor {
     final options = Options(
       method: requestOptions.method,
       headers: {
+        "accept": "application/json",
         "Authorization": "Bearer $token",
       },
     );
-
-    return dio.request<dynamic>(requestOptions.path,
+    var response = dio.request<dynamic>(requestOptions.path,
         data: requestOptions.data,
         queryParameters: requestOptions.queryParameters,
         options: options);
+    return response;
   }
 }
