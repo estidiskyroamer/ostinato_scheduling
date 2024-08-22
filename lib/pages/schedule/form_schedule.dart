@@ -40,6 +40,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
 
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
+  bool isStudentLoading = false;
 
   @override
   void initState() {
@@ -57,7 +58,13 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   }
 
   void getStudentList() async {
-    _studentList = await StudentService().getAllStudents();
+    setState(() {
+      isStudentLoading = true;
+    });
+    _studentList = await StudentService().getStudents();
+    setState(() {
+      isStudentLoading = false;
+    });
   }
 
   void getInstrumentList() async {
@@ -147,25 +154,32 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
           InputField(
               textEditingController: teacherNameController,
               hintText: "Teacher name"),
-          InputField(
-            textEditingController: studentNameController,
-            hintText: "Student name",
-            isReadOnly: true,
-            onTap: () {
-              showModalBottomSheet<void>(
-                  context: context,
-                  builder: (context) {
-                    return listBottomSheet<Student>(
-                      context: context,
-                      items: _studentList!.data,
-                      title: "Set student",
-                      onItemSelected: setStudent,
-                      itemContentBuilder: (Student student) =>
-                          Text(student.name),
-                    );
-                  });
-            },
-          ),
+          isStudentLoading
+              ? Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 6,
+                    child: Config().loadingIndicator,
+                  ),
+                )
+              : InputField(
+                  textEditingController: studentNameController,
+                  hintText: "Student name",
+                  isReadOnly: true,
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                        context: context,
+                        builder: (context) {
+                          return listBottomSheet<Student>(
+                            context: context,
+                            items: _studentList!.data,
+                            title: "Set student",
+                            onItemSelected: setStudent,
+                            itemContentBuilder: (Student student) =>
+                                Text(student.name),
+                          );
+                        });
+                  },
+                ),
           InputField(
             textEditingController: instrumentController,
             hintText: "Instrument",
@@ -309,7 +323,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                             isLoading = false;
                           });
                           if (result) {
-                            Navigator.pop(context);
+                            Navigator.pop(context, true);
                           }
                         });
                       },

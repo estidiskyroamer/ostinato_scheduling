@@ -158,7 +158,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
             : widget.studentId != null
                 ? SolidButton(
                     action: () {
-                      //Navigator.pop(context);
+                      Navigator.pop(context, true);
                     },
                     text: "Update")
                 : SolidButton(

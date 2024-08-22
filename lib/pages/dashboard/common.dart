@@ -51,11 +51,11 @@ Widget dashboardStudentTime(BuildContext context, Schedule schedule) {
               color: Colors.black54,
             ),
             onPressed: () {
-              showModalBottomSheet<void>(
+              /* showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
                     return scheduleBottomSheet(context, schedule);
-                  });
+                  }); */
             },
           ),
         ),

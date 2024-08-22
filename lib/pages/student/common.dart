@@ -164,49 +164,6 @@ Widget detailScheduleDate(BuildContext context, DateTime date) {
   );
 }
 
-Widget detailStudentTime(BuildContext context, Schedule schedule) {
-  String formattedTime = schedule.startTime.substring(0, 5);
-  return Container(
-    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-    margin: const EdgeInsets.only(bottom: 8, left: 32),
-    decoration: const BoxDecoration(
-        border: Border(
-      bottom: BorderSide(color: Colors.black38),
-    )),
-    child: Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Text(
-            formattedTime,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        Expanded(
-            flex: 6,
-            child:
-                Text("${schedule.studentName} (${schedule.instrumentName})")),
-        Expanded(
-          flex: 1,
-          child: IconButton(
-            icon: const Icon(
-              FontAwesomeIcons.ellipsisVertical,
-              color: Colors.black54,
-            ),
-            onPressed: () {
-              showModalBottomSheet<void>(
-                  context: context,
-                  builder: (context) {
-                    return scheduleBottomSheet(context, schedule);
-                  });
-            },
-          ),
-        ),
-      ],
-    ),
-  );
-}
-
 Widget detailBottomSheet(BuildContext context, String studentId) {
   return ItemBottomSheet(
     child: Column(

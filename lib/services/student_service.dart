@@ -52,4 +52,16 @@ class StudentService {
       return false;
     }
   }
+
+  Future<bool> deleteStudent(Student student) async {
+    try {
+      Response response =
+          await ServiceConfig().dio.delete('/students/student/${student.id}');
+      inspect(response);
+      return true;
+    } on DioException catch (e) {
+      inspect(e);
+      return false;
+    }
+  }
 }

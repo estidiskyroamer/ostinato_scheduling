@@ -307,7 +307,7 @@ Widget listBottomSheet<T>(
                     Navigator.pop(context);
                   },
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
+                    padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
                     decoration: const BoxDecoration(
                         border:
                             Border(bottom: BorderSide(color: Colors.black38))),

@@ -44,9 +44,11 @@ class DioInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      if (err.response?.data.message == "Token has expired") {
-        bool isRefreshed = await AuthService().refresh();
-        try {
+      try {
+        Map<String, dynamic> response = err.response!.data;
+        if (response.containsKey('message') &&
+            response['message'] == "Token has expired") {
+          bool isRefreshed = await AuthService().refresh();
           if (isRefreshed) {
             String? newToken = await AuthService().getToken();
             return (handler
@@ -55,10 +57,12 @@ class DioInterceptor extends Interceptor {
             await AuthService().logout();
             return handler.next(err);
           }
-        } on DioException catch (err) {
-          await AuthService().logout();
+        } else if (response.containsKey('error')) {
           return handler.next(err);
         }
+      } on DioException catch (err) {
+        await AuthService().logout();
+        return handler.next(err);
       }
       await AuthService().logout();
     }
@@ -74,6 +78,7 @@ class DioInterceptor extends Interceptor {
         "Authorization": "Bearer $token",
       },
     );
+    inspect(requestOptions);
     var response = dio.request<dynamic>(requestOptions.path,
         data: requestOptions.data,
         queryParameters: requestOptions.queryParameters,

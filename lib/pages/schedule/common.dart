@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:developer';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
@@ -10,7 +11,8 @@ import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 import 'package:ostinato/services/schedule_service.dart';
 
-Widget scheduleBottomSheet(BuildContext context, Schedule schedule) {
+Widget scheduleBottomSheet(BuildContext context, Schedule schedule,
+    Function editSchedule, Function deleteSchedule) {
   return ItemBottomSheet(
     child: Column(
       children: [
@@ -103,17 +105,14 @@ Widget scheduleBottomSheet(BuildContext context, Schedule schedule) {
                 label: "Notes"),
             RowIconButton(
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => FormSchedulePage(
-                            scheduleId: schedule.id,
-                          )));
+                  Navigator.of(context).pop();
+                  editSchedule();
                 },
                 icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
             RowIconButton(
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pop();
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -121,14 +120,7 @@ Widget scheduleBottomSheet(BuildContext context, Schedule schedule) {
                         builder: (context, setState) {
                           return ActionDialog(
                             action: () {
-                              ScheduleService()
-                                  .deleteSchedule(schedule)
-                                  .then((value) {
-                                setState(
-                                  () {},
-                                );
-                                Navigator.pop(context);
-                              });
+                              deleteSchedule();
                             },
                             contentText:
                                 "Are you sure you want to delete this data?",
@@ -208,13 +200,12 @@ Widget studentTime(BuildContext context, Schedule schedule) {
     child: Row(
       children: [
         Expanded(
-            flex: 2,
-            child: Container(
-              child: Text(
-                schedule.startTime,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            )),
+          flex: 2,
+          child: Text(
+            schedule.startTime,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
         Expanded(
             flex: 6,
             child:
@@ -227,11 +218,11 @@ Widget studentTime(BuildContext context, Schedule schedule) {
               color: Colors.black54,
             ),
             onPressed: () {
-              showModalBottomSheet<void>(
+              /* showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
                     return scheduleBottomSheet(context, schedule);
-                  });
+                  }); */
             },
           ),
         ),
