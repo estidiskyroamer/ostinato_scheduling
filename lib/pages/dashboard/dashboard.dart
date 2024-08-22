@@ -1,15 +1,9 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
-import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
-import 'package:ostinato/pages/dashboard/common.dart';
-import 'package:ostinato/pages/schedule/common.dart';
-import 'package:ostinato/pages/student/common.dart';
-import 'package:ostinato/services/teacher_service.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

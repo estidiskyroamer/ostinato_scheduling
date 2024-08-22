@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ostinato/common/component.dart';
@@ -32,12 +34,11 @@ class _LoginPageState extends State<LoginPage> {
     AuthService()
         .login(emailController.text, passwordController.text)
         .then((value) async {
+      inspect(value);
       if (value) {
         _user = await AuthService().getMe();
         _teacherDetail = await TeacherService().getTeacherDetail();
         Teacher teacher = _teacherDetail!.data;
-        Config().storage.write(key: 'teacher_id', value: teacher.id);
-        Config().storage.write(key: 'teacher_name', value: teacher.name);
 
         setState(() {
           _isLoading = false;

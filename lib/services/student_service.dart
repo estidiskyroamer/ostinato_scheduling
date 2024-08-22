@@ -1,8 +1,7 @@
-import 'package:dio/dio.dart';
-import 'package:ostinato/models/student.dart';
-import 'package:ostinato/common/config.dart';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
+import 'package:ostinato/models/student.dart';
 import 'package:ostinato/services/config.dart';
 
 class StudentService {

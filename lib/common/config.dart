@@ -1,11 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
-
 import 'package:loading_indicator/loading_indicator.dart';
-import 'package:ostinato/pages/login.dart';
-import 'package:ostinato/services/auth_service.dart';
 
 class Config {
   final storage = const FlutterSecureStorage();

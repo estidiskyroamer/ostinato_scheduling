@@ -1,13 +1,12 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
-import 'package:ostinato/pages/schedule/common.dart';
+import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/student/common.dart';
+import 'package:ostinato/pages/student/form_student.dart';
 import 'package:ostinato/services/student_service.dart';
 
 class DetailStudentPage extends StatefulWidget {
@@ -35,26 +34,10 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
           "Student Detail",
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              FontAwesomeIcons.ellipsisVertical,
-              color: Colors.black54,
-            ),
-            onPressed: () {
-              showModalBottomSheet<void>(
-                  context: context,
-                  builder: (context) {
-                    return detailBottomSheet(context, widget.studentId);
-                  });
-            },
-          ),
-        ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            detailTitle(context, "Data"),
             FutureBuilder(
               future: _studentDetail,
               builder: (BuildContext context,
@@ -74,8 +57,25 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   return const Center(child: Text('No student found'));
                 }
                 Student student = snapshot.data!.data;
+                List<Schedule>? schedules = student.schedules;
                 return Column(
                   children: [
+                    detailTitle(
+                      context,
+                      "Data",
+                      IconButton(
+                        icon: const Icon(
+                          FontAwesomeIcons.pencil,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => FormStudentPage(
+                                    studentId: student.id,
+                                  )));
+                        },
+                      ),
+                    ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
                       child: detailItem(context, "Full name", student.name),
@@ -99,12 +99,47 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       child: detailItem(
                           context, "Phone number", student.phoneNumber),
                     ),
+                    detailTitle(
+                      context,
+                      "Schedule",
+                      IconButton(
+                        icon: const Icon(
+                          FontAwesomeIcons.plus,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const FormSchedulePage(
+                                  // studentId: student.id,
+                                  )));
+                        },
+                      ),
+                    ),
+                    schedules == null
+                        ? const Center(child: Text('No schedule found'))
+                        : ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: schedules.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Schedule schedule = schedules[index];
+                              return Column(
+                                children: [
+                                  detailScheduleDate(context, schedule.date),
+                                  Column(
+                                    children: [
+                                      detailStudentTime(context, schedule),
+                                    ],
+                                  ),
+                                ],
+                              );
+                            },
+                          )
                   ],
                 );
               },
             ),
-            detailTitle(context, "Schedule"),
-            Container(
+            /* Container(
               padding: const EdgeInsets.only(bottom: 16),
               child: FutureBuilder(
                 future: _studentDetail,
@@ -149,7 +184,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                         );
                 },
               ),
-            ),
+            ), */
           ],
         ),
       ),

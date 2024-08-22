@@ -64,7 +64,7 @@ class AuthService {
   }
 
   Future<void> logout() async {
-    await Config().storage.delete(key: 'jwt_token');
+    await Config().storage.deleteAll();
 
     navigatorKey.currentState?.pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => const LoginPage()),

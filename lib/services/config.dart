@@ -1,8 +1,6 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/services/auth_service.dart';
 
@@ -28,10 +26,6 @@ class DioInterceptor extends Interceptor {
 
     if (options.method == 'POST') {
       options.data ??= {};
-      String? userId = await const FlutterSecureStorage().read(key: 'user_id');
-      if (userId != null) {
-        options.data['createdBy'] = userId;
-      }
       switch (options.data['isActive']) {
         case 1:
           options.data['activeDate'] =
@@ -49,11 +43,11 @@ class DioInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
-    switch (err.response?.statusCode) {
-      case 401:
-        bool response = await AuthService().refresh();
+    if (err.response?.statusCode == 401) {
+      if (err.response?.data.message == "Token has expired") {
+        bool isRefreshed = await AuthService().refresh();
         try {
-          if (response) {
+          if (isRefreshed) {
             String? newToken = await AuthService().getToken();
             return (handler
                 .resolve(await _retry(err.requestOptions, newToken)));
@@ -61,13 +55,14 @@ class DioInterceptor extends Interceptor {
             await AuthService().logout();
             return handler.next(err);
           }
-        } on DioException catch (e) {
+        } on DioException catch (err) {
           await AuthService().logout();
           return handler.next(err);
         }
-      default:
-        break;
+      }
+      await AuthService().logout();
     }
+    return handler.next(err);
   }
 
   Future<Response<dynamic>> _retry(

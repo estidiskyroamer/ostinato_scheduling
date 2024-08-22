@@ -11,6 +11,8 @@ class TeacherService {
     try {
       Response response = await ServiceConfig().dio.get('/teachers/show');
       teacher = TeacherDetail.fromJson(response.data);
+      Config().storage.write(key: 'teacher_id', value: teacher.data.id);
+      Config().storage.write(key: 'teacher_name', value: teacher.data.name);
     } on DioException catch (e) {
       inspect(e);
     }

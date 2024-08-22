@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:intl/intl.dart';
-import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
-import 'package:ostinato/pages/schedule/form_schedule.dart';
-import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 
 Widget dashboardTitle(BuildContext context, String title) {
   return Container(

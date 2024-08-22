@@ -1,21 +1,19 @@
-import 'package:dio/dio.dart';
-import 'package:ostinato/models/student.dart';
-import 'package:ostinato/common/config.dart';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/config.dart';
 
 class UserService {
   Future<UserDetail?> getUserDetail(String id) async {
-    UserDetail? student;
+    UserDetail? user;
     try {
       Response response = await ServiceConfig().dio.get('/users/show/$id');
-      student = UserDetail.fromJson(response.data);
+      user = UserDetail.fromJson(response.data);
     } on DioException catch (e) {
       inspect(e);
     }
-    return student;
+    return user;
   }
 
   Future<User?> createUser(User user) async {

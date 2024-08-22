@@ -1,10 +1,8 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/models/schedule.dart';
-import 'package:ostinato/models/teacher.dart';
-import 'package:ostinato/common/config.dart';
-import 'dart:developer';
-
 import 'package:ostinato/services/config.dart';
 
 class ScheduleService {

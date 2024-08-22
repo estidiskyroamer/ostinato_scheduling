@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
@@ -8,7 +7,6 @@ import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
-import 'package:ostinato/pages/schedule/schedule.dart';
 import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/pages/student/form_student.dart';
 
@@ -98,9 +96,9 @@ Widget bottomSheet(BuildContext context, String studentId) {
   );
 }
 
-Widget detailTitle(BuildContext context, String title) {
+Widget detailTitle(BuildContext context, String title, [Widget? action]) {
   return Container(
-    padding: padding16,
+    padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
     margin: const EdgeInsets.only(top: 16),
     decoration: const BoxDecoration(color: Colors.black12),
     child: Row(
@@ -111,6 +109,7 @@ Widget detailTitle(BuildContext context, String title) {
           title,
           style: Theme.of(context).textTheme.titleSmall,
         ),
+        action ?? const SizedBox()
       ],
     ),
   );
@@ -229,7 +228,7 @@ Widget detailBottomSheet(BuildContext context, String studentId) {
                             studentId: studentId,
                           )));
                 },
-                icon: FontAwesomeIcons.magnifyingGlass,
+                icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
             RowIconButton(
                 onTap: () {

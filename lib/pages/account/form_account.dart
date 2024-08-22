@@ -1,12 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/user.dart';
-import 'package:ostinato/services/user_service.dart';
 
 class FormAccountPage extends StatefulWidget {
-  final String? userId;
-  const FormAccountPage({super.key, this.userId});
+  const FormAccountPage({super.key});
 
   @override
   State<FormAccountPage> createState() => _FormAccountPageState();
@@ -18,10 +18,11 @@ class _FormAccountPageState extends State<FormAccountPage> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  late Future<UserDetail?> _userDetail;
+  late Future<String?> _user;
   @override
   void initState() {
-    _userDetail = UserService().getUserDetail(widget.userId!);
+    _user = Config().storage.read(key: 'user');
+
     super.initState();
   }
 
@@ -40,9 +41,9 @@ class _FormAccountPageState extends State<FormAccountPage> {
                   image: const AssetImage('assets/images/register.jpeg')),
               Padding(padding: padding16),
               FutureBuilder(
-                future: _userDetail,
-                builder: (BuildContext context,
-                    AsyncSnapshot<UserDetail?> snapshot) {
+                future: _user,
+                builder:
+                    (BuildContext context, AsyncSnapshot<String?> snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: SizedBox(
@@ -55,7 +56,8 @@ class _FormAccountPageState extends State<FormAccountPage> {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   }
                   if (snapshot.hasData) {
-                    User user = snapshot.data!.data;
+                    var jsonData = jsonDecode(snapshot.data!);
+                    User user = User.fromJson(jsonData);
                     nameController.text = user.name;
                     emailController.text = user.email;
                     phoneController.text = user.phoneNumber;
