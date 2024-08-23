@@ -1,4 +1,3 @@
-import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
@@ -19,7 +18,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   TextEditingController dateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
-  DateTime selectedScheduleStartDate = DateTime.now();
+  DateTime selectedScheduleDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "Reschedule";
@@ -32,7 +31,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   void setStartDate(DateTime selectedDate) {
     if (mounted) {
       setState(() {
-        selectedScheduleStartDate = selectedDate;
+        selectedScheduleDate = selectedDate;
       });
     }
   }
@@ -87,15 +86,20 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
               InputField(
                 textEditingController: dateController,
                 hintText: "Start date",
-                onTap: () async {
-                  final result = await dateTimePicker(
-                      context, "Start Date", selectedScheduleStartDate);
-                  if (result != null) {
-                    dateController.text =
-                        DateFormat("EEEE, dd MMMM yyyy").format(result);
-                    setStartDate(result);
-                  }
-                },
+                onTap: widget.scheduleId != null
+                    ? null
+                    : () async {
+                        showModalBottomSheet<void>(
+                          context: context,
+                          builder: (context) {
+                            return inputDateTimePicker(
+                                title: "Set Date",
+                                context: context,
+                                selectedTime: selectedScheduleDate,
+                                setTime: setStartDate);
+                          },
+                        );
+                      },
                 isReadOnly: true,
               ),
               Row(
@@ -104,18 +108,21 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
                     child: InputField(
                       textEditingController: startTimeController,
                       hintText: "Start time",
-                      onTap: () async {
-                        final result = await dateTimePicker(
-                            context,
-                            "Start Time",
-                            selectedScheduleStartTime,
-                            DateTimePickerType.time);
-                        if (result != null) {
-                          startTimeController.text =
-                              DateFormat("HH:mm").format(result);
-                          setStartTime(result);
-                        }
-                      },
+                      onTap: widget.scheduleId != null
+                          ? null
+                          : () async {
+                              showModalBottomSheet<void>(
+                                context: context,
+                                builder: (context) {
+                                  return inputDateTimePicker(
+                                      title: "Set Start Time",
+                                      pickerType: 'time',
+                                      context: context,
+                                      selectedTime: selectedScheduleStartTime,
+                                      setTime: setStartTime);
+                                },
+                              );
+                            },
                       isReadOnly: true,
                     ),
                   ),
@@ -124,15 +131,21 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
                     child: InputField(
                       textEditingController: endTimeController,
                       hintText: "End time",
-                      onTap: () async {
-                        final result = await dateTimePicker(context, "End Time",
-                            selectedScheduleEndTime, DateTimePickerType.time);
-                        if (result != null) {
-                          endTimeController.text =
-                              DateFormat("HH:mm").format(result);
-                          setEndTime(result);
-                        }
-                      },
+                      onTap: widget.scheduleId != null
+                          ? null
+                          : () async {
+                              showModalBottomSheet<void>(
+                                context: context,
+                                builder: (context) {
+                                  return inputDateTimePicker(
+                                      title: "Set End Time",
+                                      pickerType: 'time',
+                                      context: context,
+                                      selectedTime: selectedScheduleEndTime,
+                                      setTime: setEndTime);
+                                },
+                              );
+                            },
                       isReadOnly: true,
                     ),
                   ),

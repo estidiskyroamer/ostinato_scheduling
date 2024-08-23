@@ -93,7 +93,7 @@ class Schedule {
   final String? instrumentName;
   final DateTime date;
   final String? createdBy;
-  final String? statusId;
+  final String? status;
   final String startTime;
   final String endTime;
 
@@ -107,7 +107,7 @@ class Schedule {
     this.instrumentName,
     required this.date,
     this.createdBy,
-    this.statusId,
+    this.status,
     required this.startTime,
     required this.endTime,
   });
@@ -123,7 +123,7 @@ class Schedule {
             json['instrumentName'] == null ? null : json["instrumentName"],
         date: DateTime.parse(json["date"]),
         createdBy: json['createdBy'] == null ? null : json["createdBy"],
-        statusId: json['statusId'] == null ? null : json["statusId"],
+        status: json['status'] == null ? null : json["status"],
         startTime: json["startTime"],
         endTime: json["endTime"],
       );
@@ -135,7 +135,7 @@ class Schedule {
         "instrumentId": instrumentId.toString(),
         "date": DateFormat('yyyy-MM-dd').format(date),
         "createdBy": createdBy,
-        "statusId": statusId,
+        "status": status,
         "startTime": startTime,
         "endTime": endTime,
       };

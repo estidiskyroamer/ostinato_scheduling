@@ -11,8 +11,14 @@ import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 import 'package:ostinato/services/schedule_service.dart';
 
-Widget scheduleBottomSheet(BuildContext context, Schedule schedule,
-    Function editSchedule, Function deleteSchedule) {
+Widget scheduleBottomSheet(
+    BuildContext context,
+    Schedule schedule,
+    Function done,
+    Function rescheduled,
+    Function canceled,
+    Function editSchedule,
+    Function deleteSchedule) {
   return ItemBottomSheet(
     child: Column(
       children: [
@@ -33,6 +39,7 @@ Widget scheduleBottomSheet(BuildContext context, Schedule schedule,
                     builder: (BuildContext context) {
                       return ActionDialog(
                         action: () {
+                          done();
                           Navigator.pop(context);
                         },
                         contentText:
@@ -184,48 +191,6 @@ Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
                 label: "Delete"),
           ],
         )
-      ],
-    ),
-  );
-}
-
-Widget studentTime(BuildContext context, Schedule schedule) {
-  return Container(
-    padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-    margin: const EdgeInsets.only(left: 32),
-    decoration: const BoxDecoration(
-        border: Border(
-      bottom: BorderSide(color: Colors.black38),
-    )),
-    child: Row(
-      children: [
-        Expanded(
-          flex: 2,
-          child: Text(
-            schedule.startTime,
-            style: const TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-        Expanded(
-            flex: 6,
-            child:
-                Text("${schedule.studentName} (${schedule.instrumentName})")),
-        Expanded(
-          flex: 1,
-          child: IconButton(
-            icon: const Icon(
-              FontAwesomeIcons.ellipsisVertical,
-              color: Colors.black54,
-            ),
-            onPressed: () {
-              /* showModalBottomSheet<void>(
-                  context: context,
-                  builder: (context) {
-                    return scheduleBottomSheet(context, schedule);
-                  }); */
-            },
-          ),
-        ),
       ],
     ),
   );

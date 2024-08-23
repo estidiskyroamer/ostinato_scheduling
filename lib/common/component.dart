@@ -1,4 +1,3 @@
-import 'package:board_datetime_picker/board_datetime_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
@@ -252,30 +251,6 @@ class ActionDialog extends StatelessWidget {
       ),
     );
   }
-}
-
-Future<DateTime?> dateTimePicker(
-    BuildContext context, String title, DateTime initialDate,
-    [DateTimePickerType? pickerType]) {
-  pickerType = pickerType ?? DateTimePickerType.date;
-  return showBoardDateTimePicker(
-    context: context,
-    pickerType: pickerType,
-    initialDate: initialDate,
-    options: BoardDateTimeOptions(
-        backgroundColor: HexColor("#E6F2FF"),
-        foregroundColor: HexColor("#DFEBF8"),
-        activeColor: HexColor("#DFEBF8"),
-        activeTextColor: Colors.black,
-        backgroundDecoration: BoxDecoration(borderRadius: BorderRadius.zero),
-        showDateButton: false,
-        startDayOfWeek: DateTime.sunday,
-        pickerFormat: PickerFormat.ymd,
-        boardTitle: title,
-        boardTitleTextStyle: Theme.of(context).textTheme.titleSmall,
-        pickerSubTitles: const BoardDateTimeItemTitles(
-            year: "Year", month: "Month", day: "Date")),
-  );
 }
 
 Widget listBottomSheet<T>(

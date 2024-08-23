@@ -10,6 +10,7 @@ import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/student/common.dart';
 import 'package:ostinato/pages/student/form_student.dart';
+import 'package:ostinato/pages/student/form_student_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:ostinato/services/student_service.dart';
 
@@ -30,12 +31,50 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
     _studentDetail = StudentService().getStudentDetail(widget.studentId);
   }
 
-  void editSchedule(Schedule schedule) {
+  void updateSchedule(Schedule schedule, String status) {
+    Schedule update = Schedule(
+      id: schedule.id,
+      studentId: schedule.studentId,
+      studentName: schedule.studentName,
+      teacherId: schedule.teacherId,
+      teacherName: schedule.teacherName,
+      instrumentId: schedule.instrumentId,
+      instrumentName: schedule.instrumentName,
+      date: schedule.date,
+      status: status,
+      startTime: schedule.startTime,
+      endTime: schedule.endTime,
+    );
+    ScheduleService().updateSchedule(update).then((value) {
+      if (value) {
+        setState(() {
+          _studentDetail = StudentService().getStudentDetail(widget.studentId);
+        });
+      }
+      Navigator.of(context).pop();
+    });
+  }
+
+  void addSchedule(Student student) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (context) => FormStudentSchedulePage(
+                  studentId: student.id,
+                )))
+        .then((value) {
+      setState(() {
+        _studentDetail = StudentService().getStudentDetail(widget.studentId);
+      });
+    });
+  }
+
+  void editSchedule(Schedule schedule, Student student) {
     Navigator.of(context)
         .push(
           MaterialPageRoute(
-            builder: (context) => FormSchedulePage(
+            builder: (context) => FormStudentSchedulePage(
               scheduleId: schedule.id,
+              studentId: student.id,
             ),
           ),
         )
@@ -149,10 +188,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                           color: Colors.black,
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const FormSchedulePage(
-                                  // studentId: student.id,
-                                  )));
+                          addSchedule(student);
                         },
                       ),
                     ),
@@ -169,7 +205,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                                   detailScheduleDate(context, schedule.date),
                                   Column(
                                     children: [
-                                      detailStudentTime(schedule),
+                                      detailStudentTime(schedule, student),
                                     ],
                                   ),
                                 ],
@@ -186,7 +222,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
     );
   }
 
-  Widget detailStudentTime(Schedule schedule) {
+  Widget detailStudentTime(Schedule schedule, Student student) {
     String formattedTime = schedule.startTime.substring(0, 5);
     return Container(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -220,7 +256,13 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                     context: context,
                     builder: (context) {
                       return scheduleBottomSheet(context, schedule, () {
-                        editSchedule(schedule);
+                        updateSchedule(schedule, 'done');
+                      }, () {
+                        updateSchedule(schedule, 'rescheduled');
+                      }, () {
+                        updateSchedule(schedule, 'canceled');
+                      }, () {
+                        editSchedule(schedule, student);
                       }, () {
                         deleteSchedule(schedule);
                       });

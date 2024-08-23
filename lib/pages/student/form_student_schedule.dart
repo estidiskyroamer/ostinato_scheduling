@@ -11,15 +11,17 @@ import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:ostinato/services/student_service.dart';
 
-class FormSchedulePage extends StatefulWidget {
-  final Schedule? schedule;
-  const FormSchedulePage({super.key, this.schedule});
+class FormStudentSchedulePage extends StatefulWidget {
+  final String? scheduleId;
+  final String? studentId;
+  const FormStudentSchedulePage({super.key, this.scheduleId, this.studentId});
 
   @override
-  State<FormSchedulePage> createState() => _FormSchedulePageState();
+  State<FormStudentSchedulePage> createState() =>
+      _FormStudentSchedulePageState();
 }
 
-class _FormSchedulePageState extends State<FormSchedulePage> {
+class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
   TextEditingController studentNameController = TextEditingController();
   TextEditingController teacherNameController = TextEditingController();
   TextEditingController instrumentController = TextEditingController();
@@ -39,18 +41,16 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   late Student selectedStudent;
   late InstrumentList? _instrumentList;
   late Instrument selectedInstrument;
-  late Schedule selectedSchedule;
 
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
   bool isStudentLoading = false;
-  bool isEditSchedule = false;
 
   @override
   void initState() {
     setEdit();
     getTeacher();
-    getStudentList();
+    getStudent();
     getInstrumentList();
     super.initState();
   }
@@ -61,32 +61,36 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     teacherNameController.text = _teacherName!;
   }
 
+  void getStudent() async {
+    if (widget.studentId != null) {
+      StudentDetail? studentDetail =
+          await StudentService().getStudentDetail(widget.studentId!);
+      if (studentDetail != null) {
+        selectedStudent = studentDetail.data;
+        studentNameController.text = selectedStudent.name;
+      }
+    }
+  }
+
   void getStudentList() async {
+    setState(() {
+      isStudentLoading = true;
+    });
     _studentList = await StudentService().getStudents();
+    setState(() {
+      isStudentLoading = false;
+    });
   }
 
   void getInstrumentList() async {
     _instrumentList = await InstrumentService().getInstruments();
   }
 
-  void setEdit() async {
-    if (widget.schedule != null) {
-      if (mounted) {
+  void setEdit() {
+    if (mounted) {
+      if (widget.scheduleId != null) {
         setState(() {
           pageTitle = "Edit Schedule";
-          isLoading = true;
-          isEditSchedule = true;
-        });
-      }
-      StudentDetail? studentDetail =
-          await StudentService().getStudentDetail(widget.schedule!.studentId!);
-      if (studentDetail != null) {
-        setStudent(studentDetail.data);
-        setStartDate(widget.schedule!.date);
-        setStartTime(DateFormat.Hm().parse(widget.schedule!.startTime));
-        setEndTime(DateFormat.Hm().parse(widget.schedule!.endTime));
-        setState(() {
-          isLoading = false;
         });
       }
     }
@@ -126,12 +130,12 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
         selectedScheduleStartTime = selectedDate;
         startTimeController.text =
             DateFormat('HH:mm').format(selectedScheduleStartTime);
+        setEndTime(
+          selectedDate.add(
+            const Duration(minutes: 30),
+          ),
+        );
       });
-      setEndTime(
-        selectedDate.add(
-          const Duration(minutes: 30),
-        ),
-      );
     }
   }
 
@@ -168,31 +172,20 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
               image: const AssetImage('assets/images/schedule.jpeg')),
           Padding(padding: padding16),
           InputField(
-            textEditingController: teacherNameController,
-            hintText: "Teacher name",
-            isReadOnly: true,
-          ),
-          InputField(
-            textEditingController: studentNameController,
-            hintText: "Student name",
-            isReadOnly: true,
-            onTap: () {
-              isStudentLoading || isEditSchedule
-                  ? null
-                  : showModalBottomSheet<void>(
-                      context: context,
-                      builder: (context) {
-                        return listBottomSheet<Student>(
-                          context: context,
-                          items: _studentList!.data,
-                          title: "Set student",
-                          onItemSelected: setStudent,
-                          itemContentBuilder: (Student student) =>
-                              Text(student.name),
-                        );
-                      });
-            },
-          ),
+              textEditingController: teacherNameController,
+              hintText: "Teacher name"),
+          isStudentLoading
+              ? Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 6,
+                    child: Config().loadingIndicator,
+                  ),
+                )
+              : InputField(
+                  textEditingController: studentNameController,
+                  hintText: "Student name",
+                  isReadOnly: true,
+                ),
           InputField(
             textEditingController: instrumentController,
             hintText: "Instrument",
@@ -216,7 +209,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
           InputField(
             textEditingController: dateController,
             hintText: "Start date",
-            onTap: isEditSchedule
+            onTap: widget.scheduleId != null
                 ? null
                 : () async {
                     showModalBottomSheet<void>(
@@ -238,7 +231,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                 child: InputField(
                   textEditingController: startTimeController,
                   hintText: "Start time",
-                  onTap: isEditSchedule
+                  onTap: widget.scheduleId != null
                       ? null
                       : () async {
                           showModalBottomSheet<void>(
@@ -261,7 +254,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                 child: InputField(
                   textEditingController: endTimeController,
                   hintText: "End time",
-                  onTap: isEditSchedule
+                  onTap: widget.scheduleId != null
                       ? null
                       : () async {
                           showModalBottomSheet<void>(
@@ -308,65 +301,42 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                     child: Config().loadingIndicator,
                   ),
                 )
-              : isEditSchedule
+              : widget.scheduleId != null
                   ? SolidButton(
                       action: () {
-                        updateSchedule(context);
+                        Navigator.pop(context);
                       },
                       text: "Update")
                   : SolidButton(
                       action: () {
-                        createSchedule(context);
+                        setState(() {
+                          isLoading = true;
+                        });
+                        Schedule create = Schedule(
+                            studentId: selectedStudent.id!,
+                            teacherId: _teacherId!,
+                            instrumentId: selectedInstrument.id,
+                            date: selectedScheduleDate,
+                            startTime: DateFormat('H:mm')
+                                .format(selectedScheduleStartTime),
+                            endTime: DateFormat('H:mm')
+                                .format(selectedScheduleEndTime));
+                        ScheduleService()
+                            .createSchedule(create,
+                                repeat: repeatController.text)
+                            .then((result) {
+                          setState(() {
+                            isLoading = false;
+                          });
+                          if (result) {
+                            Navigator.pop(context, true);
+                          }
+                        });
                       },
                       text: "Add Schedule",
                     )
         ],
       ),
     );
-  }
-
-  void createSchedule(BuildContext context) {
-    setState(() {
-      isLoading = true;
-    });
-    Schedule create = Schedule(
-        studentId: selectedStudent.id!,
-        teacherId: _teacherId!,
-        instrumentId: selectedInstrument.id,
-        date: selectedScheduleDate,
-        startTime: DateFormat('H:mm').format(selectedScheduleStartTime),
-        endTime: DateFormat('H:mm').format(selectedScheduleEndTime));
-    ScheduleService()
-        .createSchedule(create, repeat: repeatController.text)
-        .then((result) {
-      setState(() {
-        isLoading = false;
-      });
-      if (result) {
-        Navigator.pop(context, true);
-      }
-    });
-  }
-
-  void updateSchedule(BuildContext context) {
-    setState(() {
-      isLoading = true;
-    });
-    Schedule update = Schedule(
-        id: widget.schedule!.id,
-        studentId: selectedStudent.id!,
-        teacherId: _teacherId!,
-        instrumentId: selectedInstrument.id,
-        date: selectedScheduleDate,
-        startTime: DateFormat('HH:mm').format(selectedScheduleStartTime),
-        endTime: DateFormat('HH:mm').format(selectedScheduleEndTime));
-    ScheduleService().updateSchedule(update).then((result) {
-      setState(() {
-        isLoading = false;
-      });
-      if (result) {
-        Navigator.pop(context, true);
-      }
-    });
   }
 }
