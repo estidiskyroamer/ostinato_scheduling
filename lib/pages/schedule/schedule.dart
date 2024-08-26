@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
+import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -126,6 +127,25 @@ class _SchedulePageState extends State<SchedulePage> {
         );
   }
 
+  void reschedule(Schedule schedule) {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (context) => FormReschedulePage(
+              schedule: schedule,
+            ),
+          ),
+        )
+        .then(
+          (value) => setState(
+            () {
+              _scheduleList = ScheduleService().getGroupedSchedule(
+                  month: currentTime.month, year: currentTime.year);
+            },
+          ),
+        );
+  }
+
   void deleteSchedule(Schedule schedule) async {
     bool isDeleted = await ScheduleService().deleteSchedule(schedule);
     if (isDeleted && mounted) {
@@ -221,13 +241,28 @@ class _SchedulePageState extends State<SchedulePage> {
             flex: 2,
             child: Text(
               schedule.startTime,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  decoration: schedule.status == 'canceled'
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none),
             ),
           ),
           Expanded(
-              flex: 6,
-              child:
-                  Text("${schedule.studentName} (${schedule.instrumentName})")),
+            flex: 6,
+            child: Row(
+              children: [
+                Text(
+                  "${schedule.studentName} (${schedule.instrumentName})",
+                  style: TextStyle(
+                      decoration: schedule.status == 'canceled'
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
+                ),
+                scheduleStatus(schedule.status)
+              ],
+            ),
+          ),
           Expanded(
             flex: 1,
             child: IconButton(
@@ -242,7 +277,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       return scheduleBottomSheet(context, schedule, () {
                         updateSchedule(schedule, 'done');
                       }, () {
-                        updateSchedule(schedule, 'rescheduled');
+                        reschedule(schedule);
                       }, () {
                         updateSchedule(schedule, 'canceled');
                       }, () {

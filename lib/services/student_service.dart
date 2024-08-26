@@ -53,6 +53,22 @@ class StudentService {
     }
   }
 
+  Future<bool> updateStudent(Student student) async {
+    Map<String, dynamic> params = student.toJson();
+    try {
+      Response response = await ServiceConfig()
+          .dio
+          .put('/students/student/${student.id}', data: params);
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } on DioException catch (e) {
+      inspect(e);
+      return false;
+    }
+  }
+
   Future<bool> deleteStudent(Student student) async {
     try {
       Response response =

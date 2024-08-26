@@ -26,6 +26,39 @@ class _StudentPageState extends State<StudentPage> {
     super.initState();
   }
 
+  void addStudent(BuildContext context) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const FormStudentPage()))
+        .then((value) {
+      setState(() {
+        _studentList = StudentService().getStudents();
+      });
+    });
+  }
+
+  void editStudent(Student student) {
+    Navigator.of(context)
+        .push(MaterialPageRoute(
+            builder: (context) => FormStudentPage(
+                  student: student,
+                )))
+        .then((value) {
+      setState(() {
+        _studentList = StudentService().getStudents();
+      });
+    });
+  }
+
+  void deleteStudent(Student student) async {
+    bool isDeleted = await StudentService().deleteStudent(student);
+    if (isDeleted && mounted) {
+      setState(() {
+        _studentList = StudentService().getStudents();
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +70,7 @@ class _StudentPageState extends State<StudentPage> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => FormStudentPage()));
+                  addStudent(context);
                 },
                 icon: const Icon(FontAwesomeIcons.plus))
           ],
@@ -46,15 +78,10 @@ class _StudentPageState extends State<StudentPage> {
         ),
         body: Column(
           children: [
-            Container(
-              padding: padding16,
-              child: InputField(
-                  textEditingController: searchController,
-                  hintText: "Search by student name..."),
-            ),
             Expanded(
-              child: SingleChildScrollView(
-                padding: padding16,
+              child: Container(
+                padding: const EdgeInsets.only(left: 16),
+                width: double.infinity,
                 child: FutureBuilder(
                   future: _studentList,
                   builder: (BuildContext context,
@@ -76,8 +103,6 @@ class _StudentPageState extends State<StudentPage> {
                     inspect(snapshot);
                     final students = snapshot.data!.data;
                     return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
                       itemCount: students.length,
                       itemBuilder: (BuildContext context, int index) {
                         Student student = students[index];
@@ -90,5 +115,36 @@ class _StudentPageState extends State<StudentPage> {
             )
           ],
         ));
+  }
+
+  Widget studentItem(BuildContext context, Student student) {
+    return Container(
+      padding: const EdgeInsets.only(left: 16),
+      decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.black38))),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(student.name),
+          IconButton(
+            icon: const Icon(
+              FontAwesomeIcons.ellipsisVertical,
+              color: Colors.black54,
+            ),
+            onPressed: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  builder: (context) {
+                    return bottomSheet(context, student, () {
+                      editStudent(student);
+                    }, () {
+                      deleteStudent(student);
+                    });
+                  });
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

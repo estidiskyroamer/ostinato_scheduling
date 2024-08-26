@@ -55,31 +55,42 @@ class GroupedSchedule {
   Map<String, List<Schedule>> data;
   String message;
   bool success;
-  Links links;
 
   GroupedSchedule({
     required this.data,
     required this.message,
     required this.success,
-    required this.links,
   });
 
   factory GroupedSchedule.fromJson(Map<String, dynamic> json) =>
       GroupedSchedule(
-        data: Map.from(json["data"]).map((k, v) =>
-            MapEntry<String, List<Schedule>>(
-                k, List<Schedule>.from(v.map((x) => Schedule.fromJson(x))))),
+        data: Map.from(json["data"]).map(
+          (k, v) => MapEntry<String, List<Schedule>>(
+            k,
+            List<Schedule>.from(
+              v.map(
+                (x) => Schedule.fromJson(x),
+              ),
+            ),
+          ),
+        ),
         message: json["message"],
         success: json["success"],
-        links: Links.fromJson(json["links"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "data": Map.from(data).map((k, v) => MapEntry<String, dynamic>(
-            k, List<dynamic>.from(v.map((x) => x.toJson())))),
+        "data": Map.from(data).map(
+          (k, v) => MapEntry<String, dynamic>(
+            k,
+            List<dynamic>.from(
+              v.map(
+                (x) => x.toJson(),
+              ),
+            ),
+          ),
+        ),
         "message": message,
         "success": success,
-        "links": links.toJson(),
       };
 }
 

@@ -307,7 +307,7 @@ Widget inputDateTimePicker({
   DateFormat dateFormat;
   switch (pickerType) {
     case 'date':
-      dateFormat = DateFormat('yyyy MM dd');
+      dateFormat = DateFormat('yyyy MM dd EEEE');
       break;
     case 'time':
       dateFormat = DateFormat('HH:mm');

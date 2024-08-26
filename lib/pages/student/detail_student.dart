@@ -7,6 +7,7 @@ import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/schedule/common.dart';
+import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/student/common.dart';
 import 'package:ostinato/pages/student/form_student.dart';
@@ -81,7 +82,25 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
         .then(
           (value) => setState(
             () {
-              inspect("value");
+              _studentDetail =
+                  StudentService().getStudentDetail(widget.studentId);
+            },
+          ),
+        );
+  }
+
+  void reschedule(Schedule schedule) {
+    Navigator.of(context)
+        .push(
+          MaterialPageRoute(
+            builder: (context) => FormReschedulePage(
+              schedule: schedule,
+            ),
+          ),
+        )
+        .then(
+          (value) => setState(
+            () {
               _studentDetail =
                   StudentService().getStudentDetail(widget.studentId);
             },
@@ -124,13 +143,14 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   );
                 }
                 if (snapshot.hasError) {
+                  inspect(snapshot);
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData) {
                   return const Center(child: Text('No student found'));
                 }
                 Student student = snapshot.data!.data;
-                List<Schedule>? schedules = student.schedules;
+                Map<String, List<Schedule>>? schedules = student.schedules;
                 return Column(
                   children: [
                     detailTitle(
@@ -145,7 +165,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                           Navigator.of(context)
                               .push(MaterialPageRoute(
                                   builder: (context) => FormStudentPage(
-                                        studentId: student.id,
+                                        student: student,
                                       )))
                               .then((value) {
                             setState(() {
@@ -199,15 +219,24 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                             shrinkWrap: true,
                             itemCount: schedules.length,
                             itemBuilder: (BuildContext context, int index) {
-                              Schedule schedule = schedules[index];
+                              DateTime date = DateTime.parse(
+                                  schedules.keys.elementAt(index));
+                              List<Schedule> scheduleList =
+                                  schedules.values.elementAt(index);
                               return Column(
                                 children: [
-                                  detailScheduleDate(context, schedule.date),
-                                  Column(
-                                    children: [
-                                      detailStudentTime(schedule, student),
-                                    ],
-                                  ),
+                                  detailScheduleDate(context, date),
+                                  ListView.builder(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      shrinkWrap: true,
+                                      itemCount: scheduleList.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        Schedule schedule = scheduleList[index];
+                                        return detailStudentTime(
+                                            schedule, student);
+                                      })
                                 ],
                               );
                             },
@@ -237,13 +266,28 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             flex: 2,
             child: Text(
               formattedTime,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  decoration: schedule.status == 'canceled'
+                      ? TextDecoration.lineThrough
+                      : TextDecoration.none),
             ),
           ),
           Expanded(
-              flex: 6,
-              child:
-                  Text("${schedule.studentName} (${schedule.instrumentName})")),
+            flex: 6,
+            child: Row(
+              children: [
+                Text(
+                  "${schedule.studentName} (${schedule.instrumentName})",
+                  style: TextStyle(
+                      decoration: schedule.status == 'canceled'
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
+                ),
+                scheduleStatus(schedule.status)
+              ],
+            ),
+          ),
           Expanded(
             flex: 1,
             child: IconButton(
@@ -258,7 +302,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       return scheduleBottomSheet(context, schedule, () {
                         updateSchedule(schedule, 'done');
                       }, () {
-                        updateSchedule(schedule, 'rescheduled');
+                        reschedule(schedule);
                       }, () {
                         updateSchedule(schedule, 'canceled');
                       }, () {

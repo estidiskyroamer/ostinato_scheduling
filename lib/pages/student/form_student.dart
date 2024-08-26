@@ -8,8 +8,8 @@ import 'package:ostinato/services/student_service.dart';
 import 'package:ostinato/services/user_service.dart';
 
 class FormStudentPage extends StatefulWidget {
-  final String? studentId;
-  const FormStudentPage({super.key, this.studentId});
+  final Student? student;
+  const FormStudentPage({super.key, this.student});
 
   @override
   State<FormStudentPage> createState() => _FormStudentPageState();
@@ -30,7 +30,6 @@ class _FormStudentPageState extends State<FormStudentPage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Student";
 
-  Future<StudentDetail?>? _studentDetail;
   bool isLoading = false;
 
   @override
@@ -41,10 +40,17 @@ class _FormStudentPageState extends State<FormStudentPage> {
 
   void setEdit() {
     if (mounted) {
-      if (widget.studentId != null) {
+      if (widget.student != null) {
         setState(() {
           pageTitle = "Edit Student";
-          _studentDetail = StudentService().getStudentDetail(widget.studentId!);
+          Student student = widget.student!;
+          studentNameController.text = student.name;
+          studentAddressController.text = student.address;
+          studentPhoneController.text = student.phoneNumber;
+          studentEmailController.text = student.email;
+          studentBirthDate = student.birthDate;
+          dateController.text =
+              DateFormat("dd MMMM yyyy").format(student.birthDate);
         });
       }
     }
@@ -78,35 +84,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
                   width: MediaQuery.sizeOf(context).width / 2,
                   image: const AssetImage('assets/images/student.jpeg')),
               Padding(padding: padding16),
-              FutureBuilder(
-                future: _studentDetail,
-                builder: (BuildContext context,
-                    AsyncSnapshot<StudentDetail?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 6,
-                        child: Config().loadingIndicator,
-                      ),
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  if (snapshot.hasData) {
-                    Student student = snapshot.data!.data;
-                    studentNameController.text = student.name;
-                    studentAddressController.text = student.address;
-                    studentPhoneController.text = student.phoneNumber;
-                    studentEmailController.text = student.email;
-                    studentBirthDate = student.birthDate;
-                    dateController.text =
-                        DateFormat("dd MMMM yyyy").format(student.birthDate);
-                  }
-
-                  return buildForm(context);
-                },
-              ),
+              buildForm(context)
             ],
           ),
         ),
@@ -155,51 +133,89 @@ class _FormStudentPageState extends State<FormStudentPage> {
                   child: Config().loadingIndicator,
                 ),
               )
-            : widget.studentId != null
+            : widget.student != null
                 ? SolidButton(
                     action: () {
-                      Navigator.pop(context, true);
+                      updateStudent(context);
                     },
                     text: "Update")
                 : SolidButton(
                     action: () {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      User user = User(
-                        name: studentNameController.text,
-                        email: studentEmailController.text,
-                        phoneNumber: studentPhoneController.text,
-                        password: 'password',
-                      );
-                      UserService().createUser(user).then(
-                        (result) {
-                          if (result != null) {
-                            Student student = Student(
-                              userId: result.id,
-                              name: result.name,
-                              email: result.email,
-                              phoneNumber: result.phoneNumber,
-                              address: studentAddressController.text,
-                              birthDate: studentBirthDate,
-                              isActive: 1,
-                            );
-                            StudentService()
-                                .createStudent(student)
-                                .then((value) {
-                              setState(() {
-                                isLoading = false;
-                              });
-                              if (value) {
-                                Navigator.pop(context);
-                              }
-                            });
-                          }
-                        },
-                      );
+                      createStudent(context);
                     },
                     text: "Add Student")
       ],
+    );
+  }
+
+  void createStudent(BuildContext context) {
+    setState(() {
+      isLoading = true;
+    });
+    User user = User(
+      name: studentNameController.text,
+      email: studentEmailController.text,
+      phoneNumber: studentPhoneController.text,
+    );
+    UserService().createUser(user).then(
+      (result) {
+        if (result != null) {
+          Student student = Student(
+            userId: result.id,
+            name: result.name,
+            email: result.email,
+            phoneNumber: result.phoneNumber,
+            address: studentAddressController.text,
+            birthDate: studentBirthDate,
+            isActive: 1,
+          );
+          StudentService().createStudent(student).then((value) {
+            setState(() {
+              isLoading = false;
+            });
+            if (value) {
+              Navigator.pop(context);
+            }
+          });
+        }
+      },
+    );
+  }
+
+  void updateStudent(BuildContext context) {
+    setState(() {
+      isLoading = true;
+    });
+    User user = User(
+      id: widget.student!.userId,
+      name: studentNameController.text,
+      email: studentEmailController.text,
+      phoneNumber: studentPhoneController.text,
+      password: 'password',
+    );
+    UserService().updateUser(user).then(
+      (result) {
+        if (result != null) {
+          Student student = Student(
+            id: widget.student!.id,
+            userId: result.id,
+            name: result.name,
+            email: result.email,
+            phoneNumber: result.phoneNumber,
+            address: studentAddressController.text,
+            birthDate: studentBirthDate,
+            isActive: 1,
+          );
+          StudentService().updateStudent(student).then((value) {
+            setState(() {
+              isLoading = false;
+            });
+            if (value) {
+              Navigator.pop(context);
+            }
+          });
+        }
+      },
     );
   }
 }

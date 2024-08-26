@@ -32,4 +32,21 @@ class UserService {
       return newUser;
     }
   }
+
+  Future<User?> updateUser(User user) async {
+    User? updatedUser;
+    Map<String, dynamic> params = user.toJson();
+    try {
+      Response response =
+          await ServiceConfig().dio.put('/users/user/${user.id}', data: params);
+      if (response.statusCode == 200) {
+        UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
+        updatedUser = updatedUserDetail.data;
+      }
+      return updatedUser;
+    } on DioException catch (e) {
+      inspect(e);
+      return updatedUser;
+    }
+  }
 }

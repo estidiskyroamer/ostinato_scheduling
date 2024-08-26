@@ -23,31 +23,24 @@ class ScheduleService {
 
   Future<bool> createSchedule(Schedule schedule, {String? repeat}) async {
     Map<String, dynamic> params = schedule.toJson();
-    bool success = true;
     int repeatNumber = 4;
     inspect(repeat);
     if (repeat != null && repeat.isNotEmpty) {
       repeatNumber = int.parse(repeat);
     }
-    for (int i = 0; i < repeatNumber; i++) {
-      try {
-        int addedDays = 7 * i;
-        DateTime newDate = schedule.date.add(Duration(days: addedDays));
-        params['date'] = DateFormat('yyyy-MM-dd').format(newDate);
-        Response response =
-            await ServiceConfig().dio.post('/schedules', data: params);
-        inspect(response);
-        if (response.statusCode != 200) {
-          success = false;
-          break;
-        }
-      } on DioException catch (e) {
-        inspect(e);
-        success = false;
-        break;
+    try {
+      Response response = await ServiceConfig()
+          .dio
+          .post('/schedules/$repeatNumber', data: params);
+      inspect(response);
+      if (response.statusCode != 200) {
+        return false;
       }
+      return true;
+    } on DioException catch (e) {
+      inspect(e);
+      return false;
     }
-    return success;
   }
 
   Future<bool> updateSchedule(Schedule schedule) async {

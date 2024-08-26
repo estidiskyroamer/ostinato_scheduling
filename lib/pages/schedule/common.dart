@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
@@ -22,77 +23,77 @@ Widget scheduleBottomSheet(
   return ItemBottomSheet(
     child: Column(
       children: [
-        Text(
-          "Status",
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontStyle: FontStyle.italic),
-        ),
-        Row(
-          children: [
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ActionDialog(
-                        action: () {
-                          done();
-                          Navigator.pop(context);
-                        },
-                        contentText:
-                            "Are you sure you want to mark this schedule as done?",
-                        actionText: "Mark as Done",
-                      );
-                    },
-                  );
-                },
-                icon: FontAwesomeIcons.circleCheck,
-                label: "Done"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ActionDialog(
-                        action: () {
-                          Navigator.pop(context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => FormReschedulePage()));
-                        },
-                        contentText: "Are you sure you want to reschedule?",
-                        actionText: "Reschedule",
-                      );
-                    },
-                  );
-                },
-                icon: FontAwesomeIcons.rotate,
-                label: "Reschedule"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return ActionDialog(
-                        action: () {
-                          Navigator.pop(context);
-                        },
-                        contentText:
-                            "Are you sure you want to mark this schedule as canceled?",
-                        actionText: "Mark as Canceled",
-                      );
-                    },
-                  );
-                },
-                icon: FontAwesomeIcons.circleXmark,
-                label: "Canceled"),
-          ],
-        ),
-        Padding(padding: padding8),
+        schedule.status == 'done' || schedule.status == 'canceled'
+            ? SizedBox(
+                child: Text(schedule.status!),
+              )
+            : Column(
+                children: [
+                  Text(
+                    "Status",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontStyle: FontStyle.italic),
+                  ),
+                  Row(
+                    children: [
+                      RowIconButton(
+                          onTap: () {
+                            Navigator.pop(context);
+                            String date = DateFormat("dd MMMM yyyy")
+                                .format(schedule.date);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ActionDialog(
+                                  action: () {
+                                    done();
+                                  },
+                                  contentText:
+                                      "Are you sure you want to mark this schedule as done?"
+                                      "\n$date\n${schedule.startTime} - ${schedule.studentName} (${schedule.instrumentName})",
+                                  actionText: "Mark as Done",
+                                );
+                              },
+                            );
+                          },
+                          icon: FontAwesomeIcons.circleCheck,
+                          label: "Done"),
+                      RowIconButton(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            rescheduled();
+                          },
+                          icon: FontAwesomeIcons.rotate,
+                          label: "Reschedule"),
+                      RowIconButton(
+                          onTap: () {
+                            Navigator.pop(context);
+                            String date = DateFormat("dd MMMM yyyy")
+                                .format(schedule.date);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ActionDialog(
+                                  action: () {
+                                    canceled();
+                                  },
+                                  contentText:
+                                      "Are you sure you want to mark this schedule as canceled?"
+                                      "\n$date\n${schedule.startTime} - ${schedule.studentName} (${schedule.instrumentName})",
+                                  actionText: "Mark as Canceled",
+                                );
+                              },
+                            );
+                          },
+                          icon: FontAwesomeIcons.circleXmark,
+                          label: "Canceled"),
+                    ],
+                  ),
+                  Padding(padding: padding8),
+                ],
+              ),
         Text(
           "Manage",
           style: Theme.of(context)
@@ -110,13 +111,15 @@ Widget scheduleBottomSheet(
                 },
                 icon: FontAwesomeIcons.file,
                 label: "Notes"),
-            RowIconButton(
-                onTap: () {
-                  Navigator.of(context).pop();
-                  editSchedule();
-                },
-                icon: FontAwesomeIcons.pencil,
-                label: "Edit"),
+            schedule.status == 'canceled'
+                ? const SizedBox()
+                : RowIconButton(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      editSchedule();
+                    },
+                    icon: FontAwesomeIcons.pencil,
+                    label: "Edit"),
             RowIconButton(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -266,4 +269,38 @@ Widget noteItem(BuildContext context, String scheduleNoteId, String note,
       ],
     ),
   );
+}
+
+Widget scheduleStatus(String? status) {
+  switch (status) {
+    case "done":
+      return Container(
+        padding: const EdgeInsets.only(left: 8),
+        child: Icon(
+          FontAwesomeIcons.circleCheck,
+          color: HexColor('#2ec27d'),
+          size: 18,
+        ),
+      );
+    case "rescheduled":
+      return Container(
+        padding: const EdgeInsets.only(left: 8),
+        child: Icon(
+          FontAwesomeIcons.rotate,
+          color: HexColor('#ffba47'),
+          size: 18,
+        ),
+      );
+    case "canceled":
+      return Container(
+        padding: const EdgeInsets.only(left: 8),
+        child: Icon(
+          FontAwesomeIcons.circleXmark,
+          color: HexColor('#c70e03'),
+          size: 18,
+        ),
+      );
+    default:
+      return const SizedBox();
+  }
 }

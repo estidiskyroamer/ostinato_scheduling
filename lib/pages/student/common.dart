@@ -10,38 +10,13 @@ import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/pages/student/form_student.dart';
 
-Widget studentItem(BuildContext context, Student student) {
-  return Container(
-    decoration: const BoxDecoration(
-        border: Border(bottom: BorderSide(color: Colors.black38))),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(student.name),
-        IconButton(
-          icon: const Icon(
-            FontAwesomeIcons.ellipsisVertical,
-            color: Colors.black54,
-          ),
-          onPressed: () {
-            showModalBottomSheet<void>(
-                context: context,
-                builder: (context) {
-                  return bottomSheet(context, student.id!);
-                });
-          },
-        ),
-      ],
-    ),
-  );
-}
-
-Widget bottomSheet(BuildContext context, String studentId) {
+Widget bottomSheet(BuildContext context, Student student, Function editStudent,
+    Function deleteStudent) {
   return ItemBottomSheet(
     child: Column(
       children: [
         Text(
-          "Manage",
+          "Manage ${student.name}",
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
@@ -54,7 +29,7 @@ Widget bottomSheet(BuildContext context, String studentId) {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => DetailStudentPage(
-                            studentId: studentId,
+                            studentId: student.id!,
                           )));
                 },
                 icon: FontAwesomeIcons.magnifyingGlass,
@@ -62,10 +37,7 @@ Widget bottomSheet(BuildContext context, String studentId) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => FormStudentPage(
-                            studentId: studentId,
-                          )));
+                  editStudent();
                 },
                 icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
@@ -77,15 +49,14 @@ Widget bottomSheet(BuildContext context, String studentId) {
                     builder: (BuildContext context) {
                       return ActionDialog(
                         action: () {
-                          Navigator.pop(context);
+                          deleteStudent();
                         },
                         contentText:
-                            "Are you sure you want to delete this data?",
+                            "Are you sure you want to delete this data?\nStudent: ${student.name}",
                         actionText: "Delete",
                       );
                     },
                   );
-                  print("cancel $studentId");
                 },
                 icon: FontAwesomeIcons.trash,
                 label: "Delete"),
@@ -164,7 +135,7 @@ Widget detailScheduleDate(BuildContext context, DateTime date) {
   );
 }
 
-Widget detailBottomSheet(BuildContext context, String studentId) {
+Widget detailBottomSheet(BuildContext context, Student student) {
   return ItemBottomSheet(
     child: Column(
       children: [
@@ -182,7 +153,7 @@ Widget detailBottomSheet(BuildContext context, String studentId) {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => FormStudentPage(
-                            studentId: studentId,
+                            student: student,
                           )));
                 },
                 icon: FontAwesomeIcons.pencil,
@@ -213,7 +184,6 @@ Widget detailBottomSheet(BuildContext context, String studentId) {
                       );
                     },
                   );
-                  print("cancel $studentId");
                 },
                 icon: FontAwesomeIcons.trash,
                 label: "Delete"),
