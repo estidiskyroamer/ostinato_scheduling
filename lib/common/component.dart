@@ -233,7 +233,10 @@ class ActionDialog extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(contentText),
+            Text(
+              contentText,
+              textAlign: TextAlign.center,
+            ),
             Padding(padding: padding16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -24,9 +24,7 @@ Widget scheduleBottomSheet(
     child: Column(
       children: [
         schedule.status == 'done' || schedule.status == 'canceled'
-            ? SizedBox(
-                child: Text(schedule.status!),
-              )
+            ? SizedBox()
             : Column(
                 children: [
                   Text(
@@ -111,7 +109,7 @@ Widget scheduleBottomSheet(
                 },
                 icon: FontAwesomeIcons.file,
                 label: "Notes"),
-            schedule.status == 'canceled'
+            schedule.status == 'canceled' || schedule.status == 'done'
                 ? const SizedBox()
                 : RowIconButton(
                     onTap: () {
