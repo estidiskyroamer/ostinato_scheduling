@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/schedule_note.dart';
 import 'package:ostinato/services/config.dart';
 
 class ScheduleService {
@@ -68,5 +69,17 @@ class ScheduleService {
       inspect(e);
       return false;
     }
+  }
+
+  Future<ScheduleNoteList?> getAllNotes(Schedule schedule) async {
+    ScheduleNoteList? scheduleNoteList;
+    try {
+      Response response =
+          await ServiceConfig().dio.get('/schedule_notes/${schedule.id}');
+      scheduleNoteList = ScheduleNoteList.fromJson(response.data);
+    } on DioException catch (e) {
+      inspect(e);
+    }
+    return scheduleNoteList;
   }
 }

@@ -1,17 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/schedule_note.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
+import 'package:ostinato/services/schedule_service.dart';
 
 class ScheduleNotePage extends StatefulWidget {
-  final String? scheduleId;
-  const ScheduleNotePage({super.key, this.scheduleId});
+  final Schedule schedule;
+  const ScheduleNotePage({super.key, required this.schedule});
 
   @override
   State<ScheduleNotePage> createState() => _ScheduleNotePageState();
 }
 
 class _ScheduleNotePageState extends State<ScheduleNotePage> {
+  late Future<ScheduleNoteList?> _scheduleNoteList;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void getScheduleNotes() {
+    if (mounted) {
+      setState(() {
+        _scheduleNoteList = ScheduleService().getAllNotes(widget.schedule);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

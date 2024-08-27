@@ -29,7 +29,15 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   @override
   void initState() {
     super.initState();
-    _studentDetail = StudentService().getStudentDetail(widget.studentId);
+    getStudentDetail();
+  }
+
+  void getStudentDetail() {
+    if (mounted) {
+      setState(() {
+        _studentDetail = StudentService().getStudentDetail(widget.studentId);
+      });
+    }
   }
 
   void updateSchedule(Schedule schedule, String status) {
@@ -48,9 +56,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
     );
     ScheduleService().updateSchedule(update).then((value) {
       if (value) {
-        setState(() {
-          _studentDetail = StudentService().getStudentDetail(widget.studentId);
-        });
+        getStudentDetail();
       }
       Navigator.of(context).pop();
     });
@@ -62,11 +68,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             builder: (context) => FormStudentSchedulePage(
                   studentId: student.id,
                 )))
-        .then((value) {
-      setState(() {
-        _studentDetail = StudentService().getStudentDetail(widget.studentId);
-      });
-    });
+        .then((value) => getStudentDetail());
   }
 
   void editSchedule(Schedule schedule, Student student) {
@@ -79,14 +81,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             ),
           ),
         )
-        .then(
-          (value) => setState(
-            () {
-              _studentDetail =
-                  StudentService().getStudentDetail(widget.studentId);
-            },
-          ),
-        );
+        .then((value) => getStudentDetail());
   }
 
   void reschedule(Schedule schedule) {
@@ -98,24 +93,16 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             ),
           ),
         )
-        .then(
-          (value) => setState(
-            () {
-              _studentDetail =
-                  StudentService().getStudentDetail(widget.studentId);
-            },
-          ),
-        );
+        .then((value) => getStudentDetail());
   }
 
   void deleteSchedule(Schedule schedule) async {
-    bool isDeleted = await ScheduleService().deleteSchedule(schedule);
-    if (isDeleted && mounted) {
-      setState(() {
-        _studentDetail = StudentService().getStudentDetail(widget.studentId);
+    ScheduleService().deleteSchedule(schedule).then((value) {
+      if (value) {
+        getStudentDetail();
         Navigator.of(context).pop();
-      });
-    }
+      }
+    });
   }
 
   @override

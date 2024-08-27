@@ -105,7 +105,9 @@ Widget scheduleBottomSheet(
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const ScheduleNotePage()));
+                      builder: (context) => ScheduleNotePage(
+                            schedule: schedule,
+                          )));
                 },
                 icon: FontAwesomeIcons.file,
                 label: "Notes"),

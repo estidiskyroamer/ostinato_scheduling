@@ -72,6 +72,15 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
+  void getSchedule() {
+    if (mounted) {
+      setState(() {
+        _scheduleList = ScheduleService().getGroupedSchedule(
+            month: currentTime.month, year: currentTime.year);
+      });
+    }
+  }
+
   void updateSchedule(Schedule schedule, String status) {
     Schedule update = Schedule(
       id: schedule.id,
@@ -88,10 +97,7 @@ class _SchedulePageState extends State<SchedulePage> {
     );
     ScheduleService().updateSchedule(update).then((value) {
       if (value) {
-        setState(() {
-          _scheduleList = ScheduleService().getGroupedSchedule(
-              month: currentTime.month, year: currentTime.year);
-        });
+        getSchedule();
       }
       Navigator.of(context).pop();
     });
@@ -100,12 +106,7 @@ class _SchedulePageState extends State<SchedulePage> {
   void addSchedule(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const FormSchedulePage()))
-        .then((value) {
-      setState(() {
-        _scheduleList = ScheduleService().getGroupedSchedule(
-            month: currentTime.month, year: currentTime.year);
-      });
-    });
+        .then((value) => getSchedule());
   }
 
   void editSchedule(Schedule schedule) {
@@ -117,14 +118,7 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
           ),
         )
-        .then(
-          (value) => setState(
-            () {
-              _scheduleList = ScheduleService().getGroupedSchedule(
-                  month: currentTime.month, year: currentTime.year);
-            },
-          ),
-        );
+        .then((value) => getSchedule());
   }
 
   void reschedule(Schedule schedule) {
@@ -136,25 +130,16 @@ class _SchedulePageState extends State<SchedulePage> {
             ),
           ),
         )
-        .then(
-          (value) => setState(
-            () {
-              _scheduleList = ScheduleService().getGroupedSchedule(
-                  month: currentTime.month, year: currentTime.year);
-            },
-          ),
-        );
+        .then((value) => getSchedule());
   }
 
   void deleteSchedule(Schedule schedule) async {
-    bool isDeleted = await ScheduleService().deleteSchedule(schedule);
-    if (isDeleted && mounted) {
-      setState(() {
-        _scheduleList = ScheduleService().getGroupedSchedule(
-            month: currentTime.month, year: currentTime.year);
+    ScheduleService().deleteSchedule(schedule).then((value) {
+      if (value) {
+        getSchedule();
         Navigator.of(context).pop();
-      });
-    }
+      }
+    });
   }
 
   @override

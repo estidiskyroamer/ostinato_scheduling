@@ -22,18 +22,20 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   void initState() {
-    _studentList = StudentService().getStudents();
+    getStudents();
     super.initState();
+  }
+
+  void getStudents() {
+    setState(() {
+      _studentList = StudentService().getStudents();
+    });
   }
 
   void addStudent(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const FormStudentPage()))
-        .then((value) {
-      setState(() {
-        _studentList = StudentService().getStudents();
-      });
-    });
+        .then((value) => getStudents());
   }
 
   void editStudent(Student student) {
@@ -42,21 +44,16 @@ class _StudentPageState extends State<StudentPage> {
             builder: (context) => FormStudentPage(
                   student: student,
                 )))
-        .then((value) {
-      setState(() {
-        _studentList = StudentService().getStudents();
-      });
-    });
+        .then((value) => getStudents());
   }
 
   void deleteStudent(Student student) async {
-    bool isDeleted = await StudentService().deleteStudent(student);
-    if (isDeleted && mounted) {
-      setState(() {
-        _studentList = StudentService().getStudents();
+    StudentService().deleteStudent(student).then((value) {
+      if (value) {
+        getStudents();
         Navigator.of(context).pop();
-      });
-    }
+      }
+    });
   }
 
   @override
