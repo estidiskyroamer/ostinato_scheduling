@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/schedule_note.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
@@ -150,7 +151,8 @@ Widget scheduleBottomSheet(
   );
 }
 
-Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
+Widget noteBottomSheet(BuildContext context, ScheduleNote scheduleNote,
+    Function editScheduleNote, Function deleteScheduleNote) {
   return ItemBottomSheet(
     child: Column(
       children: [
@@ -165,11 +167,7 @@ Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
           children: [
             RowIconButton(
                 onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => const FormScheduleNotePage(
-                            scheduleNoteId: "1",
-                          )));
+                  editScheduleNote();
                 },
                 icon: FontAwesomeIcons.pencil,
                 label: "Edit"),
@@ -181,7 +179,7 @@ Widget noteBottomSheet(BuildContext context, String scheduleNoteId) {
                     builder: (BuildContext context) {
                       return ActionDialog(
                         action: () {
-                          Navigator.pop(context);
+                          deleteScheduleNote();
                         },
                         contentText:
                             "Are you sure you want to delete this data?",
@@ -219,53 +217,6 @@ Widget scheduleDate(BuildContext context, DateTime date) {
               .titleSmall!
               .copyWith(color: Colors.black45),
         )
-      ],
-    ),
-  );
-}
-
-Widget noteItem(BuildContext context, String scheduleNoteId, String note,
-    DateTime createdAt) {
-  return Container(
-    padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-    margin: const EdgeInsets.only(top: 8, left: 32),
-    decoration: const BoxDecoration(
-        border: Border(
-      bottom: BorderSide(color: Colors.black38),
-    )),
-    child: Row(
-      children: [
-        Expanded(
-            flex: 6,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(note),
-                Container(
-                  padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                  child: Text(
-                    DateFormat("dd MMMM yyyy HH:mm").format(createdAt),
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                ),
-              ],
-            )),
-        Expanded(
-          flex: 1,
-          child: IconButton(
-            icon: const Icon(
-              FontAwesomeIcons.ellipsisVertical,
-              color: Colors.black54,
-            ),
-            onPressed: () {
-              showModalBottomSheet<void>(
-                  context: context,
-                  builder: (context) {
-                    return noteBottomSheet(context, scheduleNoteId);
-                  });
-            },
-          ),
-        ),
       ],
     ),
   );

@@ -282,24 +282,26 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
             ],
           ),
           Padding(padding: padding8),
-          SizedBox(
-            width: MediaQuery.of(context).size.width / 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text("Repeat for"),
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 7,
-                  child: InputField(
-                    textEditingController: repeatController,
-                    hintText: "4",
-                    inputType: TextInputType.number,
+          isEditSchedule
+              ? const SizedBox()
+              : SizedBox(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const Text("Repeat for"),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 7,
+                        child: InputField(
+                          textEditingController: repeatController,
+                          hintText: "4",
+                          inputType: TextInputType.number,
+                        ),
+                      ),
+                      const Text("weeks")
+                    ],
                   ),
                 ),
-                const Text("weeks")
-              ],
-            ),
-          ),
           Padding(padding: padding16),
           isLoading
               ? Center(

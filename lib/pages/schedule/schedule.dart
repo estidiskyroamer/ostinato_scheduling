@@ -214,7 +214,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
   Widget studentTime(BuildContext context, Schedule schedule) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
       margin: const EdgeInsets.only(left: 32),
       decoration: const BoxDecoration(
           border: Border(
@@ -225,7 +225,7 @@ class _SchedulePageState extends State<SchedulePage> {
           Expanded(
             flex: 2,
             child: Text(
-              schedule.startTime,
+              "${schedule.startTime} - ${schedule.endTime}",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   decoration: schedule.status == 'canceled'

@@ -241,7 +241,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   Widget detailStudentTime(Schedule schedule, Student student) {
     String formattedTime = schedule.startTime.substring(0, 5);
     return Container(
-      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+      padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
       margin: const EdgeInsets.only(bottom: 8, left: 32),
       decoration: const BoxDecoration(
           border: Border(
@@ -252,7 +252,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
           Expanded(
             flex: 2,
             child: Text(
-              formattedTime,
+              "${schedule.startTime} - ${schedule.endTime}",
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   decoration: schedule.status == 'canceled'

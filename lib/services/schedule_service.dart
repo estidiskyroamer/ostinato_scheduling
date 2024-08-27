@@ -82,4 +82,48 @@ class ScheduleService {
     }
     return scheduleNoteList;
   }
+
+  Future<bool> createNote(ScheduleNote note) async {
+    Map<String, dynamic> params = note.toJson();
+    try {
+      Response response =
+          await ServiceConfig().dio.post('/schedule_notes', data: params);
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } on DioException catch (e) {
+      inspect(e);
+      return false;
+    }
+  }
+
+  Future<bool> updateNote(ScheduleNote note) async {
+    Map<String, dynamic> params = note.toJson();
+    try {
+      Response response = await ServiceConfig()
+          .dio
+          .put('/schedule_notes/schedule_note/${note.id}', data: params);
+      if (response.statusCode == 200) {
+        return true;
+      }
+      return false;
+    } on DioException catch (e) {
+      inspect(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteNote(ScheduleNote note) async {
+    try {
+      Response response = await ServiceConfig()
+          .dio
+          .delete('/schedule_notes/schedule_note/${note.id}');
+      inspect(response);
+      return true;
+    } on DioException catch (e) {
+      inspect(e);
+      return false;
+    }
+  }
 }
