@@ -187,10 +187,10 @@ class _SchedulePageState extends State<SchedulePage> {
 
                 return ScrollablePositionedList.builder(
                   itemScrollController: _scrollController,
-                  itemCount: scheduleList.data.length,
+                  itemCount: scheduleList.data!.length,
                   itemBuilder: (BuildContext context, int index) {
-                    DateTime date =
-                        DateTime.parse(scheduleList.data.keys.elementAt(index));
+                    DateTime date = DateTime.parse(
+                        scheduleList.data!.keys.elementAt(index));
                     List<Schedule> schedules =
                         scheduleList.data.values.elementAt(index);
                     return Column(

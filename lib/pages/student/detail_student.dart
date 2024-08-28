@@ -239,7 +239,6 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   }
 
   Widget detailStudentTime(Schedule schedule, Student student) {
-    String formattedTime = schedule.startTime.substring(0, 5);
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
       margin: const EdgeInsets.only(bottom: 8, left: 32),
