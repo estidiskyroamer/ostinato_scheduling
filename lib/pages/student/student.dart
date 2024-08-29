@@ -134,7 +134,7 @@ class _StudentPageState extends State<StudentPage> {
 
   Widget studentItem(BuildContext context, Student student) {
     return Container(
-      padding: const EdgeInsets.only(left: 16),
+      padding: const EdgeInsets.only(left: 16, right: 16),
       decoration: const BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black38))),
       child: Row(

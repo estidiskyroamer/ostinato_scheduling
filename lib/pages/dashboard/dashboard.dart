@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/user.dart';
@@ -148,11 +149,7 @@ class _DashboardPageState extends State<DashboardPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: double.infinity,
-              padding: padding16,
-              margin: const EdgeInsets.only(top: 8),
-              decoration: const BoxDecoration(color: Colors.black12),
+            listHeader(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
@@ -221,73 +218,35 @@ class _DashboardPageState extends State<DashboardPage> {
     bool isCurrentSchedule =
         (startTime.isBefore(currentTime) || currentTime == startTime) &&
             (endTime.isAfter(currentTime) || currentTime == endTime);
-    return Container(
-      padding: isCurrentSchedule
-          ? const EdgeInsets.fromLTRB(32, 8, 16, 8)
-          : const EdgeInsets.fromLTRB(0, 8, 16, 8),
-      margin: isCurrentSchedule
-          ? const EdgeInsets.all(0)
-          : const EdgeInsets.only(left: 32),
-      decoration: BoxDecoration(
-          color: isCurrentSchedule ? HexColor("#E6F2FF") : Colors.transparent,
-          border: const Border(
-            bottom: BorderSide(color: Colors.black38),
-          )),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              "${schedule.startTime} - ${schedule.endTime}",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  decoration: schedule.status == 'canceled'
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none),
-            ),
+    return scheduleItem(
+      isCurrentSchedule,
+      schedule,
+      context,
+      Expanded(
+        flex: 1,
+        child: IconButton(
+          icon: const Icon(
+            FontAwesomeIcons.ellipsisVertical,
+            color: Colors.black54,
           ),
-          Expanded(
-            flex: 6,
-            child: Row(
-              children: [
-                Text(
-                  "${schedule.studentName} (${schedule.instrumentName})",
-                  style: TextStyle(
-                      decoration: schedule.status == 'canceled'
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none),
-                ),
-                scheduleStatus(schedule.status)
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: IconButton(
-              icon: const Icon(
-                FontAwesomeIcons.ellipsisVertical,
-                color: Colors.black54,
-              ),
-              onPressed: () {
-                showModalBottomSheet<void>(
-                    context: context,
-                    builder: (context) {
-                      return scheduleBottomSheet(context, schedule, () {
-                        updateSchedule(schedule, 'done');
-                      }, () {
-                        reschedule(schedule);
-                      }, () {
-                        updateSchedule(schedule, 'canceled');
-                      }, () {
-                        editSchedule(schedule);
-                      }, () {
-                        deleteSchedule(schedule);
-                      });
-                    });
-              },
-            ),
-          ),
-        ],
+          onPressed: () {
+            showModalBottomSheet<void>(
+                context: context,
+                builder: (context) {
+                  return scheduleBottomSheet(context, schedule, () {
+                    updateSchedule(schedule, 'done');
+                  }, () {
+                    reschedule(schedule);
+                  }, () {
+                    updateSchedule(schedule, 'canceled');
+                  }, () {
+                    editSchedule(schedule);
+                  }, () {
+                    deleteSchedule(schedule);
+                  });
+                });
+          },
+        ),
       ),
     );
   }

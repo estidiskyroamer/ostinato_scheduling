@@ -1,10 +1,11 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
+import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
@@ -23,21 +24,12 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   late Future<GroupedSchedule?> _scheduleList;
   late DateTime currentTime;
-  late DateTime nextMonthTime;
-  late String currentMonthName;
-  late String nextMonthName;
-  late Timer _timer;
 
   final ItemScrollController _scrollController = ItemScrollController();
 
   @override
   void initState() {
     currentTime = DateTime.now();
-    nextMonthTime =
-        DateTime(currentTime.year, currentTime.month + 1, currentTime.day);
-    currentMonthName = DateFormat("MMMM yyyy").format(currentTime);
-    nextMonthName = DateFormat("MMMM yyyy").format(nextMonthTime);
-
     _scheduleList = ScheduleService()
         .getGroupedSchedule(month: currentTime.month, year: currentTime.year);
     super.initState();
@@ -75,6 +67,36 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
+  void changeScheduleDate(String operation) {
+    Jiffy scheduleTime = Jiffy.parseFromDateTime(currentTime);
+    switch (operation) {
+      case 'add':
+        scheduleTime = scheduleTime.add(months: 1);
+        break;
+      case 'subtract':
+        scheduleTime = scheduleTime.subtract(months: 1);
+        break;
+      default:
+        scheduleTime = scheduleTime.add(months: 1);
+        break;
+    }
+    if (mounted) {
+      setState(() {
+        currentTime = scheduleTime.dateTime;
+        getSchedule();
+      });
+    }
+  }
+
+  void resetScheduleDate() {
+    if (mounted) {
+      setState(() {
+        currentTime = DateTime.now();
+        getSchedule();
+      });
+    }
+  }
+
   void getSchedule() {
     if (mounted) {
       setState(() {
@@ -98,11 +120,11 @@ class _SchedulePageState extends State<SchedulePage> {
       startTime: schedule.startTime,
       endTime: schedule.endTime,
     );
+    Navigator.of(context).pop();
     ScheduleService().updateSchedule(update).then((value) {
       if (value) {
         getSchedule();
       }
-      Navigator.of(context).pop();
     });
   }
 
@@ -145,21 +167,35 @@ class _SchedulePageState extends State<SchedulePage> {
     });
   }
 
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 30), (Timer timer) {
-      setState(() {});
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Text(
-          "Monthly Schedule",
-          style: Theme.of(context).textTheme.titleMedium,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IconButton(
+                onPressed: () {
+                  changeScheduleDate('subtract');
+                },
+                icon: const Icon(FontAwesomeIcons.chevronLeft)),
+            GestureDetector(
+              onDoubleTap: () {
+                resetScheduleDate();
+              },
+              child: Text(
+                DateFormat('MMMM yyyy').format(currentTime),
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+            ),
+            IconButton(
+                onPressed: () {
+                  changeScheduleDate('add');
+                },
+                icon: const Icon(FontAwesomeIcons.chevronRight)),
+          ],
         ),
         actions: [
           IconButton(
@@ -198,10 +234,10 @@ class _SchedulePageState extends State<SchedulePage> {
 
                 return ScrollablePositionedList.builder(
                   itemScrollController: _scrollController,
-                  itemCount: scheduleList.data!.length,
+                  itemCount: scheduleList.data.length,
                   itemBuilder: (BuildContext context, int index) {
-                    DateTime date = DateTime.parse(
-                        scheduleList.data!.keys.elementAt(index));
+                    DateTime date =
+                        DateTime.parse(scheduleList.data.keys.elementAt(index));
                     List<Schedule> schedules =
                         scheduleList.data.values.elementAt(index);
                     return Column(
@@ -234,73 +270,35 @@ class _SchedulePageState extends State<SchedulePage> {
     bool isCurrentSchedule =
         (startTime.isBefore(currentTime) || currentTime == startTime) &&
             (endTime.isAfter(currentTime) || currentTime == endTime);
-    return Container(
-      padding: isCurrentSchedule
-          ? const EdgeInsets.fromLTRB(32, 8, 16, 8)
-          : const EdgeInsets.fromLTRB(0, 8, 16, 8),
-      margin: isCurrentSchedule
-          ? const EdgeInsets.all(0)
-          : const EdgeInsets.only(left: 32),
-      decoration: BoxDecoration(
-          color: isCurrentSchedule ? HexColor("#E6F2FF") : Colors.transparent,
-          border: const Border(
-            bottom: BorderSide(color: Colors.black38),
-          )),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              "${schedule.startTime} - ${schedule.endTime}",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  decoration: schedule.status == 'canceled'
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none),
-            ),
+    return scheduleItem(
+      isCurrentSchedule,
+      schedule,
+      context,
+      Expanded(
+        flex: 1,
+        child: IconButton(
+          icon: const Icon(
+            FontAwesomeIcons.ellipsisVertical,
+            color: Colors.black54,
           ),
-          Expanded(
-            flex: 6,
-            child: Row(
-              children: [
-                Text(
-                  "${schedule.studentName} (${schedule.instrumentName})",
-                  style: TextStyle(
-                      decoration: schedule.status == 'canceled'
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none),
-                ),
-                scheduleStatus(schedule.status)
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: IconButton(
-              icon: const Icon(
-                FontAwesomeIcons.ellipsisVertical,
-                color: Colors.black54,
-              ),
-              onPressed: () {
-                showModalBottomSheet<void>(
-                    context: context,
-                    builder: (context) {
-                      return scheduleBottomSheet(context, schedule, () {
-                        updateSchedule(schedule, 'done');
-                      }, () {
-                        reschedule(schedule);
-                      }, () {
-                        updateSchedule(schedule, 'canceled');
-                      }, () {
-                        editSchedule(schedule);
-                      }, () {
-                        deleteSchedule(schedule);
-                      });
-                    });
-              },
-            ),
-          ),
-        ],
+          onPressed: () {
+            showModalBottomSheet<void>(
+                context: context,
+                builder: (context) {
+                  return scheduleBottomSheet(context, schedule, () {
+                    updateSchedule(schedule, 'done');
+                  }, () {
+                    reschedule(schedule);
+                  }, () {
+                    updateSchedule(schedule, 'canceled');
+                  }, () {
+                    editSchedule(schedule);
+                  }, () {
+                    deleteSchedule(schedule);
+                  });
+                });
+          },
+        ),
       ),
     );
   }

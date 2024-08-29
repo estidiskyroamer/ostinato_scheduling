@@ -69,7 +69,7 @@ Widget bottomSheet(BuildContext context, Student student, Function editStudent,
 
 Widget detailTitle(BuildContext context, String title, [Widget? action]) {
   return Container(
-    padding: const EdgeInsets.fromLTRB(16, 4, 16, 4),
+    padding: const EdgeInsets.only(left: 16, right: 16),
     margin: const EdgeInsets.only(top: 16),
     decoration: const BoxDecoration(color: Colors.black12),
     child: Row(
@@ -111,10 +111,7 @@ Widget detailItem(BuildContext context, String title, String content) {
 }
 
 Widget detailScheduleDate(BuildContext context, DateTime date) {
-  return Container(
-    color: Colors.grey[200],
-    padding: padding16,
-    margin: const EdgeInsets.only(top: 16),
+  return listHeader(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -161,10 +158,11 @@ Widget detailBottomSheet(BuildContext context, Student student) {
             RowIconButton(
                 onTap: () {
                   Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => FormSchedulePage(
-                          //studentId: studentId,
-                          )));
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const FormSchedulePage(),
+                    ),
+                  );
                 },
                 icon: FontAwesomeIcons.calendarPlus,
                 label: "Add Schedule"),

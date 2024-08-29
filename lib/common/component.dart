@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 
 class InputField extends StatefulWidget {
@@ -379,5 +382,233 @@ Widget inputDateTimePicker({
       ),
       Padding(padding: padding8),
     ],
+  );
+}
+
+Widget listHeader({required Widget child}) {
+  return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      margin: const EdgeInsets.only(top: 16),
+      decoration: const BoxDecoration(color: Colors.black12),
+      child: child);
+}
+
+Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
+    BuildContext context, Widget button) {
+  return Container(
+    padding: isCurrentSchedule
+        ? const EdgeInsets.only(left: 32, right: 16)
+        : const EdgeInsets.only(right: 16),
+    margin:
+        isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
+    decoration: BoxDecoration(
+        color: isCurrentSchedule ? HexColor("#E6F2FF") : Colors.transparent,
+        border: const Border(
+          bottom: BorderSide(color: Colors.black38),
+        )),
+    child: Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: Text(
+            "${schedule.startTime} -\n${schedule.endTime}",
+            style: TextStyle(
+                fontWeight: FontWeight.bold,
+                decoration: schedule.status == 'canceled'
+                    ? TextDecoration.lineThrough
+                    : TextDecoration.none),
+          ),
+        ),
+        Expanded(
+          flex: 6,
+          child: Row(
+            children: [
+              Text(
+                "${schedule.studentName} (${schedule.instrumentName})",
+                style: TextStyle(
+                    decoration: schedule.status == 'canceled'
+                        ? TextDecoration.lineThrough
+                        : TextDecoration.none),
+              ),
+              scheduleStatus(schedule.status)
+            ],
+          ),
+        ),
+        button
+      ],
+    ),
+  );
+}
+
+Widget scheduleStatus(String? status) {
+  switch (status) {
+    case "done":
+      return Container(
+        padding: const EdgeInsets.only(left: 8),
+        child: Icon(
+          FontAwesomeIcons.circleCheck,
+          color: HexColor('#2ec27d'),
+          size: 18,
+        ),
+      );
+    case "rescheduled":
+      return Container(
+        padding: const EdgeInsets.only(left: 8),
+        child: Icon(
+          FontAwesomeIcons.rotate,
+          color: HexColor('#ffba47'),
+          size: 18,
+        ),
+      );
+    case "canceled":
+      return Container(
+        padding: const EdgeInsets.only(left: 8),
+        child: Icon(
+          FontAwesomeIcons.circleXmark,
+          color: HexColor('#c70e03'),
+          size: 18,
+        ),
+      );
+    default:
+      return const SizedBox();
+  }
+}
+
+Widget scheduleBottomSheet(
+    BuildContext context,
+    Schedule schedule,
+    Function done,
+    Function rescheduled,
+    Function canceled,
+    Function editSchedule,
+    Function deleteSchedule) {
+  return ItemBottomSheet(
+    child: Column(
+      children: [
+        schedule.status == 'done' || schedule.status == 'canceled'
+            ? SizedBox()
+            : Column(
+                children: [
+                  Text(
+                    "Status",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontStyle: FontStyle.italic),
+                  ),
+                  Row(
+                    children: [
+                      RowIconButton(
+                          onTap: () {
+                            Navigator.pop(context);
+                            String date = DateFormat("dd MMMM yyyy")
+                                .format(schedule.date);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ActionDialog(
+                                  action: () {
+                                    done();
+                                  },
+                                  contentText:
+                                      "Are you sure you want to mark this schedule as done?"
+                                      "\n$date\n${schedule.startTime} - ${schedule.studentName} (${schedule.instrumentName})",
+                                  actionText: "Mark as Done",
+                                );
+                              },
+                            );
+                          },
+                          icon: FontAwesomeIcons.circleCheck,
+                          label: "Done"),
+                      RowIconButton(
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            rescheduled();
+                          },
+                          icon: FontAwesomeIcons.rotate,
+                          label: "Reschedule"),
+                      RowIconButton(
+                          onTap: () {
+                            Navigator.pop(context);
+                            String date = DateFormat("dd MMMM yyyy")
+                                .format(schedule.date);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return ActionDialog(
+                                  action: () {
+                                    canceled();
+                                  },
+                                  contentText:
+                                      "Are you sure you want to mark this schedule as canceled?"
+                                      "\n$date\n${schedule.startTime} - ${schedule.studentName} (${schedule.instrumentName})",
+                                  actionText: "Mark as Canceled",
+                                );
+                              },
+                            );
+                          },
+                          icon: FontAwesomeIcons.circleXmark,
+                          label: "Canceled"),
+                    ],
+                  ),
+                  Padding(padding: padding8),
+                ],
+              ),
+        Text(
+          "Manage",
+          style: Theme.of(context)
+              .textTheme
+              .bodyLarge!
+              .copyWith(fontStyle: FontStyle.italic),
+        ),
+        Row(
+          children: [
+            RowIconButton(
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ScheduleNotePage(
+                            schedule: schedule,
+                          )));
+                },
+                icon: FontAwesomeIcons.file,
+                label: "Notes"),
+            schedule.status == 'canceled' || schedule.status == 'done'
+                ? const SizedBox()
+                : RowIconButton(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      editSchedule();
+                    },
+                    icon: FontAwesomeIcons.pencil,
+                    label: "Edit"),
+            RowIconButton(
+                onTap: () {
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return StatefulBuilder(
+                        builder: (context, setState) {
+                          return ActionDialog(
+                            action: () {
+                              deleteSchedule();
+                            },
+                            contentText:
+                                "Are you sure you want to delete this data?",
+                            actionText: "Delete",
+                          );
+                        },
+                      );
+                    },
+                  );
+                },
+                icon: FontAwesomeIcons.trash,
+                label: "Delete"),
+          ],
+        )
+      ],
+    ),
   );
 }

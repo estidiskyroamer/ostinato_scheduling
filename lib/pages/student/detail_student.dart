@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
@@ -148,7 +149,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       IconButton(
                         icon: const Icon(
                           FontAwesomeIcons.pencil,
-                          color: Colors.black,
+                          size: 20,
                         ),
                         onPressed: () {
                           Navigator.of(context)
@@ -194,7 +195,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       IconButton(
                         icon: const Icon(
                           FontAwesomeIcons.plus,
-                          color: Colors.black,
+                          size: 20,
                         ),
                         onPressed: () {
                           addSchedule(student);
@@ -241,68 +242,35 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   }
 
   Widget detailStudentTime(Schedule schedule, Student student) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-      margin: const EdgeInsets.only(bottom: 8, left: 32),
-      decoration: const BoxDecoration(
-          border: Border(
-        bottom: BorderSide(color: Colors.black38),
-      )),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              "${schedule.startTime} - ${schedule.endTime}",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  decoration: schedule.status == 'canceled'
-                      ? TextDecoration.lineThrough
-                      : TextDecoration.none),
-            ),
+    return scheduleItem(
+      false,
+      schedule,
+      context,
+      Expanded(
+        flex: 1,
+        child: IconButton(
+          icon: const Icon(
+            FontAwesomeIcons.ellipsisVertical,
+            color: Colors.black54,
           ),
-          Expanded(
-            flex: 6,
-            child: Row(
-              children: [
-                Text(
-                  "${schedule.studentName} (${schedule.instrumentName})",
-                  style: TextStyle(
-                      decoration: schedule.status == 'canceled'
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none),
-                ),
-                scheduleStatus(schedule.status)
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: IconButton(
-              icon: const Icon(
-                FontAwesomeIcons.ellipsisVertical,
-                color: Colors.black54,
-              ),
-              onPressed: () {
-                showModalBottomSheet<void>(
-                    context: context,
-                    builder: (context) {
-                      return scheduleBottomSheet(context, schedule, () {
-                        updateSchedule(schedule, 'done');
-                      }, () {
-                        reschedule(schedule);
-                      }, () {
-                        updateSchedule(schedule, 'canceled');
-                      }, () {
-                        editSchedule(schedule, student);
-                      }, () {
-                        deleteSchedule(schedule);
-                      });
-                    });
-              },
-            ),
-          ),
-        ],
+          onPressed: () {
+            showModalBottomSheet<void>(
+                context: context,
+                builder: (context) {
+                  return scheduleBottomSheet(context, schedule, () {
+                    updateSchedule(schedule, 'done');
+                  }, () {
+                    reschedule(schedule);
+                  }, () {
+                    updateSchedule(schedule, 'canceled');
+                  }, () {
+                    editSchedule(schedule, student);
+                  }, () {
+                    deleteSchedule(schedule);
+                  });
+                });
+          },
+        ),
       ),
     );
   }

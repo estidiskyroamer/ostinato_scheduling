@@ -25,13 +25,13 @@ ThemeData ostinatoTheme = ThemeData(
     colorSchemeSeed: Colors.white,
     textTheme: const TextTheme(
       titleLarge: TextStyle(
-        fontSize: 42,
+        fontSize: 34,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
       titleMedium: TextStyle(
-        fontSize: 30,
+        fontSize: 26,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
