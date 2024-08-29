@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -22,6 +24,8 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   late Future<GroupedSchedule?> _scheduleList;
+  late Timer _timer;
+
   DateTime currentDate = DateTime.now();
   String greeting() {
     final hour = DateTime.now().hour;
@@ -42,6 +46,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     _user = Config().storage.read(key: 'user');
     getCurrentSchedule();
+    startTimer();
     super.initState();
   }
 
@@ -118,34 +123,49 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 30), (Timer timer) {
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: getTitle(),
         automaticallyImplyLeading: false,
+        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              width: double.infinity,
               padding: padding16,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              margin: const EdgeInsets.only(top: 8),
+              decoration: const BoxDecoration(color: Colors.black12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
                 children: [
+                  Text("Today's Schedule",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleSmall!
+                          .copyWith(color: Colors.black45)),
                   Text(
-                    DateFormat("dd MMMM yyyy").format(currentDate),
+                    DateFormat("EEEE, dd MMMM yyyy").format(currentDate),
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
-                  Text(
-                    DateFormat("EEEE").format(currentDate),
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(color: Colors.black45),
-                  )
                 ],
               ),
             ),
@@ -276,24 +296,16 @@ class _DashboardPageState extends State<DashboardPage> {
     return FutureBuilder(
       future: _user,
       builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: SizedBox(
-              width: MediaQuery.of(context).size.width / 6,
-              child: Config().loadingIndicator,
-            ),
+        if (snapshot.hasData) {
+          var jsonData = jsonDecode(snapshot.data!);
+          User user = User.fromJson(jsonData);
+          return Text(
+            "${greeting()}, ${user.name.split(' ')[0]}",
+            style: Theme.of(context).textTheme.titleMedium,
           );
         }
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-        if (!snapshot.hasData) {
-          return const Center(child: Text('No teacher found'));
-        }
-        var jsonData = jsonDecode(snapshot.data!);
-        User user = User.fromJson(jsonData);
         return Text(
-          "${greeting()}, ${user.name.split(' ')[0]}",
+          "${greeting()}",
           style: Theme.of(context).textTheme.titleMedium,
         );
       },

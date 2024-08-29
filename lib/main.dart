@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/pages/dashboard/dashboard.dart';
 import 'package:ostinato/pages/login.dart';
 //import 'package:wheretowatch/common/shared_preferences.dart';
 
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
       title: 'Ostinato',
       theme: ostinatoTheme,
       navigatorKey: navigatorKey,
-      home: const LoginPage(),
+      home: const DashboardPage(),
     );
   }
 }

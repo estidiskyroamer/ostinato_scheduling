@@ -108,7 +108,9 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           "Student Detail",
           style: Theme.of(context).textTheme.titleMedium,

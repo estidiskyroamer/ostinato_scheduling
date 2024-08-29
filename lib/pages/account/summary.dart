@@ -17,7 +17,9 @@ class _SummaryPageState extends State<SummaryPage> {
     DateTime firstDayCurrentMonth = DateTime(now.year, now.month, 1);
     DateTime lastDayCurrentMonth = DateTime(now.year, now.month + 1, 0);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           "Summary",
           style: Theme.of(context).textTheme.titleMedium,

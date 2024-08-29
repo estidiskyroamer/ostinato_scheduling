@@ -43,7 +43,9 @@ class _FormScheduleNotePageState extends State<FormScheduleNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           pageTitle,
           style: Theme.of(context).textTheme.titleMedium,

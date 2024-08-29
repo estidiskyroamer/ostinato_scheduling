@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
@@ -24,6 +26,7 @@ class _SchedulePageState extends State<SchedulePage> {
   late DateTime nextMonthTime;
   late String currentMonthName;
   late String nextMonthName;
+  late Timer _timer;
 
   final ItemScrollController _scrollController = ItemScrollController();
 
@@ -142,10 +145,18 @@ class _SchedulePageState extends State<SchedulePage> {
     });
   }
 
+  void startTimer() {
+    _timer = Timer.periodic(const Duration(seconds: 30), (Timer timer) {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           "Monthly Schedule",
           style: Theme.of(context).textTheme.titleMedium,
@@ -213,13 +224,28 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   Widget studentTime(BuildContext context, Schedule schedule) {
+    DateTime currentTime = DateTime.now();
+    DateTime startTime = DateFormat('HH:mm').parse(schedule.startTime);
+    startTime = DateTime(schedule.date.year, schedule.date.month,
+        schedule.date.day, startTime.hour, startTime.minute);
+    DateTime endTime = DateFormat('HH:mm').parse(schedule.endTime);
+    endTime = DateTime(schedule.date.year, schedule.date.month,
+        schedule.date.day, endTime.hour, endTime.minute);
+    bool isCurrentSchedule =
+        (startTime.isBefore(currentTime) || currentTime == startTime) &&
+            (endTime.isAfter(currentTime) || currentTime == endTime);
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
-      margin: const EdgeInsets.only(left: 32),
-      decoration: const BoxDecoration(
-          border: Border(
-        bottom: BorderSide(color: Colors.black38),
-      )),
+      padding: isCurrentSchedule
+          ? const EdgeInsets.fromLTRB(32, 8, 16, 8)
+          : const EdgeInsets.fromLTRB(0, 8, 16, 8),
+      margin: isCurrentSchedule
+          ? const EdgeInsets.all(0)
+          : const EdgeInsets.only(left: 32),
+      decoration: BoxDecoration(
+          color: isCurrentSchedule ? HexColor("#E6F2FF") : Colors.transparent,
+          border: const Border(
+            bottom: BorderSide(color: Colors.black38),
+          )),
       child: Row(
         children: [
           Expanded(

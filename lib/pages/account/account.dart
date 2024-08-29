@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
@@ -14,9 +16,23 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   @override
+  void initState() {
+    setRandomImage();
+    super.initState();
+  }
+
+  int setRandomImage() {
+    final random = Random();
+    int index = random.nextInt(6);
+    return index;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           "Account",
           style: Theme.of(context).textTheme.titleMedium,
@@ -31,7 +47,8 @@ class _AccountPageState extends State<AccountPage> {
           children: [
             Image(
                 width: MediaQuery.sizeOf(context).width / 2,
-                image: const AssetImage('assets/images/account.jpeg')),
+                image: AssetImage(
+                    'assets/images/dashboard${setRandomImage()}.jpeg')),
             Padding(padding: padding16),
             StyledTextButton(
                 action: () {

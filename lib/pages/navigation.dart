@@ -18,6 +18,7 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
           setState(() {

@@ -148,7 +148,9 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           pageTitle,
           style: Theme.of(context).textTheme.titleMedium,
@@ -336,8 +338,8 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
         teacherId: _teacherId!,
         instrumentId: selectedInstrument.id,
         date: selectedScheduleDate,
-        startTime: DateFormat('H:mm').format(selectedScheduleStartTime),
-        endTime: DateFormat('H:mm').format(selectedScheduleEndTime));
+        startTime: DateFormat('HH:mm').format(selectedScheduleStartTime),
+        endTime: DateFormat('HH:mm').format(selectedScheduleEndTime));
     ScheduleService()
         .createSchedule(create, repeat: repeatController.text)
         .then((result) {

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
@@ -66,10 +68,18 @@ class _FormStudentPageState extends State<FormStudentPage> {
     }
   }
 
+  int setRandomImage() {
+    final random = Random();
+    int index = random.nextInt(6);
+    return index;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Text(
           pageTitle,
           style: Theme.of(context).textTheme.titleMedium,
@@ -82,7 +92,8 @@ class _FormStudentPageState extends State<FormStudentPage> {
             children: [
               Image(
                   width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/student.jpeg')),
+                  image: AssetImage(
+                      'assets/images/student${setRandomImage()}.jpeg')),
               Padding(padding: padding16),
               buildForm(context)
             ],

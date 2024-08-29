@@ -19,6 +19,7 @@ class StudentPage extends StatefulWidget {
 class _StudentPageState extends State<StudentPage> {
   TextEditingController searchController = TextEditingController();
   late Future<StudentList?> _studentList;
+  int totalStudents = 0;
 
   @override
   void initState() {
@@ -59,11 +60,10 @@ class _StudentPageState extends State<StudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: Text(
-            "Student List",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
+          backgroundColor: Colors.white,
+          title: getTitle(),
           actions: [
             IconButton(
                 onPressed: () {
@@ -97,7 +97,6 @@ class _StudentPageState extends State<StudentPage> {
                     if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
                       return const Center(child: Text('No students yet'));
                     }
-                    inspect(snapshot);
                     final students = snapshot.data!.data;
                     return ListView.builder(
                       itemCount: students.length,
@@ -112,6 +111,25 @@ class _StudentPageState extends State<StudentPage> {
             )
           ],
         ));
+  }
+
+  FutureBuilder<StudentList?> getTitle() {
+    return FutureBuilder(
+      future: _studentList,
+      builder: (BuildContext context, AsyncSnapshot<StudentList?> snapshot) {
+        if (snapshot.hasData) {
+          final students = snapshot.data!.data;
+          return Text(
+            "Student List (${students.length})",
+            style: Theme.of(context).textTheme.titleMedium,
+          );
+        }
+        return Text(
+          "Student List",
+          style: Theme.of(context).textTheme.titleMedium,
+        );
+      },
+    );
   }
 
   Widget studentItem(BuildContext context, Student student) {
