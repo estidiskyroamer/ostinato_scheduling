@@ -16,15 +16,11 @@ class ScheduleList {
   final List<Schedule> data;
   final String message;
   final bool success;
-  final Links links;
-  final Meta meta;
 
   ScheduleList({
     required this.data,
     required this.message,
     required this.success,
-    required this.links,
-    required this.meta,
   });
 
   factory ScheduleList.fromJson(Map<String, dynamic> json) => ScheduleList(
@@ -32,16 +28,12 @@ class ScheduleList {
             List<Schedule>.from(json["data"].map((x) => Schedule.fromJson(x))),
         message: json["message"],
         success: json["success"],
-        links: Links.fromJson(json["links"]),
-        meta: Meta.fromJson(json["meta"]),
       );
 
   Map<String, dynamic> toJson() => {
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "message": message,
         "success": success,
-        "links": links.toJson(),
-        "meta": meta.toJson(),
       };
 }
 

@@ -24,7 +24,7 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  late Future<GroupedSchedule?> _scheduleList;
+  late Future<ScheduleList?> _scheduleList;
   late Timer _timer;
 
   DateTime currentDate = DateTime.now();
@@ -54,7 +54,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void getCurrentSchedule() {
     if (mounted) {
       setState(() {
-        _scheduleList = ScheduleService().getGroupedSchedule(
+        _scheduleList = ScheduleService().getScheduleList(
             month: currentDate.month,
             year: currentDate.year,
             day: currentDate.day);
@@ -169,7 +169,7 @@ class _DashboardPageState extends State<DashboardPage> {
             FutureBuilder(
               future: _scheduleList,
               builder: (BuildContext context,
-                  AsyncSnapshot<GroupedSchedule?> snapshot) {
+                  AsyncSnapshot<ScheduleList?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: SizedBox(
@@ -179,17 +179,14 @@ class _DashboardPageState extends State<DashboardPage> {
                   );
                 }
                 inspect(snapshot);
-                if (!snapshot.hasData ||
-                    snapshot.data!.data.values.elementAt(0).isEmpty) {
+                if (!snapshot.hasData) {
                   return const Center(child: Text('No schedule yet'));
                 }
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
-                GroupedSchedule scheduleList = snapshot.data!;
-                inspect(scheduleList);
-                List<Schedule> schedules =
-                    scheduleList.data.values.elementAt(0);
+                ScheduleList scheduleList = snapshot.data!;
+                List<Schedule> schedules = scheduleList.data;
                 return SizedBox(
                   height: MediaQuery.of(context).size.height,
                   child: ListView.builder(
