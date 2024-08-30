@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/user.dart';
+import 'package:ostinato/services/user_service.dart';
 
 class FormAccountPage extends StatefulWidget {
   const FormAccountPage({super.key});
@@ -19,11 +20,30 @@ class _FormAccountPageState extends State<FormAccountPage> {
   TextEditingController passwordController = TextEditingController();
 
   late Future<String?> _user;
+  late String? user;
+  late User userData;
+  bool isLoading = false;
+
   @override
   void initState() {
-    _user = Config().storage.read(key: 'user');
-
+    getUserData();
     super.initState();
+  }
+
+  void getUserData() async {
+    isLoading = true;
+    user = await Config().storage.read(key: 'user');
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+        if (user != null) {
+          userData = User.fromJson(jsonDecode(user!));
+          nameController.text = userData.name;
+          emailController.text = userData.email;
+          phoneController.text = userData.phoneNumber;
+        }
+      });
+    }
   }
 
   @override
@@ -43,32 +63,14 @@ class _FormAccountPageState extends State<FormAccountPage> {
                   width: MediaQuery.sizeOf(context).width / 2,
                   image: const AssetImage('assets/images/register.jpeg')),
               Padding(padding: padding16),
-              FutureBuilder(
-                future: _user,
-                builder:
-                    (BuildContext context, AsyncSnapshot<String?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
+              isLoading
+                  ? Center(
                       child: SizedBox(
                         width: MediaQuery.of(context).size.width / 6,
                         child: Config().loadingIndicator,
                       ),
-                    );
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  if (snapshot.hasData) {
-                    var jsonData = jsonDecode(snapshot.data!);
-                    User user = User.fromJson(jsonData);
-                    nameController.text = user.name;
-                    emailController.text = user.email;
-                    phoneController.text = user.phoneNumber;
-                  }
-
-                  return buildForm(context);
-                },
-              ),
+                    )
+                  : buildForm(context),
             ],
           ),
         ),
@@ -107,7 +109,25 @@ class _FormAccountPageState extends State<FormAccountPage> {
         Padding(padding: padding8),
         SolidButton(
             action: () {
-              Navigator.pop(context);
+              User update = User(
+                  id: userData.id,
+                  email: emailController.text,
+                  name: nameController.text,
+                  phoneNumber: phoneController.text,
+                  password: passwordController.text);
+              UserService().updateUser(update).then((value) {
+                Config()
+                    .storage
+                    .write(
+                      key: 'user',
+                      value: jsonEncode(
+                        value!.toJson(),
+                      ),
+                    )
+                    .then(
+                      (value) => Navigator.pop(context),
+                    );
+              });
             },
             text: "Save"),
       ],

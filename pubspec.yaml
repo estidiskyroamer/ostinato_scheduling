@@ -93,21 +93,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Cormorant
-      fonts:
-        - asset: assets/fonts/Cormorant/Cormorant-Regular.ttf
-        - asset: assets/fonts/Cormorant/Cormorant-Italic.ttf
-          style: italic
-        - asset: assets/fonts/Cormorant/Cormorant-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Cormorant/Cormorant-BoldItalic.ttf
-          style: italic
-          weight: 700
-        - asset: assets/fonts/Cormorant/Cormorant-Light.ttf
-          weight: 100
-        - asset: assets/fonts/Cormorant/Cormorant-LightItalic.ttf
-          style: italic
-          weight: 100
     - family: Garamond
       fonts:
         - asset: assets/fonts/Garamond/EBGaramond-Medium.ttf
@@ -121,21 +106,6 @@ flutter:
         - asset: assets/fonts/Garamond/EBGaramond-Regular.ttf
           weight: 100
         - asset: assets/fonts/Garamond/EBGaramond-Italic.ttf
-          style: italic
-          weight: 100
-    - family: Montserrat
-      fonts:
-        - asset: assets/fonts/Montserrat/Montserrat-Regular.ttf
-        - asset: assets/fonts/Montserrat/Montserrat-Italic.ttf
-          style: italic
-        - asset: assets/fonts/Montserrat/Montserrat-Bold.ttf
-          weight: 700
-        - asset: assets/fonts/Montserrat/Montserrat-BoldItalic.ttf
-          style: italic
-          weight: 700
-        - asset: assets/fonts/Montserrat/Montserrat-Light.ttf
-          weight: 100
-        - asset: assets/fonts/Montserrat/Montserrat-LightItalic.ttf
           style: italic
           weight: 100
   # For details regarding fonts from package dependencies,
