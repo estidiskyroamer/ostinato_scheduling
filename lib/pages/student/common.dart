@@ -29,7 +29,7 @@ Widget bottomSheet(BuildContext context, Student student, Function editStudent,
                   Navigator.pop(context);
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => DetailStudentPage(
-                            studentId: student.id!,
+                            student: student,
                           )));
                 },
                 icon: FontAwesomeIcons.magnifyingGlass,

@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
@@ -17,8 +18,8 @@ import 'package:ostinato/services/schedule_service.dart';
 import 'package:ostinato/services/student_service.dart';
 
 class DetailStudentPage extends StatefulWidget {
-  final String studentId;
-  const DetailStudentPage({super.key, required this.studentId});
+  final Student student;
+  const DetailStudentPage({super.key, required this.student});
 
   @override
   State<DetailStudentPage> createState() => _DetailStudentPageState();
@@ -26,17 +27,30 @@ class DetailStudentPage extends StatefulWidget {
 
 class _DetailStudentPageState extends State<DetailStudentPage> {
   late Future<StudentDetail?> _studentDetail;
+  late Future<ScheduleList?> _studentScheduleList;
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    super.initState();
     getStudentDetail();
+    getScheduleList();
+    super.initState();
   }
 
   void getStudentDetail() {
     if (mounted) {
       setState(() {
-        _studentDetail = StudentService().getStudentDetail(widget.studentId);
+        _studentDetail = StudentService().getStudentDetail(widget.student.id!);
+      });
+    }
+  }
+
+  void getScheduleList() {
+    if (mounted) {
+      setState(() {
+        _studentScheduleList =
+            StudentService().getStudentSchedule(widget.student.id!);
       });
     }
   }
@@ -54,7 +68,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
     );
     ScheduleService().updateSchedule(update).then((value) {
       if (value) {
-        getStudentDetail();
+        getScheduleList();
       }
       Navigator.of(context).pop();
     });
@@ -66,7 +80,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             builder: (context) => FormStudentSchedulePage(
                   student: student,
                 )))
-        .then((value) => getStudentDetail());
+        .then((value) => getScheduleList());
   }
 
   void editSchedule(Schedule schedule, Student student) {
@@ -79,7 +93,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             ),
           ),
         )
-        .then((value) => getStudentDetail());
+        .then((value) => getScheduleList());
   }
 
   void reschedule(Schedule schedule) {
@@ -91,13 +105,13 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             ),
           ),
         )
-        .then((value) => getStudentDetail());
+        .then((value) => getScheduleList());
   }
 
   void deleteSchedule(Schedule schedule) async {
     ScheduleService().deleteSchedule(schedule).then((value) {
       if (value) {
-        getStudentDetail();
+        getScheduleList();
         Navigator.of(context).pop();
       }
     });
@@ -117,6 +131,26 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            detailTitle(
+              context,
+              "Data",
+              IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.pencil,
+                  size: 20,
+                ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                          builder: (context) => FormStudentPage(
+                                student: widget.student,
+                              )))
+                      .then((value) {
+                    getStudentDetail();
+                  });
+                },
+              ),
+            ),
             FutureBuilder(
               future: _studentDetail,
               builder: (BuildContext context,
@@ -137,32 +171,8 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   return const Center(child: Text('No student found'));
                 }
                 Student student = snapshot.data!.data;
-                Map<String, List<Schedule>>? schedules = student.schedules;
                 return Column(
                   children: [
-                    detailTitle(
-                      context,
-                      "Data",
-                      IconButton(
-                        icon: const Icon(
-                          FontAwesomeIcons.pencil,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          Navigator.of(context)
-                              .push(MaterialPageRoute(
-                                  builder: (context) => FormStudentPage(
-                                        student: student,
-                                      )))
-                              .then((value) {
-                            setState(() {
-                              _studentDetail = StudentService()
-                                  .getStudentDetail(widget.studentId);
-                            });
-                          });
-                        },
-                      ),
-                    ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
                       child:
@@ -187,52 +197,56 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       child: detailItem(
                           context, "Phone number", student.user.phoneNumber),
                     ),
-                    detailTitle(
-                      context,
-                      "Schedule",
-                      IconButton(
-                        icon: const Icon(
-                          FontAwesomeIcons.plus,
-                          size: 20,
-                        ),
-                        onPressed: () {
-                          addSchedule(student);
-                        },
-                      ),
-                    ),
-                    schedules == null
-                        ? const Center(child: Text('No schedule found'))
-                        : ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: schedules.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              DateTime date = DateTime.parse(
-                                  schedules.keys.elementAt(index));
-                              List<Schedule> scheduleList =
-                                  schedules.values.elementAt(index);
-                              return Column(
-                                children: [
-                                  detailScheduleDate(context, date),
-                                  ListView.builder(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      shrinkWrap: true,
-                                      itemCount: scheduleList.length,
-                                      itemBuilder:
-                                          (BuildContext context, int index) {
-                                        Schedule schedule = scheduleList[index];
-                                        return detailStudentTime(
-                                            schedule, student);
-                                      })
-                                ],
-                              );
-                            },
-                          )
                   ],
                 );
               },
             ),
+            detailTitle(
+              context,
+              "Schedule",
+              IconButton(
+                icon: const Icon(
+                  FontAwesomeIcons.plus,
+                  size: 20,
+                ),
+                onPressed: () {
+                  addSchedule(widget.student);
+                },
+              ),
+            ),
+            FutureBuilder(
+                future: _studentScheduleList,
+                builder: (BuildContext context,
+                    AsyncSnapshot<ScheduleList?> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 6,
+                        child: Config().loadingIndicator,
+                      ),
+                    );
+                  }
+                  inspect(snapshot);
+                  if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
+                    return const Center(child: Text('No schedule yet'));
+                  }
+                  if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  }
+                  ScheduleList scheduleList = snapshot.data!;
+                  return GroupedListView(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    controller: _scrollController,
+                    elements: scheduleList.data,
+                    groupBy: (schedule) => schedule.date,
+                    groupSeparatorBuilder: (value) =>
+                        scheduleDate(context, value),
+                    itemBuilder: (context, schedule) {
+                      return detailStudentTime(schedule, schedule.student);
+                    },
+                  );
+                }),
           ],
         ),
       ),

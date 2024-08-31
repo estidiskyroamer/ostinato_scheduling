@@ -15,7 +15,7 @@ class TeacherService {
       teacher = TeacherDetail.fromJson(response.data);
       Config()
           .storage
-          .write(key: 'teacher', value: jsonEncode(teacher.toJson()));
+          .write(key: 'teacher', value: jsonEncode(teacher.data.toJson()));
     } on DioException catch (e) {
       inspect(e);
     }

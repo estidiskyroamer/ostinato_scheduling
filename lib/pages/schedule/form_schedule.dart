@@ -56,12 +56,14 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     super.initState();
   }
 
-  void getTeacher() async {
-    String? teacher = await Config().storage.read(key: 'teacher');
-    if (teacher != null) {
-      selectedTeacher = Teacher.fromJson(jsonDecode(teacher));
-    }
-    teacherNameController.text = selectedTeacher.user.name;
+  void getTeacher() {
+    Config().storage.read(key: 'teacher').then((value) {
+      selectedTeacher = Teacher.fromJson(jsonDecode(value!));
+      teacherNameController.text = selectedTeacher.user.name;
+    });
+    //if (teacher != null) {
+
+    //}
   }
 
   void getStudentList() async {

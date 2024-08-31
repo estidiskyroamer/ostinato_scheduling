@@ -22,7 +22,7 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  late Future<ScheduleList?> theScheduleList;
+  late Future<ScheduleList?> _scheduleList;
   late DateTime currentTime;
 
   final ScrollController _scrollController = ScrollController();
@@ -33,38 +33,6 @@ class _SchedulePageState extends State<SchedulePage> {
     getSchedule();
     super.initState();
   }
-
-  /* void scrollToDate(GroupedSchedule scheduleList) {
-    int nearestIndex = -1;
-    DateTime? nearestDate;
-    DateTime targetDate = DateTime.now();
-
-    // Iterate over the schedule dates to find the nearest date
-    for (int i = 0; i < scheduleList.data.length; i++) {
-      DateTime date = DateTime.parse(scheduleList.data.keys.elementAt(i));
-
-      // Check for an exact match
-      if (date.isAtSameMomentAs(targetDate)) {
-        nearestIndex = i;
-        nearestDate = date;
-        break;
-      }
-
-      if (nearestDate == null ||
-          (date.isBefore(targetDate) && date.isAfter(nearestDate))) {
-        nearestIndex = i;
-        nearestDate = date;
-      }
-    }
-
-    if (nearestIndex != -1) {
-      _scrollController.scrollTo(
-        index: nearestIndex,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-      );
-    }
-  } */
 
   void changeScheduleDate(String operation) {
     Jiffy scheduleTime = Jiffy.parseFromDateTime(currentTime);
@@ -99,7 +67,7 @@ class _SchedulePageState extends State<SchedulePage> {
   void getSchedule() {
     if (mounted) {
       setState(() {
-        theScheduleList = ScheduleService()
+        _scheduleList = ScheduleService()
             .getScheduleList(month: currentTime.month, year: currentTime.year);
       });
     }
@@ -205,7 +173,7 @@ class _SchedulePageState extends State<SchedulePage> {
       body: SizedBox(
           height: double.infinity,
           child: FutureBuilder(
-              future: theScheduleList,
+              future: _scheduleList,
               builder: (BuildContext context,
                   AsyncSnapshot<ScheduleList?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
@@ -223,11 +191,6 @@ class _SchedulePageState extends State<SchedulePage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 ScheduleList scheduleList = snapshot.data!;
-
-                /* WidgetsBinding.instance.addPostFrameCallback((_) {
-                  scrollToDate(scheduleList);
-                }); */
-
                 return GroupedListView(
                   controller: _scrollController,
                   elements: scheduleList.data,
@@ -238,29 +201,6 @@ class _SchedulePageState extends State<SchedulePage> {
                     return studentTime(context, schedule);
                   },
                 );
-                /* return ScrollablePositionedList.builder(
-                  itemScrollController: _scrollController,
-                  itemCount: scheduleList.data.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    DateTime date =
-                        DateTime.parse(scheduleList.data.keys.elementAt(index));
-                    List<Schedule> schedules =
-                        scheduleList.data.values.elementAt(index);
-                    return Column(
-                      children: [
-                        scheduleDate(context, date),
-                        ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: schedules.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              Schedule schedule = schedules[index];
-                              return studentTime(context, schedule);
-                            })
-                      ],
-                    );
-                  },
-                ); */
               })),
     );
   }

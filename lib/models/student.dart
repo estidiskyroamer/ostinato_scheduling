@@ -71,7 +71,7 @@ class Student {
   final int isActive;
   final DateTime? activeDate;
   final DateTime? inactiveDate;
-  Map<String, List<Schedule>>? schedules;
+  List<Schedule>? schedules;
 
   Student({
     this.id,
@@ -98,21 +98,14 @@ class Student {
             : DateTime.parse(json['inactiveDate']),
         schedules: json["schedules"] == null || json["schedules"].length == 0
             ? null
-            : Map.from(json["schedules"]).map(
-                (k, v) => MapEntry<String, List<Schedule>>(
-                  k,
-                  List<Schedule>.from(
-                    v.map(
-                      (x) => Schedule.fromJson(x),
-                    ),
-                  ),
-                ),
-              ),
+            : List<Schedule>.from(
+                json["schedules"].map((x) => Schedule.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "user": user,
+        "userId": user.id,
         "address": address,
         "birthDate": DateFormat('yyyy-MM-dd').format(birthDate),
         "isActive": isActive,
@@ -120,15 +113,6 @@ class Student {
         "inactiveDate": inactiveDate?.toString(),
         "schedules": schedules == null
             ? null
-            : Map.from(schedules!).map(
-                (k, v) => MapEntry<String, dynamic>(
-                  k,
-                  List<dynamic>.from(
-                    v.map(
-                      (x) => x.toJson(),
-                    ),
-                  ),
-                ),
-              ),
+            : List<dynamic>.from(schedules!.map((x) => x.toJson())),
       };
 }

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/services/config.dart';
 
@@ -36,6 +37,18 @@ class StudentService {
       inspect(e);
     }
     return student;
+  }
+
+  Future<ScheduleList?> getStudentSchedule(String id) async {
+    ScheduleList? schedule;
+    try {
+      String url = '/students/showSchedule/$id';
+      Response response = await ServiceConfig().dio.get(url);
+      schedule = ScheduleList.fromJson(response.data);
+    } on DioException catch (e) {
+      inspect(e);
+    }
+    return schedule;
   }
 
   Future<bool> createStudent(Student student) async {

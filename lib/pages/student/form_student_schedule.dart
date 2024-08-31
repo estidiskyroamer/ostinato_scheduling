@@ -61,6 +61,7 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
   void getTeacher() async {
     String? teacher = await Config().storage.read(key: 'teacher');
     if (teacher != null) {
+      inspect(teacher);
       selectedTeacher = Teacher.fromJson(jsonDecode(teacher));
     }
     teacherNameController.text = selectedTeacher.user.name;
@@ -178,8 +179,10 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
               image: const AssetImage('assets/images/schedule.jpeg')),
           Padding(padding: padding16),
           InputField(
-              textEditingController: teacherNameController,
-              hintText: "Teacher name"),
+            textEditingController: teacherNameController,
+            hintText: "Teacher name",
+            isReadOnly: true,
+          ),
           isStudentLoading
               ? Center(
                   child: SizedBox(

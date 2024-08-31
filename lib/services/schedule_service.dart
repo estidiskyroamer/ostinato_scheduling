@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/schedule_note.dart';
+import 'package:ostinato/models/student.dart';
 import 'package:ostinato/services/config.dart';
 
 class ScheduleService {
@@ -26,8 +27,10 @@ class ScheduleService {
 
   Future<bool> createSchedule(Schedule schedule, {String? repeat}) async {
     Map<String, dynamic> params = schedule.toJson();
+    params['studentId'] = params['student']['id'];
+    params['teacherId'] = params['teacher']['id'];
+    params['instrumentId'] = params['instrument']['id'];
     int repeatNumber = 4;
-    inspect(repeat);
     if (repeat != null && repeat.isNotEmpty) {
       repeatNumber = int.parse(repeat);
     }
@@ -48,6 +51,9 @@ class ScheduleService {
 
   Future<bool> updateSchedule(Schedule schedule) async {
     Map<String, dynamic> params = schedule.toJson();
+    params['studentId'] = params['student']['id'];
+    params['teacherId'] = params['teacher']['id'];
+    params['instrumentId'] = params['instrument']['id'];
     try {
       Response response = await ServiceConfig()
           .dio

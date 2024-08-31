@@ -66,7 +66,8 @@ class Teacher {
   Map<String, dynamic> toJson() => {
         "id": id,
         "userId": userId,
-        "name": user,
+        "name": user.name,
+        "user": user,
         "isActive": isActive,
         "activeDate": activeDate.toString(),
         "inactiveDate": inactiveDate?.toString(),

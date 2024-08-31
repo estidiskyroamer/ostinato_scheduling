@@ -15,32 +15,21 @@ class InstrumentList {
   List<Instrument> data;
   String message;
   bool success;
-  Links links;
-  Meta meta;
 
-  InstrumentList({
-    required this.data,
-    required this.message,
-    required this.success,
-    required this.links,
-    required this.meta,
-  });
+  InstrumentList(
+      {required this.data, required this.message, required this.success});
 
   factory InstrumentList.fromJson(Map<String, dynamic> json) => InstrumentList(
         data: List<Instrument>.from(
             json["data"].map((x) => Instrument.fromJson(x))),
         message: json["message"],
         success: json["success"],
-        links: Links.fromJson(json["links"]),
-        meta: Meta.fromJson(json["meta"]),
       );
 
   Map<String, dynamic> toJson() => {
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "message": message,
         "success": success,
-        "links": links.toJson(),
-        "meta": meta.toJson(),
       };
 }
 

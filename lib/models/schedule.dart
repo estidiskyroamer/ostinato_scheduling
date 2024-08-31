@@ -68,8 +68,8 @@ class Schedule {
         date: DateTime.parse(json["date"]),
         createdBy: json['createdBy'] == null ? null : json["createdBy"],
         status: json['status'] == null ? null : json["status"],
-        startTime: json["startTime"],
-        endTime: json["endTime"],
+        startTime: _formatTime(json["startTime"]),
+        endTime: _formatTime(json["endTime"]),
         student: Student.fromJson(json["student"]),
         teacher: Teacher.fromJson(json["teacher"]),
         instrument: Instrument.fromJson(json["instrument"]),
@@ -86,4 +86,11 @@ class Schedule {
         "teacher": teacher.toJson(),
         "instrument": instrument.toJson(),
       };
+
+  static String _formatTime(String time) {
+    // Parse the time string assuming it's in "HH:mm:ss" format
+    DateTime parsedTime = DateFormat('HH:mm:ss').parse(time);
+    // Format to "HH:mm"
+    return DateFormat('HH:mm').format(parsedTime);
+  }
 }
