@@ -26,59 +26,59 @@ class _NavigationPageState extends State<NavigationPage> {
           });
         },
         selectedIndex: currentIndex,
-        destinations: const [
+        destinations: [
           NavigationDestination(
-              icon: Icon(
+              icon: const Icon(
                 FontAwesomeIcons.house,
                 color: Colors.black54,
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.house,
-                color: Colors.black,
+                color: HexColor("#E6F2FF"),
               ),
               label: 'Dashboard'),
           NavigationDestination(
-              icon: Icon(
+              icon: const Icon(
                 FontAwesomeIcons.child,
                 color: Colors.black54,
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.child,
-                color: Colors.black,
+                color: HexColor("#E6F2FF"),
               ),
               label: 'Students'),
           NavigationDestination(
-              icon: Icon(
+              icon: const Icon(
                 FontAwesomeIcons.calendarCheck,
                 color: Colors.black54,
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.calendarCheck,
-                color: Colors.black,
+                color: HexColor("#E6F2FF"),
               ),
               label: 'Schedule'),
           NavigationDestination(
-              icon: Icon(
+              icon: const Icon(
                 FontAwesomeIcons.userGear,
                 color: Colors.black54,
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.userGear,
-                color: Colors.black,
+                color: HexColor("#E6F2FF"),
               ),
               label: 'Account'),
         ],
         elevation: 0,
         backgroundColor: HexColor("#E6F2FF"),
-        indicatorColor: HexColor("#DFEBF8"),
+        indicatorColor: Colors.black54,
         indicatorShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),
       body: <Widget>[
-        DashboardPage(),
-        StudentPage(),
-        SchedulePage(),
-        AccountPage(),
+        const DashboardPage(),
+        const StudentPage(),
+        const SchedulePage(),
+        const AccountPage(),
       ][currentIndex],
     );
   }

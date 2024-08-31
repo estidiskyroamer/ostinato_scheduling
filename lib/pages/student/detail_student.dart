@@ -44,12 +44,9 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   void updateSchedule(Schedule schedule, String status) {
     Schedule update = Schedule(
       id: schedule.id,
-      studentId: schedule.studentId,
-      studentName: schedule.studentName,
-      teacherId: schedule.teacherId,
-      teacherName: schedule.teacherName,
-      instrumentId: schedule.instrumentId,
-      instrumentName: schedule.instrumentName,
+      student: schedule.student,
+      teacher: schedule.teacher,
+      instrument: schedule.instrument,
       date: schedule.date,
       status: status,
       startTime: schedule.startTime,
@@ -67,7 +64,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
     Navigator.of(context)
         .push(MaterialPageRoute(
             builder: (context) => FormStudentSchedulePage(
-                  studentId: student.id,
+                  student: student,
                 )))
         .then((value) => getStudentDetail());
   }
@@ -77,8 +74,8 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
         .push(
           MaterialPageRoute(
             builder: (context) => FormStudentSchedulePage(
-              scheduleId: schedule.id,
-              studentId: student.id,
+              schedule: schedule,
+              student: student,
             ),
           ),
         )
@@ -168,7 +165,8 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child: detailItem(context, "Full name", student.name),
+                      child:
+                          detailItem(context, "Full name", student.user.name),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
@@ -181,13 +179,13 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child:
-                          detailItem(context, "E-mail address", student.email),
+                      child: detailItem(
+                          context, "E-mail address", student.user.email),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
                       child: detailItem(
-                          context, "Phone number", student.phoneNumber),
+                          context, "Phone number", student.user.phoneNumber),
                     ),
                     detailTitle(
                       context,

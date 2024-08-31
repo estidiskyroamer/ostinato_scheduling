@@ -55,7 +55,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   }
 
   void setTeacher() async {
-    teacherNameController.text = widget.schedule!.teacherName!;
+    teacherNameController.text = widget.schedule!.teacher.user.name;
   }
 
   void getStudentList() async {
@@ -67,11 +67,11 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   }
 
   void setStudent() {
-    studentNameController.text = widget.schedule!.studentName!;
+    studentNameController.text = widget.schedule!.student.user.name;
   }
 
   void setInstrument() {
-    instrumentController.text = widget.schedule!.instrumentName!;
+    instrumentController.text = widget.schedule!.instrument.name;
   }
 
   void setStartDate(DateTime selectedDate) {
@@ -235,9 +235,9 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
     });
     Schedule update = Schedule(
         id: widget.schedule!.id,
-        studentId: widget.schedule!.studentId,
-        teacherId: widget.schedule!.teacherId,
-        instrumentId: widget.schedule!.instrumentId,
+        student: widget.schedule!.student,
+        teacher: widget.schedule!.teacher,
+        instrument: widget.schedule!.instrument,
         date: selectedScheduleDate,
         status: 'rescheduled',
         startTime: DateFormat('HH:mm').format(selectedScheduleStartTime),

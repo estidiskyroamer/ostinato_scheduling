@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/common/config.dart';
@@ -11,8 +13,9 @@ class TeacherService {
     try {
       Response response = await ServiceConfig().dio.get('/teachers/show');
       teacher = TeacherDetail.fromJson(response.data);
-      Config().storage.write(key: 'teacher_id', value: teacher.data.id);
-      Config().storage.write(key: 'teacher_name', value: teacher.data.name);
+      Config()
+          .storage
+          .write(key: 'teacher', value: jsonEncode(teacher.toJson()));
     } on DioException catch (e) {
       inspect(e);
     }

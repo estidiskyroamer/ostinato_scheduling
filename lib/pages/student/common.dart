@@ -16,7 +16,7 @@ Widget bottomSheet(BuildContext context, Student student, Function editStudent,
     child: Column(
       children: [
         Text(
-          "Manage ${student.name}",
+          "Manage ${student.user.name}",
           style: Theme.of(context)
               .textTheme
               .bodyLarge!
@@ -52,7 +52,7 @@ Widget bottomSheet(BuildContext context, Student student, Function editStudent,
                           deleteStudent();
                         },
                         contentText:
-                            "Are you sure you want to delete this data?\nStudent: ${student.name}",
+                            "Are you sure you want to delete this data?\nStudent: ${student.user.name}",
                         actionText: "Delete",
                       );
                     },

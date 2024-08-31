@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
+import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:ostinato/services/student_service.dart';
@@ -33,13 +35,12 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Schedule";
 
-  late String? _teacherId;
-  late String? _teacherName;
   late StudentList? _studentList;
   late Student selectedStudent;
   late InstrumentList? _instrumentList;
   late Instrument selectedInstrument;
   late Schedule selectedSchedule;
+  late Teacher selectedTeacher;
 
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
@@ -56,9 +57,11 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   }
 
   void getTeacher() async {
-    _teacherId = await Config().storage.read(key: 'teacher_id');
-    _teacherName = await Config().storage.read(key: 'teacher_name');
-    teacherNameController.text = _teacherName!;
+    String? teacher = await Config().storage.read(key: 'teacher');
+    if (teacher != null) {
+      selectedTeacher = Teacher.fromJson(jsonDecode(teacher));
+    }
+    teacherNameController.text = selectedTeacher.user.name;
   }
 
   void getStudentList() async {
@@ -79,7 +82,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
         });
       }
       StudentDetail? studentDetail =
-          await StudentService().getStudentDetail(widget.schedule!.studentId!);
+          await StudentService().getStudentDetail(widget.schedule!.student.id!);
       if (studentDetail != null) {
         setStudent(studentDetail.data);
         setStartDate(widget.schedule!.date);
@@ -96,7 +99,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     if (mounted) {
       setState(() {
         selectedStudent = student;
-        studentNameController.text = selectedStudent.name;
+        studentNameController.text = selectedStudent.user.name;
       });
     }
   }
@@ -190,7 +193,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                           title: "Set student",
                           onItemSelected: setStudent,
                           itemContentBuilder: (Student student) =>
-                              Text(student.name),
+                              Text(student.user.name),
                         );
                       });
             },
@@ -206,7 +209,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                     return listBottomSheet<Instrument>(
                       context: context,
                       items: _instrumentList!.data,
-                      title: "Set instrument",
+                      title: "Choose instrument",
                       onItemSelected: setInstrument,
                       itemContentBuilder: (Instrument instrument) =>
                           Text(instrument.name),
@@ -334,9 +337,9 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
       isLoading = true;
     });
     Schedule create = Schedule(
-        studentId: selectedStudent.id!,
-        teacherId: _teacherId!,
-        instrumentId: selectedInstrument.id,
+        student: selectedStudent,
+        teacher: selectedTeacher,
+        instrument: selectedInstrument,
         date: selectedScheduleDate,
         startTime: DateFormat('HH:mm').format(selectedScheduleStartTime),
         endTime: DateFormat('HH:mm').format(selectedScheduleEndTime));
@@ -358,9 +361,9 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     });
     Schedule update = Schedule(
         id: widget.schedule!.id,
-        studentId: selectedStudent.id!,
-        teacherId: _teacherId!,
-        instrumentId: selectedInstrument.id,
+        student: selectedStudent,
+        teacher: selectedTeacher,
+        instrument: selectedInstrument,
         date: selectedScheduleDate,
         startTime: DateFormat('HH:mm').format(selectedScheduleStartTime),
         endTime: DateFormat('HH:mm').format(selectedScheduleEndTime));

@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
-import 'package:ostinato/common/config.dart';
-import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/schedule_note.dart';
-import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 
 Widget noteBottomSheet(BuildContext context, ScheduleNote scheduleNote,
     Function editScheduleNote, Function deleteScheduleNote) {

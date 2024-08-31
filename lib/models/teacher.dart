@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:ostinato/models/user.dart';
+
 TeacherDetail teacherDetailFromJson(String str) =>
     TeacherDetail.fromJson(json.decode(str));
 
@@ -36,7 +38,7 @@ class TeacherDetail {
 class Teacher {
   final String id;
   final String userId;
-  final String name;
+  final User user;
   final int isActive;
   final DateTime activeDate;
   final DateTime? inactiveDate;
@@ -44,7 +46,7 @@ class Teacher {
   Teacher({
     required this.id,
     required this.userId,
-    required this.name,
+    required this.user,
     required this.isActive,
     required this.activeDate,
     this.inactiveDate,
@@ -53,7 +55,7 @@ class Teacher {
   factory Teacher.fromJson(Map<String, dynamic> json) => Teacher(
         id: json["id"],
         userId: json["userId"],
-        name: json["name"],
+        user: User.fromJson(json["user"]),
         isActive: json["isActive"],
         activeDate: DateTime.parse(json["activeDate"]),
         inactiveDate: json['inactiveDate'] == null
@@ -64,7 +66,7 @@ class Teacher {
   Map<String, dynamic> toJson() => {
         "id": id,
         "userId": userId,
-        "name": name,
+        "name": user,
         "isActive": isActive,
         "activeDate": activeDate.toString(),
         "inactiveDate": inactiveDate?.toString(),

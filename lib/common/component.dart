@@ -111,7 +111,10 @@ class RowIconButton extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Icon(icon),
+              Icon(
+                icon,
+                color: Colors.black54,
+              ),
               Padding(
                 padding: padding4,
               ),
@@ -425,7 +428,7 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
           child: Row(
             children: [
               Text(
-                "${schedule.studentName} (${schedule.instrumentName})",
+                "${schedule.student.user.name} (${schedule.instrument.name})",
                 style: TextStyle(
                     decoration: schedule.status == 'canceled'
                         ? TextDecoration.lineThrough
@@ -513,7 +516,7 @@ Widget scheduleBottomSheet(
                                   },
                                   contentText:
                                       "Are you sure you want to mark this schedule as done?"
-                                      "\n$date\n${schedule.startTime} - ${schedule.studentName} (${schedule.instrumentName})",
+                                      "\n$date\n${schedule.startTime} - ${schedule.student.user.name} (${schedule.instrument.name})",
                                   actionText: "Mark as Done",
                                 );
                               },
@@ -542,7 +545,7 @@ Widget scheduleBottomSheet(
                                   },
                                   contentText:
                                       "Are you sure you want to mark this schedule as canceled?"
-                                      "\n$date\n${schedule.startTime} - ${schedule.studentName} (${schedule.instrumentName})",
+                                      "\n$date\n${schedule.startTime} - ${schedule.student.user.name} (${schedule.instrument.name})",
                                   actionText: "Mark as Canceled",
                                 );
                               },

@@ -46,10 +46,10 @@ class _FormStudentPageState extends State<FormStudentPage> {
         setState(() {
           pageTitle = "Edit Student";
           Student student = widget.student!;
-          studentNameController.text = student.name;
+          studentNameController.text = student.user.name;
           studentAddressController.text = student.address;
-          studentPhoneController.text = student.phoneNumber;
-          studentEmailController.text = student.email;
+          studentPhoneController.text = student.user.phoneNumber;
+          studentEmailController.text = student.user.email;
           studentBirthDate = student.birthDate;
           dateController.text =
               DateFormat("dd MMMM yyyy").format(student.birthDate);
@@ -172,10 +172,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
       (result) {
         if (result != null) {
           Student student = Student(
-            userId: result.id,
-            name: result.name,
-            email: result.email,
-            phoneNumber: result.phoneNumber,
+            user: result,
             address: studentAddressController.text,
             birthDate: studentBirthDate,
             isActive: 1,
@@ -198,7 +195,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
       isLoading = true;
     });
     User user = User(
-      id: widget.student!.userId,
+      id: widget.student!.user.id,
       name: studentNameController.text,
       email: studentEmailController.text,
       phoneNumber: studentPhoneController.text,
@@ -209,10 +206,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
         if (result != null) {
           Student student = Student(
             id: widget.student!.id,
-            userId: result.id,
-            name: result.name,
-            email: result.email,
-            phoneNumber: result.phoneNumber,
+            user: result,
             address: studentAddressController.text,
             birthDate: studentBirthDate,
             isActive: 1,

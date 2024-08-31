@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
@@ -66,12 +67,9 @@ class _DashboardPageState extends State<DashboardPage> {
   void updateSchedule(Schedule schedule, String status) {
     Schedule update = Schedule(
       id: schedule.id,
-      studentId: schedule.studentId,
-      studentName: schedule.studentName,
-      teacherId: schedule.teacherId,
-      teacherName: schedule.teacherName,
-      instrumentId: schedule.instrumentId,
-      instrumentName: schedule.instrumentName,
+      student: schedule.student,
+      teacher: schedule.teacher,
+      instrument: schedule.instrument,
       date: schedule.date,
       status: status,
       startTime: schedule.startTime,
@@ -148,6 +146,7 @@ class _DashboardPageState extends State<DashboardPage> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.max,
           children: [
             listHeader(
               child: Column(
@@ -187,15 +186,18 @@ class _DashboardPageState extends State<DashboardPage> {
                 }
                 ScheduleList scheduleList = snapshot.data!;
                 List<Schedule> schedules = scheduleList.data;
-                return SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: ListView.builder(
+                if (schedules.isEmpty) {
+                  return const Center(child: Text('No schedule yet'));
+                } else {
+                  return ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
                       itemCount: schedules.length,
                       itemBuilder: (BuildContext context, int index) {
                         Schedule schedule = schedules[index];
                         return studentTime(context, schedule);
-                      }),
-                );
+                      });
+                }
               },
             )
           ],

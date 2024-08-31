@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:ostinato/common/component.dart';
@@ -21,20 +22,19 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  late Future<GroupedSchedule?> _scheduleList;
+  late Future<ScheduleList?> theScheduleList;
   late DateTime currentTime;
 
-  final ItemScrollController _scrollController = ItemScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     currentTime = DateTime.now();
-    _scheduleList = ScheduleService()
-        .getGroupedSchedule(month: currentTime.month, year: currentTime.year);
+    getSchedule();
     super.initState();
   }
 
-  void scrollToDate(GroupedSchedule scheduleList) {
+  /* void scrollToDate(GroupedSchedule scheduleList) {
     int nearestIndex = -1;
     DateTime? nearestDate;
     DateTime targetDate = DateTime.now();
@@ -64,7 +64,7 @@ class _SchedulePageState extends State<SchedulePage> {
         curve: Curves.easeInOut,
       );
     }
-  }
+  } */
 
   void changeScheduleDate(String operation) {
     Jiffy scheduleTime = Jiffy.parseFromDateTime(currentTime);
@@ -99,8 +99,8 @@ class _SchedulePageState extends State<SchedulePage> {
   void getSchedule() {
     if (mounted) {
       setState(() {
-        _scheduleList = ScheduleService().getGroupedSchedule(
-            month: currentTime.month, year: currentTime.year);
+        theScheduleList = ScheduleService()
+            .getScheduleList(month: currentTime.month, year: currentTime.year);
       });
     }
   }
@@ -108,12 +108,9 @@ class _SchedulePageState extends State<SchedulePage> {
   void updateSchedule(Schedule schedule, String status) {
     Schedule update = Schedule(
       id: schedule.id,
-      studentId: schedule.studentId,
-      studentName: schedule.studentName,
-      teacherId: schedule.teacherId,
-      teacherName: schedule.teacherName,
-      instrumentId: schedule.instrumentId,
-      instrumentName: schedule.instrumentName,
+      student: schedule.student,
+      teacher: schedule.teacher,
+      instrument: schedule.instrument,
       date: schedule.date,
       status: status,
       startTime: schedule.startTime,
@@ -208,9 +205,9 @@ class _SchedulePageState extends State<SchedulePage> {
       body: SizedBox(
           height: double.infinity,
           child: FutureBuilder(
-              future: _scheduleList,
+              future: theScheduleList,
               builder: (BuildContext context,
-                  AsyncSnapshot<GroupedSchedule?> snapshot) {
+                  AsyncSnapshot<ScheduleList?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: SizedBox(
@@ -225,13 +222,23 @@ class _SchedulePageState extends State<SchedulePage> {
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
-                GroupedSchedule scheduleList = snapshot.data!;
+                ScheduleList scheduleList = snapshot.data!;
 
-                WidgetsBinding.instance.addPostFrameCallback((_) {
+                /* WidgetsBinding.instance.addPostFrameCallback((_) {
                   scrollToDate(scheduleList);
-                });
+                }); */
 
-                return ScrollablePositionedList.builder(
+                return GroupedListView(
+                  controller: _scrollController,
+                  elements: scheduleList.data,
+                  groupBy: (schedule) => schedule.date,
+                  groupSeparatorBuilder: (value) =>
+                      scheduleDate(context, value),
+                  itemBuilder: (context, schedule) {
+                    return studentTime(context, schedule);
+                  },
+                );
+                /* return ScrollablePositionedList.builder(
                   itemScrollController: _scrollController,
                   itemCount: scheduleList.data.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -253,7 +260,7 @@ class _SchedulePageState extends State<SchedulePage> {
                       ],
                     );
                   },
-                );
+                ); */
               })),
     );
   }

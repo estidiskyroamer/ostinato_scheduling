@@ -7,25 +7,15 @@ import 'package:ostinato/models/schedule_note.dart';
 import 'package:ostinato/services/config.dart';
 
 class ScheduleService {
-  Future<GroupedSchedule?> getGroupedSchedule({int? year, int? month}) async {
-    GroupedSchedule? schedule;
-    try {
-      String url = '/schedules';
-      url += '/$year/$month';
-      Response response = await ServiceConfig().dio.get(url);
-      schedule = GroupedSchedule.fromJson(response.data);
-    } on DioException catch (e) {
-      inspect(e);
-    }
-    return schedule;
-  }
-
   Future<ScheduleList?> getScheduleList(
       {int? year, int? month, int? day}) async {
     ScheduleList? schedule;
     try {
       String url = '/schedules';
-      url += '/$year/$month/$day';
+      url += '/$year/$month';
+      if (day != null) {
+        url += '/$day';
+      }
       Response response = await ServiceConfig().dio.get(url);
       schedule = ScheduleList.fromJson(response.data);
     } on DioException catch (e) {

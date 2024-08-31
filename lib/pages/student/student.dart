@@ -91,6 +91,7 @@ class _StudentPageState extends State<StudentPage> {
                         ),
                       );
                     }
+                    inspect(snapshot);
                     if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     }
@@ -140,7 +141,7 @@ class _StudentPageState extends State<StudentPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(student.name),
+          Text(student.user.name),
           IconButton(
             icon: const Icon(
               FontAwesomeIcons.ellipsisVertical,

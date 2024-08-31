@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 import 'package:ostinato/models/common.dart';
 import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/user.dart';
 
 StudentList studentListFromJson(String str) =>
     StudentList.fromJson(json.decode(str));
@@ -13,27 +14,23 @@ class StudentList {
   final List<Student> data;
   final String message;
   final bool success;
-  final Links links;
 
   StudentList({
     required this.data,
     required this.message,
     required this.success,
-    required this.links,
   });
 
   factory StudentList.fromJson(Map<String, dynamic> json) => StudentList(
         data: List<Student>.from(json["data"].map((x) => Student.fromJson(x))),
         message: json["message"],
         success: json["success"],
-        links: Links.fromJson(json["links"]),
       );
 
   Map<String, dynamic> toJson() => {
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "message": message,
         "success": success,
-        "links": links.toJson(),
       };
 }
 
@@ -68,12 +65,9 @@ class StudentDetail {
 
 class Student {
   String? id;
-  String? userId;
-  final String name;
-  final String email;
   final String address;
-  final String phoneNumber;
   final DateTime birthDate;
+  final User user;
   final int isActive;
   final DateTime? activeDate;
   final DateTime? inactiveDate;
@@ -81,12 +75,9 @@ class Student {
 
   Student({
     this.id,
-    this.userId,
-    required this.name,
-    required this.email,
     required this.address,
-    required this.phoneNumber,
     required this.birthDate,
+    required this.user,
     required this.isActive,
     this.activeDate,
     this.inactiveDate,
@@ -95,12 +86,9 @@ class Student {
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
         id: json["id"],
-        userId: json["userId"],
-        name: json["name"],
-        email: json["email"],
         address: json["address"],
-        phoneNumber: json["phoneNumber"],
         birthDate: DateTime.parse(json["birthDate"]),
+        user: User.fromJson(json["user"]),
         isActive: json["isActive"],
         activeDate: json['activeDate'] == null
             ? null
@@ -124,11 +112,8 @@ class Student {
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "userId": userId,
-        "name": name,
-        "email": email,
+        "user": user,
         "address": address,
-        "phoneNumber": phoneNumber,
         "birthDate": DateFormat('yyyy-MM-dd').format(birthDate),
         "isActive": isActive,
         "activeDate": activeDate?.toString(),

@@ -45,6 +45,7 @@ dependencies:
   loading_indicator: ^3.1.1
   dropdown_button2: ^2.3.9
   scrollable_positioned_list: ^0.3.8
+  grouped_list: ^6.0.0
   scroll_datetime_picker: ^0.1.2
   currency_formatter: ^2.2.1
   flutter_debouncer: ^2.0.0
