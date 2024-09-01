@@ -261,9 +261,9 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
       Expanded(
         flex: 1,
         child: IconButton(
-          icon: const Icon(
+          icon: Icon(
             FontAwesomeIcons.ellipsisVertical,
-            color: Colors.black54,
+            color: Colors.grey[700],
           ),
           onPressed: () {
             showModalBottomSheet<void>(

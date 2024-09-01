@@ -6,6 +6,7 @@ import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
+import 'package:toastification/toastification.dart';
 
 class InputField extends StatefulWidget {
   final TextEditingController textEditingController;
@@ -113,7 +114,7 @@ class RowIconButton extends StatelessWidget {
             children: [
               Icon(
                 icon,
-                color: Colors.black54,
+                color: Colors.grey[700],
               ),
               Padding(
                 padding: padding4,
@@ -613,5 +614,25 @@ Widget scheduleBottomSheet(
         )
       ],
     ),
+  );
+}
+
+ToastificationItem toastNotification(String text) {
+  return toastification.showCustom(
+    alignment: Alignment.bottomCenter,
+    autoCloseDuration: const Duration(seconds: 5),
+    builder: (context, holder) {
+      return Center(
+        child: Container(
+          padding: padding8,
+          margin: padding16,
+          color: Colors.grey[700],
+          child: Text(
+            text,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
+        ),
+      );
+    },
   );
 }

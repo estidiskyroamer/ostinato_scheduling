@@ -52,7 +52,7 @@ Widget bottomSheet(BuildContext context, Student student, Function editStudent,
                           deleteStudent();
                         },
                         contentText:
-                            "Are you sure you want to delete this data?\nStudent: ${student.user.name}",
+                            "Are you sure you want to delete this data? Student: ${student.user.name}\nTheir schedules will also be removed.",
                         actionText: "Delete",
                       );
                     },

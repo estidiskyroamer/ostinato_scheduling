@@ -28,9 +28,9 @@ class _NavigationPageState extends State<NavigationPage> {
         selectedIndex: currentIndex,
         destinations: [
           NavigationDestination(
-              icon: const Icon(
+              icon: Icon(
                 FontAwesomeIcons.house,
-                color: Colors.black54,
+                color: Colors.grey[700],
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.house,
@@ -38,9 +38,9 @@ class _NavigationPageState extends State<NavigationPage> {
               ),
               label: 'Dashboard'),
           NavigationDestination(
-              icon: const Icon(
+              icon: Icon(
                 FontAwesomeIcons.child,
-                color: Colors.black54,
+                color: Colors.grey[700],
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.child,
@@ -48,9 +48,9 @@ class _NavigationPageState extends State<NavigationPage> {
               ),
               label: 'Students'),
           NavigationDestination(
-              icon: const Icon(
+              icon: Icon(
                 FontAwesomeIcons.calendarCheck,
-                color: Colors.black54,
+                color: Colors.grey[700],
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.calendarCheck,
@@ -58,9 +58,9 @@ class _NavigationPageState extends State<NavigationPage> {
               ),
               label: 'Schedule'),
           NavigationDestination(
-              icon: const Icon(
+              icon: Icon(
                 FontAwesomeIcons.userGear,
-                color: Colors.black54,
+                color: Colors.grey[700],
               ),
               selectedIcon: Icon(
                 FontAwesomeIcons.userGear,
@@ -70,7 +70,7 @@ class _NavigationPageState extends State<NavigationPage> {
         ],
         elevation: 0,
         backgroundColor: HexColor("#E6F2FF"),
-        indicatorColor: Colors.black54,
+        indicatorColor: Colors.grey[700],
         indicatorShape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       ),

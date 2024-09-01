@@ -143,9 +143,9 @@ class _StudentPageState extends State<StudentPage> {
         children: [
           Text(student.user.name),
           IconButton(
-            icon: const Icon(
+            icon: Icon(
               FontAwesomeIcons.ellipsisVertical,
-              color: Colors.black54,
+              color: Colors.grey[700],
             ),
             onPressed: () {
               showModalBottomSheet<void>(

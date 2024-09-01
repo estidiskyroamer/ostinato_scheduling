@@ -10,6 +10,7 @@ import 'package:ostinato/pages/navigation.dart';
 import 'package:ostinato/pages/register.dart';
 import 'package:ostinato/services/auth_service.dart';
 import 'package:ostinato/services/teacher_service.dart';
+import 'package:toastification/toastification.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -51,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           _isLoading = false;
         });
-        print("LOgin failed");
+        toastNotification("Cannot authenticate");
       }
     });
   }
@@ -115,7 +116,8 @@ class _LoginPageState extends State<LoginPage> {
                                   passwordController.text.isNotEmpty) {
                                 doLogin();
                               } else {
-                                null;
+                                toastNotification(
+                                    "Email and password cannot be empty");
                               }
                             },
                             text: "Login"),

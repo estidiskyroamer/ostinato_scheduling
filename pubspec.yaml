@@ -49,6 +49,7 @@ dependencies:
   scroll_datetime_picker: ^0.1.2
   currency_formatter: ^2.2.1
   flutter_debouncer: ^2.0.0
+  toastification: ^2.2.0
   cached_network_image: ^3.3.1
   intl: ^0.19.0
 

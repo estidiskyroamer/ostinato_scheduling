@@ -86,19 +86,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Container(
-          padding: padding16,
-          child: Column(
-            children: [
-              Image(
-                  width: MediaQuery.sizeOf(context).width / 2,
-                  image: AssetImage(
-                      'assets/images/student${setRandomImage()}.jpeg')),
-              Padding(padding: padding16),
-              buildForm(context)
-            ],
-          ),
-        ),
+        child: Container(padding: padding16, child: buildForm(context)),
       ),
     );
   }

@@ -23,59 +23,59 @@ EdgeInsetsGeometry padding4 = const EdgeInsets.all(4);
 ThemeData ostinatoTheme = ThemeData(
     fontFamily: 'Garamond',
     colorSchemeSeed: Colors.white,
-    textTheme: const TextTheme(
-      titleLarge: TextStyle(
+    textTheme: TextTheme(
+      titleLarge: const TextStyle(
         fontSize: 34,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
-      titleMedium: TextStyle(
+      titleMedium: const TextStyle(
         fontSize: 26,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
-      titleSmall: TextStyle(
+      titleSmall: const TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
-      bodyLarge: TextStyle(
+      bodyLarge: const TextStyle(
         fontSize: 24,
         color: Colors.black,
       ),
-      bodyMedium: TextStyle(
+      bodyMedium: const TextStyle(
         fontSize: 16,
         color: Colors.black,
       ),
-      bodySmall: TextStyle(
+      bodySmall: const TextStyle(
         fontSize: 8,
         color: Colors.black,
       ),
-      displayLarge: TextStyle(
+      displayLarge: const TextStyle(
         fontSize: 26,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
-      displayMedium: TextStyle(
+      displayMedium: const TextStyle(
         fontSize: 18,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
-      displaySmall: TextStyle(
+      displaySmall: const TextStyle(
         fontSize: 10,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
       labelLarge: TextStyle(
-          fontFamily: "Montserrat", fontSize: 18, color: Colors.black54),
+          fontFamily: "Montserrat", fontSize: 18, color: Colors.grey[700]),
       labelMedium: TextStyle(
-          fontFamily: "Montserrat", fontSize: 14, color: Colors.black54),
+          fontFamily: "Montserrat", fontSize: 14, color: Colors.grey[700]),
       labelSmall: TextStyle(
-          fontFamily: "Montserrat", fontSize: 10, color: Colors.black54),
+          fontFamily: "Montserrat", fontSize: 10, color: Colors.grey[700]),
     ),
     navigationBarTheme: NavigationBarThemeData(
-        labelTextStyle: MaterialStateProperty.all(const TextStyle(
-            fontFamily: "Montserrat", fontSize: 10, color: Colors.black54))));
+        labelTextStyle: MaterialStateProperty.all(TextStyle(
+            fontFamily: "Montserrat", fontSize: 10, color: Colors.grey[700]))));

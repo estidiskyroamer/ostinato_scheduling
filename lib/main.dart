@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/config.dart';
-import 'package:ostinato/pages/dashboard/dashboard.dart';
-import 'package:ostinato/pages/login.dart';
 import 'package:ostinato/pages/navigation.dart';
+import 'package:toastification/toastification.dart';
 //import 'package:wheretowatch/common/shared_preferences.dart';
 
 void main() async {
@@ -23,11 +22,13 @@ class MyApp extends StatelessWidget {
       Prefs().preferences.setString("region", "US");
       Prefs().preferences.setString("region_name", "United States of America");
     } */
-    return MaterialApp(
-      title: 'Ostinato',
-      theme: ostinatoTheme,
-      navigatorKey: navigatorKey,
-      home: const NavigationPage(),
+    return ToastificationWrapper(
+      child: MaterialApp(
+        title: 'Ostinato',
+        theme: ostinatoTheme,
+        navigatorKey: navigatorKey,
+        home: const NavigationPage(),
+      ),
     );
   }
 }
