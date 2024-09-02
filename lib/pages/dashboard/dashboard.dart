@@ -158,6 +158,7 @@ class _DashboardPageState extends State<DashboardPage> {
                           .textTheme
                           .titleSmall!
                           .copyWith(color: Colors.black45)),
+                  Padding(padding: padding4),
                   Text(
                     DateFormat("EEEE, dd MMMM yyyy").format(currentDate),
                     style: Theme.of(context).textTheme.titleSmall,

@@ -320,12 +320,30 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
               : isEditSchedule
                   ? SolidButton(
                       action: () {
-                        updateSchedule(context);
+                        if (teacherNameController.text != '' &&
+                            studentNameController.text != '' &&
+                            instrumentController.text != '' &&
+                            dateController.text != '' &&
+                            startTimeController.text != '' &&
+                            endTimeController.text != '') {
+                          updateSchedule(context);
+                        } else {
+                          null;
+                        }
                       },
                       text: "Update")
                   : SolidButton(
                       action: () {
-                        createSchedule(context);
+                        if (teacherNameController.text != '' &&
+                            studentNameController.text != '' &&
+                            instrumentController.text != '' &&
+                            dateController.text != '' &&
+                            startTimeController.text != '' &&
+                            endTimeController.text != '') {
+                          createSchedule(context);
+                        } else {
+                          null;
+                        }
                       },
                       text: "Add Schedule",
                     )

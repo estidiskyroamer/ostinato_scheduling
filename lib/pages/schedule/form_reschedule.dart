@@ -221,7 +221,14 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
                 )
               : SolidButton(
                   action: () {
-                    updateSchedule(context);
+                    if (teacherNameController.text != '' &&
+                        studentNameController.text != '' &&
+                        instrumentController.text != '' &&
+                        dateController.text != '' &&
+                        startTimeController.text != '' &&
+                        endTimeController.text != '') {
+                      updateSchedule(context);
+                    }
                   },
                   text: "Reschedule")
         ],

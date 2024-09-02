@@ -135,12 +135,24 @@ class _FormStudentPageState extends State<FormStudentPage> {
             : widget.student != null
                 ? SolidButton(
                     action: () {
-                      updateStudent(context);
+                      if (studentNameController.text != "" &&
+                          studentAddressController.text != "" &&
+                          studentPhoneController.text != "" &&
+                          studentEmailController.text != "" &&
+                          dateController.text != "") {
+                        updateStudent(context);
+                      }
                     },
                     text: "Update")
                 : SolidButton(
                     action: () {
-                      createStudent(context);
+                      if (studentNameController.text != "" &&
+                          studentAddressController.text != "" &&
+                          studentPhoneController.text != "" &&
+                          studentEmailController.text != "" &&
+                          dateController.text != "") {
+                        createStudent(context);
+                      }
                     },
                     text: "Add Student")
       ],

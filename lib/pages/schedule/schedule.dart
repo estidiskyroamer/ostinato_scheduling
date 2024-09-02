@@ -13,6 +13,7 @@ import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 class SchedulePage extends StatefulWidget {
   const SchedulePage({super.key});
@@ -25,13 +26,44 @@ class _SchedulePageState extends State<SchedulePage> {
   late Future<ScheduleList?> _scheduleList;
   late DateTime currentTime;
 
-  final ScrollController _scrollController = ScrollController();
+  final GroupedItemScrollController _scrollController =
+      GroupedItemScrollController();
 
   @override
   void initState() {
     currentTime = DateTime.now();
     getSchedule();
     super.initState();
+  }
+
+  void scrollToDate(ScheduleList scheduleList) {
+    int nearestIndex = -1;
+    DateTime? nearestDate;
+    DateTime targetDate = DateTime.now();
+
+    // Iterate over the schedule dates to find the nearest date
+    for (int i = 0; i < scheduleList.data.length; i++) {
+      DateTime date = scheduleList.data[i].date;
+
+      // Check for an exact match
+      if (date.isAtSameMomentAs(targetDate)) {
+        nearestIndex = i;
+        nearestDate = date;
+        break;
+      }
+
+      if (nearestDate == null ||
+          (date.isBefore(targetDate) && date.isAfter(nearestDate))) {
+        nearestIndex = i;
+        nearestDate = date;
+      }
+    }
+
+    if (nearestIndex != -1) {
+      _scrollController.jumpToElement(
+        identifier: nearestDate,
+      );
+    }
   }
 
   void changeScheduleDate(String operation) {
@@ -191,16 +223,19 @@ class _SchedulePageState extends State<SchedulePage> {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 ScheduleList scheduleList = snapshot.data!;
-                return GroupedListView(
-                  controller: _scrollController,
-                  elements: scheduleList.data,
-                  groupBy: (schedule) => schedule.date,
-                  groupSeparatorBuilder: (value) =>
-                      scheduleDate(context, value),
-                  itemBuilder: (context, schedule) {
-                    return studentTime(context, schedule);
-                  },
-                );
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  scrollToDate(scheduleList);
+                });
+                return StickyGroupedListView(
+                    elements: scheduleList.data,
+                    elementIdentifier: (schedule) => schedule.date,
+                    itemScrollController: _scrollController,
+                    groupBy: (schedule) => schedule.date,
+                    groupSeparatorBuilder: (value) =>
+                        scheduleDate(context, value.date),
+                    itemBuilder: (context, schedule) {
+                      return studentTime(context, schedule);
+                    });
               })),
     );
   }
