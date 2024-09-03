@@ -49,7 +49,6 @@ class _FormAccountPageState extends State<FormAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 class Config {
@@ -22,60 +23,71 @@ EdgeInsetsGeometry padding4 = const EdgeInsets.all(4);
 
 ThemeData ostinatoTheme = ThemeData(
     fontFamily: 'Garamond',
-    colorSchemeSeed: Colors.white,
-    textTheme: TextTheme(
-      titleLarge: const TextStyle(
+    textTheme: const TextTheme(
+      titleLarge: TextStyle(
         fontSize: 34,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
-      titleMedium: const TextStyle(
+      titleMedium: TextStyle(
         fontSize: 26,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
-      titleSmall: const TextStyle(
+      titleSmall: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
-      bodyLarge: const TextStyle(
+      bodyLarge: TextStyle(
         fontSize: 24,
         color: Colors.black,
       ),
-      bodyMedium: const TextStyle(
+      bodyMedium: TextStyle(
         fontSize: 16,
         color: Colors.black,
       ),
-      bodySmall: const TextStyle(
+      bodySmall: TextStyle(
         fontSize: 8,
         color: Colors.black,
       ),
-      displayLarge: const TextStyle(
-        fontSize: 26,
+      displayLarge: TextStyle(
+        fontSize: 24,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
-      displayMedium: const TextStyle(
+      displayMedium: TextStyle(
         fontSize: 18,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
-      displaySmall: const TextStyle(
-        fontSize: 10,
+      displaySmall: TextStyle(
+        fontSize: 14,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
       labelLarge: TextStyle(
-          fontFamily: "Montserrat", fontSize: 18, color: Colors.grey[700]),
+          fontFamily: "Montserrat", fontSize: 16, color: Colors.black),
       labelMedium: TextStyle(
-          fontFamily: "Montserrat", fontSize: 14, color: Colors.grey[700]),
+          fontFamily: "Montserrat", fontSize: 14, color: Colors.black),
       labelSmall: TextStyle(
-          fontFamily: "Montserrat", fontSize: 10, color: Colors.grey[700]),
+          fontFamily: "Montserrat", fontSize: 12, color: Colors.black),
     ),
     navigationBarTheme: NavigationBarThemeData(
-        labelTextStyle: MaterialStateProperty.all(TextStyle(
-            fontFamily: "Montserrat", fontSize: 10, color: Colors.grey[700]))));
+      labelTextStyle: MaterialStateProperty.all(const TextStyle(
+          fontFamily: "Montserrat", fontSize: 12, color: Colors.black)),
+    ),
+    applyElevationOverlayColor: false,
+    scaffoldBackgroundColor: Colors.white,
+    bottomSheetTheme: BottomSheetThemeData(
+        elevation: 0, backgroundColor: HexColor('#FFF7EA')),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+        elevation: 0, backgroundColor: HexColor('#FFF7EA')),
+    appBarTheme: const AppBarTheme(
+      scrolledUnderElevation: 0,
+      elevation: 0,
+      backgroundColor: Colors.white,
+    ));

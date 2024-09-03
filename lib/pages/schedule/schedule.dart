@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_list/grouped_list.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:ostinato/common/component.dart';
@@ -61,8 +62,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
     if (nearestIndex != -1) {
       _scrollController.jumpToElement(
-        identifier: nearestDate,
-      );
+          alignment: 0.05, automaticAlignment: false, identifier: nearestDate);
     }
   }
 
@@ -168,7 +168,6 @@ class _SchedulePageState extends State<SchedulePage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -203,40 +202,41 @@ class _SchedulePageState extends State<SchedulePage> {
         automaticallyImplyLeading: false,
       ),
       body: SizedBox(
-          height: double.infinity,
-          child: FutureBuilder(
-              future: _scheduleList,
-              builder: (BuildContext context,
-                  AsyncSnapshot<ScheduleList?> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 6,
-                      child: Config().loadingIndicator,
-                    ),
-                  );
-                }
-                if (!snapshot.hasData) {
-                  return const Center(child: Text('No schedule yet'));
-                }
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-                ScheduleList scheduleList = snapshot.data!;
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  scrollToDate(scheduleList);
-                });
-                return StickyGroupedListView(
-                    elements: scheduleList.data,
-                    elementIdentifier: (schedule) => schedule.date,
-                    itemScrollController: _scrollController,
-                    groupBy: (schedule) => schedule.date,
-                    groupSeparatorBuilder: (value) =>
-                        scheduleDate(context, value.date),
-                    itemBuilder: (context, schedule) {
-                      return studentTime(context, schedule);
-                    });
-              })),
+        height: double.infinity,
+        child: FutureBuilder(
+            future: _scheduleList,
+            builder:
+                (BuildContext context, AsyncSnapshot<ScheduleList?> snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width / 6,
+                    child: Config().loadingIndicator,
+                  ),
+                );
+              }
+              if (!snapshot.hasData) {
+                return const Center(child: Text('No schedule yet'));
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              }
+              ScheduleList scheduleList = snapshot.data!;
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                scrollToDate(scheduleList);
+              });
+              return StickyGroupedListView(
+                  elements: scheduleList.data,
+                  elementIdentifier: (schedule) => schedule.date,
+                  itemScrollController: _scrollController,
+                  groupBy: (schedule) => schedule.date,
+                  groupSeparatorBuilder: (value) =>
+                      scheduleDate(context, value.date),
+                  itemBuilder: (context, schedule) {
+                    return studentTime(context, schedule);
+                  });
+            }),
+      ),
     );
   }
 
@@ -258,9 +258,9 @@ class _SchedulePageState extends State<SchedulePage> {
       Expanded(
         flex: 1,
         child: IconButton(
-          icon: Icon(
+          icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
-            color: Colors.grey[700],
+            color: Colors.black,
           ),
           onPressed: () {
             showModalBottomSheet<void>(

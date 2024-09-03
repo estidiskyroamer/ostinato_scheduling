@@ -112,7 +112,6 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(

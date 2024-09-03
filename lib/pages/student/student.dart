@@ -60,9 +60,7 @@ class _StudentPageState extends State<StudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
           title: getTitle(),
           actions: [
             IconButton(
@@ -145,7 +143,7 @@ class _StudentPageState extends State<StudentPage> {
           IconButton(
             icon: Icon(
               FontAwesomeIcons.ellipsisVertical,
-              color: Colors.grey[700],
+              color: Colors.black,
             ),
             onPressed: () {
               showModalBottomSheet<void>(

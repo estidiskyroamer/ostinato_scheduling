@@ -81,7 +81,10 @@ class ItemBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(children: [
-      Container(padding: padding16, color: HexColor("#E6F2FF"), child: child)
+      Container(
+          padding: padding16,
+          color: Theme.of(context).bottomSheetTheme.backgroundColor,
+          child: child)
     ]);
   }
 }
@@ -108,13 +111,13 @@ class RowIconButton extends StatelessWidget {
           margin: padding8,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: HexColor("#D8E4F0"),
+            color: HexColor("#FFF0D4"),
           ),
           child: Column(
             children: [
               Icon(
                 icon,
-                color: Colors.grey[700],
+                color: Colors.black,
               ),
               Padding(
                 padding: padding4,
@@ -393,7 +396,6 @@ Widget listHeader({required Widget child}) {
   return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
-      margin: const EdgeInsets.only(top: 16),
       decoration: const BoxDecoration(color: Colors.black12),
       child: child);
 }
@@ -407,7 +409,7 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
     margin:
         isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
     decoration: BoxDecoration(
-        color: isCurrentSchedule ? HexColor("#E6F2FF") : Colors.transparent,
+        color: isCurrentSchedule ? HexColor("#FFF0D4") : Colors.transparent,
         border: const Border(
           bottom: BorderSide(color: Colors.black38),
         )),
@@ -626,7 +628,7 @@ ToastificationItem toastNotification(String text) {
         child: Container(
           padding: padding8,
           margin: padding16,
-          color: Colors.grey[700],
+          color: Colors.black,
           child: Text(
             text,
             style: Theme.of(context).textTheme.displayMedium,
@@ -635,4 +637,111 @@ ToastificationItem toastNotification(String text) {
       );
     },
   );
+}
+
+class NavBar extends StatefulWidget {
+  final List<BottomNavBarItem> items;
+  int currentIndex;
+  final Color? backgroundColor;
+  Function(int)? onTap;
+
+  NavBar({
+    super.key,
+    required this.items,
+    required this.currentIndex,
+    this.backgroundColor,
+    required this.onTap,
+  });
+
+  @override
+  State<NavBar> createState() => _NavBarState();
+}
+
+class _NavBarState extends State<NavBar> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height / 12,
+      color: widget.backgroundColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(
+          widget.items.length,
+          (index) => NavBarItem(
+            onTap: () {
+              setState(() {
+                widget.currentIndex = index;
+                widget.onTap!(widget.currentIndex);
+              });
+            },
+            width: MediaQuery.of(context).size.width / 4,
+            isSelected: widget.currentIndex == index,
+            item: widget.items[index],
+            backgroundColor: widget.backgroundColor,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BottomNavBarItem {
+  final String label;
+  final IconData icon;
+  final Widget page;
+  BottomNavBarItem({
+    required this.label,
+    required this.icon,
+    required this.page,
+  });
+}
+
+class NavBarItem extends StatefulWidget {
+  final Color? backgroundColor;
+  final bool isSelected;
+  final Function onTap;
+  final BottomNavBarItem item;
+  final double width;
+  const NavBarItem(
+      {super.key,
+      this.backgroundColor,
+      this.isSelected = false,
+      required this.onTap,
+      required this.width,
+      required this.item});
+
+  @override
+  State<NavBarItem> createState() => _NavBarItemState();
+}
+
+class _NavBarItemState extends State<NavBarItem> {
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        widget.onTap();
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 250),
+        color: widget.isSelected ? Colors.black : Colors.transparent,
+        width: widget.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              widget.item.icon,
+              color: widget.isSelected ? widget.backgroundColor : Colors.black,
+            ),
+            Padding(padding: padding4),
+            Text(widget.item.label,
+                style: widget.isSelected
+                    ? Theme.of(context).textTheme.displayMedium
+                    : Theme.of(context).textTheme.labelSmall)
+          ],
+        ),
+      ),
+    );
+  }
 }

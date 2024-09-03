@@ -120,7 +120,6 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Text(
@@ -138,6 +137,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                 icon: const Icon(
                   FontAwesomeIcons.pencil,
                   size: 20,
+                  color: Colors.black,
                 ),
                 onPressed: () {
                   Navigator.of(context)
@@ -208,6 +208,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                 icon: const Icon(
                   FontAwesomeIcons.plus,
                   size: 20,
+                  color: Colors.black,
                 ),
                 onPressed: () {
                   addSchedule(widget.student);
@@ -261,9 +262,9 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
       Expanded(
         flex: 1,
         child: IconButton(
-          icon: Icon(
+          icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
-            color: Colors.grey[700],
+            color: Colors.black,
           ),
           onPressed: () {
             showModalBottomSheet<void>(

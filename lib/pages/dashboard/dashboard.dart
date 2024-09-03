@@ -137,11 +137,9 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         title: getTitle(),
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -227,7 +225,7 @@ class _DashboardPageState extends State<DashboardPage> {
         child: IconButton(
           icon: Icon(
             FontAwesomeIcons.ellipsisVertical,
-            color: Colors.grey[700],
+            color: Colors.black,
           ),
           onPressed: () {
             showModalBottomSheet<void>(

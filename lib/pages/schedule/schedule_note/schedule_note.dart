@@ -167,7 +167,7 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
             child: IconButton(
               icon: Icon(
                 FontAwesomeIcons.ellipsisVertical,
-                color: Colors.grey[700],
+                color: Colors.black,
               ),
               onPressed: () {
                 showModalBottomSheet<void>(
