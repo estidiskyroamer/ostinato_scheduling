@@ -45,3 +45,4 @@ app.*.map.json
 /linux/
 /macos/
 /windows/
+musiclesson-scheduling.code-workspace

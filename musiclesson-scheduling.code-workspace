@@ -5,6 +5,10 @@
 		},
 		{
 			"path": "."
+		},
+		{
+			"name": "ostinato-admin",
+			"path": "../ostinato-admin"
 		}
 	],
 	"settings": {}
