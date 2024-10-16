@@ -69,8 +69,6 @@ class Student {
   final DateTime birthDate;
   final User user;
   final int isActive;
-  final DateTime? activeDate;
-  final DateTime? inactiveDate;
   List<Schedule>? schedules;
 
   Student({
@@ -79,8 +77,6 @@ class Student {
     required this.birthDate,
     required this.user,
     required this.isActive,
-    this.activeDate,
-    this.inactiveDate,
     this.schedules,
   });
 
@@ -90,12 +86,6 @@ class Student {
         birthDate: DateTime.parse(json["birthDate"]),
         user: User.fromJson(json["user"]),
         isActive: json["isActive"],
-        activeDate: json['activeDate'] == null
-            ? null
-            : DateTime.parse(json['activeDate']),
-        inactiveDate: json['inactiveDate'] == null
-            ? null
-            : DateTime.parse(json['inactiveDate']),
         schedules: json["schedules"] == null || json["schedules"].length == 0
             ? null
             : List<Schedule>.from(
@@ -109,8 +99,6 @@ class Student {
         "address": address,
         "birthDate": DateFormat('yyyy-MM-dd').format(birthDate),
         "isActive": isActive,
-        "activeDate": activeDate?.toString(),
-        "inactiveDate": inactiveDate?.toString(),
         "schedules": schedules == null
             ? null
             : List<dynamic>.from(schedules!.map((x) => x.toJson())),

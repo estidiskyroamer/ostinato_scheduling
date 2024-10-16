@@ -166,27 +166,22 @@ class _FormStudentPageState extends State<FormStudentPage> {
       name: studentNameController.text,
       email: studentEmailController.text,
       phoneNumber: studentPhoneController.text,
+      password: studentPhoneController.text,
     );
-    UserService().createUser(user).then(
-      (result) {
-        if (result != null) {
-          Student student = Student(
-            user: result,
-            address: studentAddressController.text,
-            birthDate: studentBirthDate,
-            isActive: 1,
-          );
-          StudentService().createStudent(student).then((value) {
-            setState(() {
-              isLoading = false;
-            });
-            if (value) {
-              Navigator.pop(context);
-            }
-          });
-        }
-      },
+    Student student = Student(
+      user: user,
+      address: studentAddressController.text,
+      birthDate: studentBirthDate,
+      isActive: 1,
     );
+    StudentService().createStudent(student).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+      if (value) {
+        Navigator.pop(context);
+      }
+    });
   }
 
   void updateStudent(BuildContext context) {
@@ -200,26 +195,20 @@ class _FormStudentPageState extends State<FormStudentPage> {
       phoneNumber: studentPhoneController.text,
       password: 'password',
     );
-    UserService().updateUser(user).then(
-      (result) {
-        if (result != null) {
-          Student student = Student(
-            id: widget.student!.id,
-            user: result,
-            address: studentAddressController.text,
-            birthDate: studentBirthDate,
-            isActive: 1,
-          );
-          StudentService().updateStudent(student).then((value) {
-            setState(() {
-              isLoading = false;
-            });
-            if (value) {
-              Navigator.pop(context);
-            }
-          });
-        }
-      },
+    Student student = Student(
+      id: widget.student!.id,
+      user: user,
+      address: studentAddressController.text,
+      birthDate: studentBirthDate,
+      isActive: 1,
     );
+    StudentService().updateStudent(student).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+      if (value) {
+        Navigator.pop(context);
+      }
+    });
   }
 }

@@ -40,16 +40,12 @@ class Teacher {
   final String userId;
   final User user;
   final int isActive;
-  final DateTime activeDate;
-  final DateTime? inactiveDate;
 
   Teacher({
     required this.id,
     required this.userId,
     required this.user,
     required this.isActive,
-    required this.activeDate,
-    this.inactiveDate,
   });
 
   factory Teacher.fromJson(Map<String, dynamic> json) => Teacher(
@@ -57,10 +53,6 @@ class Teacher {
         userId: json["userId"],
         user: User.fromJson(json["user"]),
         isActive: json["isActive"],
-        activeDate: DateTime.parse(json["activeDate"]),
-        inactiveDate: json['inactiveDate'] == null
-            ? null
-            : DateTime.parse(json['inactiveDate']),
       );
 
   Map<String, dynamic> toJson() => {
@@ -69,7 +61,5 @@ class Teacher {
         "name": user.name,
         "user": user,
         "isActive": isActive,
-        "activeDate": activeDate.toString(),
-        "inactiveDate": inactiveDate?.toString(),
       };
 }
