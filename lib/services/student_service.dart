@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/config.dart';
 
 class StudentService {
@@ -53,6 +54,13 @@ class StudentService {
 
   Future<bool> createStudent(Student student) async {
     Map<String, dynamic> params = student.toJson();
+
+    if (params['user'] != null) {
+      User paramUser = student.user;
+      Map<String, dynamic> user = paramUser.toJson();
+      params.remove('user');
+      params.addAll(user);
+    }
     try {
       Response response =
           await ServiceConfig().dio.post('/students', data: params);
@@ -68,6 +76,13 @@ class StudentService {
 
   Future<bool> updateStudent(Student student) async {
     Map<String, dynamic> params = student.toJson();
+
+    if (params['user'] != null) {
+      User paramUser = student.user;
+      Map<String, dynamic> user = paramUser.toJson();
+      params.remove('user');
+      params.addAll(user);
+    }
     try {
       Response response = await ServiceConfig()
           .dio

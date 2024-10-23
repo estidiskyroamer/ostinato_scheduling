@@ -97,12 +97,18 @@ class _StudentPageState extends State<StudentPage> {
                       return const Center(child: Text('No students yet'));
                     }
                     final students = snapshot.data!.data;
-                    return ListView.builder(
-                      itemCount: students.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        Student student = students[index];
-                        return studentItem(context, student);
+                    return RefreshIndicator(
+                      color: Colors.black,
+                      onRefresh: () async {
+                        getStudents();
                       },
+                      child: ListView.builder(
+                        itemCount: students.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Student student = students[index];
+                          return studentItem(context, student);
+                        },
+                      ),
                     );
                   },
                 ),
@@ -141,7 +147,7 @@ class _StudentPageState extends State<StudentPage> {
         children: [
           Text(student.user.name),
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               FontAwesomeIcons.ellipsisVertical,
               color: Colors.black,
             ),
