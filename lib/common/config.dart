@@ -25,56 +25,56 @@ ThemeData ostinatoTheme = ThemeData(
     fontFamily: 'Garamond',
     textTheme: const TextTheme(
       titleLarge: TextStyle(
-        fontSize: 34,
+        fontSize: 36,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
       titleMedium: TextStyle(
-        fontSize: 26,
+        fontSize: 28,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
       titleSmall: TextStyle(
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: FontWeight.bold,
         color: Colors.black,
         height: 1.0,
       ),
       bodyLarge: TextStyle(
-        fontSize: 24,
+        fontSize: 26,
         color: Colors.black,
       ),
       bodyMedium: TextStyle(
-        fontSize: 16,
+        fontSize: 18,
         color: Colors.black,
       ),
       bodySmall: TextStyle(
-        fontSize: 8,
+        fontSize: 10,
         color: Colors.black,
       ),
       displayLarge: TextStyle(
-        fontSize: 24,
+        fontSize: 26,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
       displayMedium: TextStyle(
-        fontSize: 18,
+        fontSize: 20,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
       displaySmall: TextStyle(
-        fontSize: 14,
+        fontSize: 16,
         fontStyle: FontStyle.italic,
         color: Colors.white,
       ),
       labelLarge: TextStyle(
-          fontFamily: "Montserrat", fontSize: 16, color: Colors.black),
+          fontFamily: "Montserrat", fontSize: 18, color: Colors.black),
       labelMedium: TextStyle(
-          fontFamily: "Montserrat", fontSize: 14, color: Colors.black),
+          fontFamily: "Montserrat", fontSize: 16, color: Colors.black),
       labelSmall: TextStyle(
-          fontFamily: "Montserrat", fontSize: 12, color: Colors.black),
+          fontFamily: "Montserrat", fontSize: 14, color: Colors.black),
     ),
     navigationBarTheme: NavigationBarThemeData(
       labelTextStyle: MaterialStateProperty.all(const TextStyle(
@@ -82,6 +82,7 @@ ThemeData ostinatoTheme = ThemeData(
     ),
     applyElevationOverlayColor: false,
     scaffoldBackgroundColor: Colors.white,
+    dialogBackgroundColor: HexColor('#FFF7EA'),
     bottomSheetTheme: BottomSheetThemeData(
         elevation: 0, backgroundColor: HexColor('#FFF7EA')),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(

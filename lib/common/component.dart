@@ -236,7 +236,7 @@ class ActionDialog extends StatelessWidget {
     return Dialog(
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       elevation: 0,
-      backgroundColor: HexColor("#E6F2FF"),
+      backgroundColor: Theme.of(context).dialogBackgroundColor,
       insetPadding: EdgeInsets.zero,
       child: Container(
         padding: padding16,
@@ -493,7 +493,7 @@ Widget scheduleBottomSheet(
     child: Column(
       children: [
         schedule.status == 'done' || schedule.status == 'canceled'
-            ? SizedBox()
+            ? const SizedBox()
             : Column(
                 children: [
                   Text(
@@ -737,7 +737,9 @@ class _NavBarItemState extends State<NavBarItem> {
             Padding(padding: padding4),
             Text(widget.item.label,
                 style: widget.isSelected
-                    ? Theme.of(context).textTheme.displayMedium
+                    ? Theme.of(context).textTheme.displaySmall!.merge(TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: widget.backgroundColor))
                     : Theme.of(context).textTheme.labelSmall)
           ],
         ),

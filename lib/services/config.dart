@@ -9,13 +9,15 @@ class ServiceConfig {
   late Dio refreshDio;
 
   ServiceConfig() {
-    dio = Dio(BaseOptions(baseUrl: "http://localhost:8000/api"))
+    dio = Dio(BaseOptions(
+        baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"))
       ..interceptors.add(DioInterceptor());
   }
 }
 
 class DioInterceptor extends Interceptor {
-  Dio dio = Dio(BaseOptions(baseUrl: "http://localhost:8000/api"));
+  Dio dio = Dio(BaseOptions(
+      baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"));
 
   @override
   void onRequest(

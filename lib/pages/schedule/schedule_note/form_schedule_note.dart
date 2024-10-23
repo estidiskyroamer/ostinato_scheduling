@@ -64,17 +64,24 @@ class _FormScheduleNotePageState extends State<FormScheduleNotePage> {
                   maxLines: 7,
                   hintText: "Write notes on this lesson..."),
               Padding(padding: padding16),
-              isEdit
-                  ? SolidButton(
-                      action: () {
-                        updateNote(context);
-                      },
-                      text: "Update")
-                  : SolidButton(
-                      action: () {
-                        createNote(context);
-                      },
-                      text: "Save"),
+              isLoading
+                  ? Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 6,
+                        child: Config().loadingIndicator,
+                      ),
+                    )
+                  : isEdit
+                      ? SolidButton(
+                          action: () {
+                            updateNote(context);
+                          },
+                          text: "Update")
+                      : SolidButton(
+                          action: () {
+                            createNote(context);
+                          },
+                          text: "Save"),
             ],
           ),
         ),

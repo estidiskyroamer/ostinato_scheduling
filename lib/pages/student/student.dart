@@ -23,8 +23,8 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   void initState() {
-    getStudents();
     super.initState();
+    getStudents();
   }
 
   void getStudents() {
