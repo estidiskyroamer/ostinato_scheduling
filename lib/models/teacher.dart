@@ -40,7 +40,7 @@ class Teacher {
   final String userId;
   final User user;
   final int isActive;
-  final DateTime activeDate;
+  final DateTime? activeDate;
   final DateTime? inactiveDate;
 
   Teacher({
@@ -57,7 +57,9 @@ class Teacher {
         userId: json["userId"],
         user: User.fromJson(json["user"]),
         isActive: json["isActive"],
-        activeDate: DateTime.parse(json["activeDate"]),
+        activeDate: json['activeDate'] == null
+            ? null
+            : DateTime.parse(json["activeDate"]),
         inactiveDate: json['inactiveDate'] == null
             ? null
             : DateTime.parse(json['inactiveDate']),

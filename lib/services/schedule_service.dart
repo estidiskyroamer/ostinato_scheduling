@@ -12,10 +12,10 @@ class ScheduleService {
       {int? year, int? month, int? day}) async {
     ScheduleList? schedule;
     try {
-      String url = '/schedules';
-      url += '/$year/$month';
+      String url = '/schedules?';
+      url += 'year=$year&month=$month';
       if (day != null) {
-        url += '/$day';
+        url += '&day=$day';
       }
       Response response = await ServiceConfig().dio.get(url);
       schedule = ScheduleList.fromJson(response.data);
