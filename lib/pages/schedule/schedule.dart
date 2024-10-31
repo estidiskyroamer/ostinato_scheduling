@@ -155,10 +155,10 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void deleteSchedule(Schedule schedule) async {
+    Navigator.of(context).pop();
     ScheduleService().deleteSchedule(schedule).then((value) {
       if (value) {
         getSchedule();
-        Navigator.of(context).pop();
       }
     });
   }
@@ -225,16 +225,22 @@ class _SchedulePageState extends State<SchedulePage> {
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 scrollToDate(scheduleList);
               });
-              return StickyGroupedListView(
-                  elements: scheduleList.data,
-                  elementIdentifier: (schedule) => schedule.date,
-                  itemScrollController: _scrollController,
-                  groupBy: (schedule) => schedule.date,
-                  groupSeparatorBuilder: (value) =>
-                      scheduleDate(context, value.date),
-                  itemBuilder: (context, schedule) {
-                    return studentTime(context, schedule);
-                  });
+              return RefreshIndicator(
+                color: Colors.black,
+                onRefresh: () async {
+                  getSchedule();
+                },
+                child: StickyGroupedListView(
+                    elements: scheduleList.data,
+                    elementIdentifier: (schedule) => schedule.date,
+                    itemScrollController: _scrollController,
+                    groupBy: (schedule) => schedule.date,
+                    groupSeparatorBuilder: (value) =>
+                        scheduleDate(context, value.date),
+                    itemBuilder: (context, schedule) {
+                      return studentTime(context, schedule);
+                    }),
+              );
             }),
       ),
     );

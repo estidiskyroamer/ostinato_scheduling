@@ -70,11 +70,11 @@ ThemeData ostinatoTheme = ThemeData(
         color: Colors.white,
       ),
       labelLarge: TextStyle(
-          fontFamily: "Montserrat", fontSize: 18, color: Colors.black),
-      labelMedium: TextStyle(
           fontFamily: "Montserrat", fontSize: 16, color: Colors.black),
-      labelSmall: TextStyle(
+      labelMedium: TextStyle(
           fontFamily: "Montserrat", fontSize: 14, color: Colors.black),
+      labelSmall: TextStyle(
+          fontFamily: "Montserrat", fontSize: 12, color: Colors.black),
     ),
     navigationBarTheme: NavigationBarThemeData(
       labelTextStyle: MaterialStateProperty.all(const TextStyle(

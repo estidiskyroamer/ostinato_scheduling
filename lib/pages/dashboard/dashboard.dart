@@ -75,11 +75,11 @@ class _DashboardPageState extends State<DashboardPage> {
       startTime: schedule.startTime,
       endTime: schedule.endTime,
     );
+    Navigator.of(context).pop();
     ScheduleService().updateSchedule(update).then((value) {
       if (value) {
         getCurrentSchedule();
       }
-      Navigator.of(context).pop();
     });
   }
 
@@ -114,10 +114,10 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void deleteSchedule(Schedule schedule) async {
+    Navigator.of(context).pop();
     ScheduleService().deleteSchedule(schedule).then((value) {
       if (value) {
         getCurrentSchedule();
-        Navigator.of(context).pop();
       }
     });
   }
@@ -141,30 +141,32 @@ class _DashboardPageState extends State<DashboardPage> {
         title: getTitle(),
         automaticallyImplyLeading: false,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            listHeader(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Text("Today's Schedule",
-                      style: Theme.of(context)
-                          .textTheme
-                          .titleSmall!
-                          .copyWith(color: Colors.black45)),
-                  Padding(padding: padding4),
-                  Text(
-                    DateFormat("EEEE, dd MMMM yyyy").format(currentDate),
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                ],
-              ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          listHeader(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Text("Today's Schedule",
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleSmall!
+                        .copyWith(color: Colors.black45)),
+                Padding(padding: padding4),
+                Text(
+                  DateFormat("EEEE, dd MMMM yyyy").format(currentDate),
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              ],
             ),
-            FutureBuilder(
+          ),
+          Expanded(
+              child: Container(
+            width: double.infinity,
+            child: FutureBuilder(
               future: _scheduleList,
               builder: (BuildContext context,
                   AsyncSnapshot<ScheduleList?> snapshot) {
@@ -188,19 +190,23 @@ class _DashboardPageState extends State<DashboardPage> {
                 if (schedules.isEmpty) {
                   return const Center(child: Text('No schedule yet'));
                 } else {
-                  return ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: schedules.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        Schedule schedule = schedules[index];
-                        return studentTime(context, schedule);
-                      });
+                  return RefreshIndicator(
+                    color: Colors.black,
+                    onRefresh: () async {
+                      getCurrentSchedule();
+                    },
+                    child: ListView.builder(
+                        itemCount: schedules.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          Schedule schedule = schedules[index];
+                          return studentTime(context, schedule);
+                        }),
+                  );
                 }
               },
-            )
-          ],
-        ),
+            ),
+          ))
+        ],
       ),
     );
   }

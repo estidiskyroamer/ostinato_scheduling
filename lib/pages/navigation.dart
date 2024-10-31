@@ -24,6 +24,13 @@ class _NavigationPageState extends State<NavigationPage> {
     });
   }
 
+  List<Widget> pages = [
+    const DashboardPage(),
+    const StudentPage(),
+    const SchedulePage(),
+    const AccountPage(),
+  ];
+
   List<BottomNavBarItem> items = [
     BottomNavBarItem(
         label: "Dashboard",
@@ -54,6 +61,9 @@ class _NavigationPageState extends State<NavigationPage> {
             setPage(value);
           },
         ),
-        body: items[currentIndex].page);
+        body: IndexedStack(
+          index: currentIndex,
+          children: pages,
+        ));
   }
 }

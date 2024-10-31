@@ -402,6 +402,9 @@ Widget listHeader({required Widget child}) {
 
 Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
     BuildContext context, Widget button) {
+  DateTime startTime = DateFormat.Hm().parse(schedule.startTime);
+  DateTime endTime = DateFormat.Hm().parse(schedule.endTime);
+  Duration diff = endTime.difference(startTime);
   return Container(
     padding: isCurrentSchedule
         ? const EdgeInsets.only(left: 32, right: 16)
@@ -416,18 +419,26 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
     child: Row(
       children: [
         Expanded(
-          flex: 2,
-          child: Text(
-            "${schedule.startTime} -\n${schedule.endTime}",
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                decoration: schedule.status == 'canceled'
-                    ? TextDecoration.lineThrough
-                    : TextDecoration.none),
-          ),
-        ),
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  schedule.startTime,
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      decoration: schedule.status == 'canceled'
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none),
+                ),
+                Text(
+                  '${diff.inMinutes} minutes',
+                  style: Theme.of(context).textTheme.labelSmall,
+                )
+              ],
+            )),
         Expanded(
-          flex: 6,
+          flex: 7,
           child: Row(
             children: [
               Text(

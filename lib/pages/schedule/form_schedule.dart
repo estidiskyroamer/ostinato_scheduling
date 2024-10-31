@@ -45,6 +45,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
   bool isStudentLoading = false;
+  bool isInstrumentLoading = false;
   bool isEditSchedule = false;
 
   @override
@@ -67,11 +68,23 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   }
 
   void getStudentList() async {
+    setState(() {
+      isStudentLoading = true;
+    });
     _studentList = await StudentService().getStudents();
+    setState(() {
+      isStudentLoading = false;
+    });
   }
 
   void getInstrumentList() async {
+    setState(() {
+      isInstrumentLoading = true;
+    });
     _instrumentList = await InstrumentService().getInstruments();
+    setState(() {
+      isInstrumentLoading = false;
+    });
   }
 
   void setEdit() async {
@@ -204,18 +217,20 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
             hintText: "Instrument",
             isReadOnly: true,
             onTap: () {
-              showModalBottomSheet<void>(
-                  context: context,
-                  builder: (context) {
-                    return listBottomSheet<Instrument>(
+              isInstrumentLoading
+                  ? null
+                  : showModalBottomSheet<void>(
                       context: context,
-                      items: _instrumentList!.data,
-                      title: "Choose instrument",
-                      onItemSelected: setInstrument,
-                      itemContentBuilder: (Instrument instrument) =>
-                          Text(instrument.name),
-                    );
-                  });
+                      builder: (context) {
+                        return listBottomSheet<Instrument>(
+                          context: context,
+                          items: _instrumentList!.data,
+                          title: "Choose instrument",
+                          onItemSelected: setInstrument,
+                          itemContentBuilder: (Instrument instrument) =>
+                              Text(instrument.name),
+                        );
+                      });
             },
           ),
           Padding(padding: padding8),
