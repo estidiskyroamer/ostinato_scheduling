@@ -49,10 +49,10 @@ class _StudentPageState extends State<StudentPage> {
   }
 
   void deleteStudent(Student student) async {
+    Navigator.of(context).pop();
     StudentService().deleteStudent(student).then((value) {
       if (value) {
         getStudents();
-        Navigator.of(context).pop();
       }
     });
   }

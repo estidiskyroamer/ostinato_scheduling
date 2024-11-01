@@ -407,8 +407,8 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
   Duration diff = endTime.difference(startTime);
   return Container(
     padding: isCurrentSchedule
-        ? const EdgeInsets.only(left: 32, right: 16)
-        : const EdgeInsets.only(right: 16),
+        ? const EdgeInsets.fromLTRB(32, 8, 16, 8)
+        : const EdgeInsets.fromLTRB(0, 8, 16, 8),
     margin:
         isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
     decoration: BoxDecoration(
@@ -439,7 +439,18 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
             )),
         Expanded(
           flex: 7,
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                schedule.student.user.name,
+              ),
+              Text(
+                schedule.instrument.name,
+                style: Theme.of(context).textTheme.labelSmall,
+              )
+            ],
+          ), /* Row(
             children: [
               Text(
                 "${schedule.student.user.name} (${schedule.instrument.name})",
@@ -450,7 +461,7 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
               ),
               scheduleStatus(schedule.status)
             ],
-          ),
+          ), */
         ),
         button
       ],
