@@ -62,6 +62,8 @@ class _FormScheduleNotePageState extends State<FormScheduleNotePage> {
               InputField(
                   textEditingController: noteController,
                   maxLines: 7,
+                  inputType: TextInputType.multiline,
+                  capitalization: TextCapitalization.sentences,
                   hintText: "Write notes on this lesson..."),
               Padding(padding: padding16),
               isLoading

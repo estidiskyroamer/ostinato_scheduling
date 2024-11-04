@@ -15,6 +15,7 @@ class InputField extends StatefulWidget {
   final double marginBottom;
   final Color borderColor;
   final TextInputType inputType;
+  final TextCapitalization capitalization;
   final VoidCallback? onTap;
   final bool isReadOnly;
   final bool isPassword;
@@ -28,6 +29,7 @@ class InputField extends StatefulWidget {
       this.marginBottom = 6.0,
       this.borderColor = Colors.black,
       this.inputType = TextInputType.text,
+      this.capitalization = TextCapitalization.words,
       this.onTap,
       this.isReadOnly = false,
       this.isPassword = false,
