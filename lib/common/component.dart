@@ -444,26 +444,20 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                schedule.student.user.name,
+              Row(
+                children: [
+                  Text(
+                    schedule.student.user.name,
+                  ),
+                  scheduleStatus(schedule.status)
+                ],
               ),
               Text(
                 schedule.instrument.name,
                 style: Theme.of(context).textTheme.labelSmall,
               )
             ],
-          ), /* Row(
-            children: [
-              Text(
-                "${schedule.student.user.name} (${schedule.instrument.name})",
-                style: TextStyle(
-                    decoration: schedule.status == 'canceled'
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none),
-              ),
-              scheduleStatus(schedule.status)
-            ],
-          ), */
+          ),
         ),
         button
       ],
