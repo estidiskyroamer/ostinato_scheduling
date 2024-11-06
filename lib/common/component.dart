@@ -449,8 +449,8 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
                   Text(
                     schedule.student.user.name,
                   ),
+                  rescheduleStatus(schedule.isRescheduled ?? false),
                   scheduleStatus(schedule.status),
-                  rescheduleStatus(schedule.isRescheduled ?? false)
                 ],
               ),
               Text(

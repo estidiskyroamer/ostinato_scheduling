@@ -70,7 +70,7 @@ class Schedule {
         date: DateTime.parse(json["date"]),
         createdBy: json['createdBy'] == null ? null : json["createdBy"],
         status: json['status'] == null ? null : json["status"],
-        isRescheduled: json['isRescheduled'],
+        isRescheduled: json['isRescheduled'] == 1 ? true : false,
         startTime: _formatTime(json["startTime"]),
         endTime: _formatTime(json["endTime"]),
         student: Student.fromJson(json["student"]),
@@ -83,7 +83,8 @@ class Schedule {
         "date": DateFormat('yyyy-MM-dd').format(date),
         "createdBy": createdBy,
         "status": status,
-        "isRescheduled": isRescheduled,
+        if (isRescheduled != null)
+          "isRescheduled": isRescheduled == true ? 1 : 0,
         "startTime": startTime,
         "endTime": endTime,
         "student": student.toJson(),

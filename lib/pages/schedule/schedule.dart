@@ -32,9 +32,9 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   void initState() {
+    super.initState();
     currentTime = DateTime.now();
     getSchedule();
-    super.initState();
   }
 
   void scrollToDate(ScheduleList scheduleList) {
@@ -116,6 +116,7 @@ class _SchedulePageState extends State<SchedulePage> {
       startTime: schedule.startTime,
       endTime: schedule.endTime,
     );
+
     Navigator.of(context).pop();
     ScheduleService().updateSchedule(update).then((value) {
       if (value) {

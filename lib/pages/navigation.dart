@@ -49,21 +49,105 @@ class _NavigationPageState extends State<NavigationPage> {
         icon: FontAwesomeIcons.userGear,
         page: const AccountPage()),
   ];
+
+  void onTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: NavBar(
-          currentIndex: currentIndex,
-          items: items,
-          backgroundColor:
-              Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-          onTap: (value) {
-            setPage(value);
-          },
-        ),
-        body: IndexedStack(
-          index: currentIndex,
-          children: pages,
-        ));
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        elevation: 0,
+        backgroundColor:
+            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        selectedLabelStyle:
+            Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
+                  fontWeight: FontWeight.bold,
+                )),
+        unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
+        unselectedItemColor: Colors.black54,
+        selectedItemColor: Colors.black,
+        items: [
+          BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: const Icon(
+                  FontAwesomeIcons.house,
+                ),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: const Icon(
+                  FontAwesomeIcons.house,
+                ),
+              ),
+              label: "Dashboard"),
+          BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: const Icon(
+                  FontAwesomeIcons.child,
+                ),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: const Icon(
+                  FontAwesomeIcons.child,
+                ),
+              ),
+              label: "Students"),
+          BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: const Icon(
+                  FontAwesomeIcons.calendarCheck,
+                ),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: const Icon(
+                  FontAwesomeIcons.calendarCheck,
+                ),
+              ),
+              label: "Schedule"),
+          BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.only(bottom: 4),
+                child: const Icon(
+                  FontAwesomeIcons.userGear,
+                ),
+              ),
+              activeIcon: Container(
+                padding: const EdgeInsets.only(bottom: 6),
+                child: const Icon(
+                  FontAwesomeIcons.userGear,
+                ),
+              ),
+              label: "Account")
+        ],
+        currentIndex: currentIndex,
+        onTap: onTapped,
+      ),
+      body: pages[currentIndex],
+      /* bottomNavigationBar: NavBar(
+        currentIndex: currentIndex,
+        items: items,
+        backgroundColor:
+            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        onTap: (value) {
+          setPage(value);
+        },
+      ),
+      body: IndexedStack(
+        index: currentIndex,
+        children: pages,
+      ), */
+    );
   }
 }
