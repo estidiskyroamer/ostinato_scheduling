@@ -45,6 +45,7 @@ class Schedule {
   final DateTime date;
   final String? createdBy;
   final String? status;
+  final bool? isRescheduled;
   final String startTime;
   final String endTime;
   final Student student;
@@ -56,6 +57,7 @@ class Schedule {
     required this.date,
     this.createdBy,
     this.status,
+    this.isRescheduled,
     required this.startTime,
     required this.endTime,
     required this.student,
@@ -68,6 +70,7 @@ class Schedule {
         date: DateTime.parse(json["date"]),
         createdBy: json['createdBy'] == null ? null : json["createdBy"],
         status: json['status'] == null ? null : json["status"],
+        isRescheduled: json['isRescheduled'],
         startTime: _formatTime(json["startTime"]),
         endTime: _formatTime(json["endTime"]),
         student: Student.fromJson(json["student"]),
@@ -80,6 +83,7 @@ class Schedule {
         "date": DateFormat('yyyy-MM-dd').format(date),
         "createdBy": createdBy,
         "status": status,
+        "isRescheduled": isRescheduled,
         "startTime": startTime,
         "endTime": endTime,
         "student": student.toJson(),

@@ -448,7 +448,8 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
                         ? TextDecoration.lineThrough
                         : TextDecoration.none),
               ),
-              scheduleStatus(schedule.status)
+              scheduleStatus(schedule.status),
+              rescheduleStatus(schedule.isRescheduled ?? false)
             ],
           ),
         ),
@@ -490,6 +491,19 @@ Widget scheduleStatus(String? status) {
     default:
       return const SizedBox();
   }
+}
+
+Widget rescheduleStatus(bool status) {
+  return status
+      ? Container(
+          padding: const EdgeInsets.only(left: 8),
+          child: Icon(
+            FontAwesomeIcons.rotate,
+            color: HexColor('#ffba47'),
+            size: 18,
+          ),
+        )
+      : const SizedBox();
 }
 
 Widget scheduleBottomSheet(

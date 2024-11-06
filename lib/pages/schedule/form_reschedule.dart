@@ -245,7 +245,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
         teacher: widget.schedule!.teacher,
         instrument: widget.schedule!.instrument,
         date: selectedScheduleDate,
-        status: 'rescheduled',
+        isRescheduled: true,
         startTime: DateFormat('HH:mm').format(selectedScheduleStartTime),
         endTime: DateFormat('HH:mm').format(selectedScheduleEndTime));
     ScheduleService().updateSchedule(update).then((result) {
