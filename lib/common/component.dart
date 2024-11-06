@@ -15,6 +15,7 @@ class InputField extends StatefulWidget {
   final double marginBottom;
   final Color borderColor;
   final TextInputType inputType;
+  final TextCapitalization capitalization;
   final VoidCallback? onTap;
   final bool isReadOnly;
   final bool isPassword;
@@ -28,6 +29,7 @@ class InputField extends StatefulWidget {
       this.marginBottom = 6.0,
       this.borderColor = Colors.black,
       this.inputType = TextInputType.text,
+      this.capitalization = TextCapitalization.words,
       this.onTap,
       this.isReadOnly = false,
       this.isPassword = false,
@@ -395,7 +397,7 @@ Widget inputDateTimePicker({
 Widget listHeader({required Widget child}) {
   return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
+      padding: padding12,
       decoration: const BoxDecoration(color: Colors.black12),
       child: child);
 }
@@ -407,8 +409,8 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
   Duration diff = endTime.difference(startTime);
   return Container(
     padding: isCurrentSchedule
-        ? const EdgeInsets.only(left: 32, right: 16)
-        : const EdgeInsets.only(right: 16),
+        ? const EdgeInsets.fromLTRB(32, 8, 16, 8)
+        : const EdgeInsets.fromLTRB(0, 8, 16, 8),
     margin:
         isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
     decoration: BoxDecoration(
@@ -439,17 +441,22 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
             )),
         Expanded(
           flex: 7,
-          child: Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                "${schedule.student.user.name} (${schedule.instrument.name})",
-                style: TextStyle(
-                    decoration: schedule.status == 'canceled'
-                        ? TextDecoration.lineThrough
-                        : TextDecoration.none),
+              Row(
+                children: [
+                  Text(
+                    schedule.student.user.name,
+                  ),
+                  scheduleStatus(schedule.status),
+                  rescheduleStatus(schedule.isRescheduled ?? false)
+                ],
               ),
-              scheduleStatus(schedule.status),
-              rescheduleStatus(schedule.isRescheduled ?? false)
+              Text(
+                schedule.instrument.name,
+                style: Theme.of(context).textTheme.labelSmall,
+              )
             ],
           ),
         ),

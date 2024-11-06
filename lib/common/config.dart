@@ -16,9 +16,8 @@ class Config {
 }
 
 EdgeInsetsGeometry padding16 = const EdgeInsets.all(16);
-
+EdgeInsetsGeometry padding12 = const EdgeInsets.all(12);
 EdgeInsetsGeometry padding8 = const EdgeInsets.all(8);
-
 EdgeInsetsGeometry padding4 = const EdgeInsets.all(4);
 
 ThemeData ostinatoTheme = ThemeData(

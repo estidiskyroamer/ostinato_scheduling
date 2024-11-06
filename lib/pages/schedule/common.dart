@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/component.dart';
+import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule_note.dart';
 
 Widget noteBottomSheet(BuildContext context, ScheduleNote scheduleNote,
@@ -54,12 +55,13 @@ Widget scheduleDate(BuildContext context, DateTime date) {
   return listHeader(
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          DateFormat("dd MMMM yyyy").format(date),
+          DateFormat("dd MMM").format(date),
           style: Theme.of(context).textTheme.titleSmall,
         ),
+        Padding(padding: padding4),
         Text(
           DateFormat("EEEE").format(date),
           style: Theme.of(context)
