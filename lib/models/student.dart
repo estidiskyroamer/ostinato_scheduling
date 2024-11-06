@@ -70,15 +70,16 @@ class Student {
   final User user;
   final int isActive;
   List<Schedule>? schedules;
+  final String companyId;
 
-  Student({
-    this.id,
-    required this.address,
-    required this.birthDate,
-    required this.user,
-    required this.isActive,
-    this.schedules,
-  });
+  Student(
+      {this.id,
+      required this.address,
+      required this.birthDate,
+      required this.user,
+      required this.isActive,
+      this.schedules,
+      required this.companyId});
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
         id: json["id"],
@@ -90,6 +91,7 @@ class Student {
             ? null
             : List<Schedule>.from(
                 json["schedules"].map((x) => Schedule.fromJson(x))),
+        companyId: json["companyId"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -102,5 +104,6 @@ class Student {
         "schedules": schedules == null
             ? null
             : List<dynamic>.from(schedules!.map((x) => x.toJson())),
+        "companyId": companyId
       };
 }

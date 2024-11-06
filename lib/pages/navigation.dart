@@ -70,19 +70,13 @@ class _NavigationPageState extends State<NavigationPage> {
             Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
                   fontWeight: FontWeight.bold,
                 )),
-        unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
+        unselectedLabelStyle: Theme.of(context).textTheme.displaySmall,
         unselectedItemColor: Colors.black54,
         selectedItemColor: Colors.black,
         items: [
           BottomNavigationBarItem(
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: const Icon(
-                  FontAwesomeIcons.house,
-                ),
-              ),
-              activeIcon: Container(
-                padding: const EdgeInsets.only(bottom: 6),
                 child: const Icon(
                   FontAwesomeIcons.house,
                 ),
@@ -95,12 +89,6 @@ class _NavigationPageState extends State<NavigationPage> {
                   FontAwesomeIcons.child,
                 ),
               ),
-              activeIcon: Container(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: const Icon(
-                  FontAwesomeIcons.child,
-                ),
-              ),
               label: "Students"),
           BottomNavigationBarItem(
               icon: Container(
@@ -109,22 +97,10 @@ class _NavigationPageState extends State<NavigationPage> {
                   FontAwesomeIcons.calendarCheck,
                 ),
               ),
-              activeIcon: Container(
-                padding: const EdgeInsets.only(bottom: 6),
-                child: const Icon(
-                  FontAwesomeIcons.calendarCheck,
-                ),
-              ),
               label: "Schedule"),
           BottomNavigationBarItem(
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 4),
-                child: const Icon(
-                  FontAwesomeIcons.userGear,
-                ),
-              ),
-              activeIcon: Container(
-                padding: const EdgeInsets.only(bottom: 6),
                 child: const Icon(
                   FontAwesomeIcons.userGear,
                 ),

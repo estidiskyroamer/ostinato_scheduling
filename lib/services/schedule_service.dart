@@ -19,6 +19,7 @@ class ScheduleService {
       }
       Response response = await ServiceConfig().dio.get(url);
       schedule = ScheduleList.fromJson(response.data);
+      inspect(schedule);
     } on DioException catch (e) {
       inspect(e);
     }

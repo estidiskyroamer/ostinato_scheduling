@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:ostinato/common/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/user.dart';
+import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/services/student_service.dart';
 import 'package:ostinato/services/user_service.dart';
 
@@ -32,12 +34,15 @@ class _FormStudentPageState extends State<FormStudentPage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Student";
 
+  late Teacher selectedTeacher;
+
   bool isLoading = false;
 
   @override
   void initState() {
     super.initState();
     setEdit();
+    getTeacher();
   }
 
   void setEdit() {
@@ -72,6 +77,13 @@ class _FormStudentPageState extends State<FormStudentPage> {
     final random = Random();
     int index = random.nextInt(6);
     return index;
+  }
+
+  void getTeacher() async {
+    String? teacher = await Config().storage.read(key: 'teacher');
+    if (teacher != null) {
+      selectedTeacher = Teacher.fromJson(jsonDecode(teacher));
+    }
   }
 
   @override
@@ -169,11 +181,11 @@ class _FormStudentPageState extends State<FormStudentPage> {
       password: studentPhoneController.text,
     );
     Student student = Student(
-      user: user,
-      address: studentAddressController.text,
-      birthDate: studentBirthDate,
-      isActive: 1,
-    );
+        user: user,
+        address: studentAddressController.text,
+        birthDate: studentBirthDate,
+        isActive: 1,
+        companyId: selectedTeacher.companyId);
     StudentService().createStudent(student).then((value) {
       setState(() {
         isLoading = false;
@@ -196,12 +208,12 @@ class _FormStudentPageState extends State<FormStudentPage> {
       password: 'password',
     );
     Student student = Student(
-      id: widget.student!.id,
-      user: user,
-      address: studentAddressController.text,
-      birthDate: studentBirthDate,
-      isActive: 1,
-    );
+        id: widget.student!.id,
+        user: user,
+        address: studentAddressController.text,
+        birthDate: studentBirthDate,
+        isActive: 1,
+        companyId: widget.student!.companyId);
     StudentService().updateStudent(student).then((value) {
       setState(() {
         isLoading = false;

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/summary.dart';
+import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/account/common.dart';
 import 'package:ostinato/services/summary_service.dart';
@@ -19,10 +20,12 @@ class SummaryPage extends StatefulWidget {
 class _SummaryPageState extends State<SummaryPage> {
   late Future<Summary?> _summary;
   late Future<String?> _user;
+  late Future<String?> _teacher;
 
   @override
   void initState() {
     _user = Config().storage.read(key: 'user');
+    _teacher = Config().storage.read(key: 'teacher');
     getSummary();
     super.initState();
   }
@@ -61,11 +64,12 @@ class _SummaryPageState extends State<SummaryPage> {
               child: Column(
                 children: [
                   getTeacherName(),
-                  Text("Monthly Summary for Teacher",
+                  getTeacherCompany(),
+                  /* Text("Monthly Summary for Teacher",
                       style: Theme.of(context)
                           .textTheme
                           .displayMedium!
-                          .merge(const TextStyle(color: Colors.black))),
+                          .merge(const TextStyle(color: Colors.black))), */
                   Padding(padding: padding4),
                   Text(
                       "Data ranged from ${DateFormat("dd MMMM yyyy").format(firstDayCurrentMonth)} to ${DateFormat("dd MMMM yyyy").format(lastDayCurrentMonth)}",
@@ -186,6 +190,29 @@ class _SummaryPageState extends State<SummaryPage> {
           name = user.name;
         }
         return Text(name, style: Theme.of(context).textTheme.titleMedium);
+      },
+    );
+  }
+
+  FutureBuilder<String?> getTeacherCompany() {
+    return FutureBuilder(
+      future: _teacher,
+      builder: (BuildContext context, AsyncSnapshot<String?> snapshot) {
+        String company = '';
+        if (snapshot.hasData) {
+          var jsonData = jsonDecode(snapshot.data!);
+          inspect(jsonData);
+          Teacher teacher = Teacher.fromJson(jsonData);
+          company = teacher.company!.name;
+        }
+        return Container(
+          padding: padding4,
+          child: Text(company,
+              style: Theme.of(context)
+                  .textTheme
+                  .displayMedium!
+                  .merge(const TextStyle(color: Colors.black))),
+        );
       },
     );
   }
