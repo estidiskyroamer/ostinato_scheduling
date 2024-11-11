@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ostinato/common/component.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/schedule_note.dart';

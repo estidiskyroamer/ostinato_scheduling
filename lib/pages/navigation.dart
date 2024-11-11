@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
-import 'package:ostinato/common/component.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/pages/account/account.dart';
 import 'package:ostinato/pages/dashboard/dashboard.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';

@@ -91,3 +91,21 @@ ThemeData ostinatoTheme = ThemeData(
       elevation: 0,
       backgroundColor: Colors.white,
     ));
+
+extension StringCapitalization on String {
+  /// Capitalizes the first letter of a single word or sentence.
+  String capitalizeFirst() {
+    if (isEmpty) return '';
+    return this[0].toUpperCase() + substring(1);
+  }
+
+  /// Capitalizes the first letter of each word in a sentence.
+  String capitalizeEachWord() {
+    if (isEmpty) return '';
+    return split(' ')
+        .map((word) => word.isNotEmpty
+            ? word[0].toUpperCase() + word.substring(1).toLowerCase()
+            : word)
+        .join(' ');
+  }
+}

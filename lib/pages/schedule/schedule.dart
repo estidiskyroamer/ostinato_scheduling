@@ -2,18 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:grouped_list/grouped_list.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:ostinato/common/component.dart';
+import 'package:ostinato/common/components/component.dart';
+import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -273,17 +271,8 @@ class _SchedulePageState extends State<SchedulePage> {
             showModalBottomSheet<void>(
                 context: context,
                 builder: (context) {
-                  return scheduleBottomSheet(context, schedule, () {
-                    updateSchedule(schedule, 'done');
-                  }, () {
-                    reschedule(schedule);
-                  }, () {
-                    updateSchedule(schedule, 'canceled');
-                  }, () {
-                    editSchedule(schedule);
-                  }, () {
-                    deleteSchedule(schedule);
-                  });
+                  return ScheduleBottomSheet(
+                      schedule: schedule, onChanged: getSchedule);
                 });
           },
         ),

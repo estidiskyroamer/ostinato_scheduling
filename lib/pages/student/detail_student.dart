@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:ostinato/common/component.dart';
+import 'package:ostinato/common/components/component.dart';
+import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
@@ -270,17 +271,8 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             showModalBottomSheet<void>(
                 context: context,
                 builder: (context) {
-                  return scheduleBottomSheet(context, schedule, () {
-                    updateSchedule(schedule, 'done');
-                  }, () {
-                    reschedule(schedule);
-                  }, () {
-                    updateSchedule(schedule, 'canceled');
-                  }, () {
-                    editSchedule(schedule, student);
-                  }, () {
-                    deleteSchedule(schedule);
-                  });
+                  return ScheduleBottomSheet(
+                      schedule: schedule, onChanged: getScheduleList);
                 });
           },
         ),
