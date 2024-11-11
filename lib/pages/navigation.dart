@@ -111,19 +111,6 @@ class _NavigationPageState extends State<NavigationPage> {
         onTap: onTapped,
       ),
       body: pages[currentIndex],
-      /* bottomNavigationBar: NavBar(
-        currentIndex: currentIndex,
-        items: items,
-        backgroundColor:
-            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
-        onTap: (value) {
-          setPage(value);
-        },
-      ),
-      body: IndexedStack(
-        index: currentIndex,
-        children: pages,
-      ), */
     );
   }
 }
