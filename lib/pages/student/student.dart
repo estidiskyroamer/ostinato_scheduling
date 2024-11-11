@@ -5,7 +5,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
-import 'package:ostinato/pages/student/common.dart';
+import 'package:ostinato/pages/student/common/student_bottom_sheet.dart';
 import 'package:ostinato/pages/student/form_student.dart';
 import 'package:ostinato/services/student_service.dart';
 
@@ -37,24 +37,6 @@ class _StudentPageState extends State<StudentPage> {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const FormStudentPage()))
         .then((value) => getStudents());
-  }
-
-  void editStudent(Student student) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(
-            builder: (context) => FormStudentPage(
-                  student: student,
-                )))
-        .then((value) => getStudents());
-  }
-
-  void deleteStudent(Student student) async {
-    Navigator.of(context).pop();
-    StudentService().deleteStudent(student).then((value) {
-      if (value) {
-        getStudents();
-      }
-    });
   }
 
   @override
@@ -155,11 +137,8 @@ class _StudentPageState extends State<StudentPage> {
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return bottomSheet(context, student, () {
-                      editStudent(student);
-                    }, () {
-                      deleteStudent(student);
-                    });
+                    return StudentBottomSheet(
+                        student: student, onChanged: getStudents);
                   });
             },
           ),
