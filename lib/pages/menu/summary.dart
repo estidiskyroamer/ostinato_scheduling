@@ -7,7 +7,7 @@ import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/summary.dart';
 import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
-import 'package:ostinato/pages/account/common.dart';
+import 'package:ostinato/pages/menu/common.dart';
 import 'package:ostinato/services/summary_service.dart';
 
 class SummaryPage extends StatefulWidget {

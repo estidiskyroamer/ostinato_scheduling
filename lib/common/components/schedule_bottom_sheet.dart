@@ -10,12 +10,17 @@ import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:share_plus/share_plus.dart';
 
-class ScheduleBottomSheet extends StatelessWidget {
+class ScheduleBottomSheet extends StatefulWidget {
   final Schedule schedule;
   final VoidCallback onChanged;
   const ScheduleBottomSheet(
       {super.key, required this.schedule, required this.onChanged});
 
+  @override
+  State<StatefulWidget> createState() => _ScheduleBottomSheetState();
+}
+
+class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
   void updateSchedule(Schedule schedule, String status, BuildContext context) {
     Schedule update = Schedule(
       id: schedule.id,
@@ -27,19 +32,12 @@ class ScheduleBottomSheet extends StatelessWidget {
       startTime: schedule.startTime,
       endTime: schedule.endTime,
     );
-
     Navigator.of(context).pop();
     ScheduleService().updateSchedule(update).then((value) {
       if (value) {
-        onChanged();
+        widget.onChanged();
       }
     });
-  }
-
-  void addSchedule(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const FormSchedulePage()))
-        .then((value) => onChanged());
   }
 
   void editSchedule(Schedule schedule, BuildContext context) {
@@ -51,7 +49,7 @@ class ScheduleBottomSheet extends StatelessWidget {
             ),
           ),
         )
-        .then((value) => onChanged());
+        .then((value) => widget.onChanged());
   }
 
   void reschedule(Schedule schedule, BuildContext context) {
@@ -63,14 +61,14 @@ class ScheduleBottomSheet extends StatelessWidget {
             ),
           ),
         )
-        .then((value) => onChanged());
+        .then((value) => widget.onChanged());
   }
 
   void deleteSchedule(Schedule schedule, BuildContext context) async {
     Navigator.of(context).pop();
     ScheduleService().deleteSchedule(schedule).then((value) {
       if (value) {
-        onChanged();
+        widget.onChanged();
       }
     });
   }
@@ -80,7 +78,8 @@ class ScheduleBottomSheet extends StatelessWidget {
     return ItemBottomSheet(
       child: Column(
         children: [
-          schedule.status == 'done' || schedule.status == 'canceled'
+          widget.schedule.status == 'done' ||
+                  widget.schedule.status == 'canceled'
               ? const SizedBox()
               : Column(
                   children: [
@@ -114,10 +113,10 @@ class ScheduleBottomSheet extends StatelessWidget {
               RowIconButton(
                   onTap: () {
                     Navigator.of(context).pop();
-                    String date =
-                        DateFormat("EEEE, dd MMMM y").format(schedule.date);
+                    String date = DateFormat("EEEE, dd MMMM y")
+                        .format(widget.schedule.date);
                     Share.share(
-                        "Hi ${schedule.student.user.name}, this is a reminder for your piano lesson scheduled on $date at ${schedule.startTime}. If you need to reschedule, please let me know in advance.");
+                        "Hi ${widget.schedule.student.user.name}, this is a reminder for your piano lesson scheduled on $date at ${widget.schedule.startTime}. If you need to reschedule, please let me know in advance.");
                   },
                   icon: FontAwesomeIcons.shareNodes,
                   label: "Share"),
@@ -140,7 +139,7 @@ class ScheduleBottomSheet extends StatelessWidget {
                 builder: (context, setState) {
                   return ActionDialog(
                     action: () {
-                      deleteSchedule(schedule, context);
+                      deleteSchedule(widget.schedule, context);
                     },
                     contentText: "Are you sure you want to delete this data?",
                     actionText: "Delete",
@@ -160,7 +159,7 @@ class ScheduleBottomSheet extends StatelessWidget {
           Navigator.pop(context);
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => ScheduleNotePage(
-                    schedule: schedule,
+                    schedule: widget.schedule,
                   )));
         },
         icon: FontAwesomeIcons.file,
@@ -171,7 +170,7 @@ class ScheduleBottomSheet extends StatelessWidget {
     return RowIconButton(
         onTap: () {
           Navigator.of(context).pop();
-          reschedule(schedule, context);
+          reschedule(widget.schedule, context);
         },
         icon: FontAwesomeIcons.rotate,
         label: "Reschedule");
@@ -181,17 +180,17 @@ class ScheduleBottomSheet extends StatelessWidget {
     return RowIconButton(
         onTap: () {
           Navigator.pop(context);
-          String date = DateFormat("dd MMMM yyyy").format(schedule.date);
+          String date = DateFormat("dd MMMM yyyy").format(widget.schedule.date);
           showDialog(
             context: context,
             builder: (BuildContext context) {
               return ActionDialog(
                 action: () {
-                  updateSchedule(schedule, status, context);
+                  updateSchedule(widget.schedule, status, context);
                 },
                 contentText:
                     "Are you sure you want to mark this schedule as $status?"
-                    "\n$date\n${schedule.startTime} - ${schedule.student.user.name} (${schedule.instrument.name})",
+                    "\n$date\n${widget.schedule.startTime} - ${widget.schedule.student.user.name} (${widget.schedule.instrument.name})",
                 actionText: "Mark as $status",
               );
             },

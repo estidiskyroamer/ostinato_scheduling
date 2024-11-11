@@ -16,7 +16,8 @@ class StudentPage extends StatefulWidget {
   State<StudentPage> createState() => _StudentPageState();
 }
 
-class _StudentPageState extends State<StudentPage> {
+class _StudentPageState extends State<StudentPage>
+    with AutomaticKeepAliveClientMixin {
   TextEditingController searchController = TextEditingController();
   late Future<StudentList?> _studentList;
   int totalStudents = 0;
@@ -26,6 +27,9 @@ class _StudentPageState extends State<StudentPage> {
     super.initState();
     getStudents();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   void getStudents() {
     setState(() {
@@ -41,6 +45,7 @@ class _StudentPageState extends State<StudentPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
         appBar: AppBar(
           title: getTitle(),

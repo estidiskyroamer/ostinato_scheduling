@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:ostinato/common/components/component.dart';
-import 'package:ostinato/pages/account/account.dart';
+import 'package:ostinato/pages/menu/menu.dart';
 import 'package:ostinato/pages/dashboard/dashboard.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';
 import 'package:ostinato/pages/student/student.dart';
@@ -18,6 +18,8 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   int currentIndex = 0;
+  final PageController _controller = PageController();
+
   void setPage(int index) {
     setState(() {
       currentIndex = index;
@@ -51,6 +53,10 @@ class _NavigationPageState extends State<NavigationPage> {
   ];
 
   void onTapped(int index) {
+    if (currentIndex != index) {
+      _controller.jumpToPage(index);
+    }
+
     setState(() {
       currentIndex = index;
     });
@@ -110,7 +116,11 @@ class _NavigationPageState extends State<NavigationPage> {
         currentIndex: currentIndex,
         onTap: onTapped,
       ),
-      body: pages[currentIndex],
+      body: PageView(
+        controller: _controller,
+        onPageChanged: onTapped,
+        children: pages,
+      ),
     );
   }
 }

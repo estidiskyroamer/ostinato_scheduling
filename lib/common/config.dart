@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 class Config {
   final storage = const FlutterSecureStorage();

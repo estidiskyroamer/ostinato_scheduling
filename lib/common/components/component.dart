@@ -397,7 +397,7 @@ Widget inputDateTimePicker({
 Widget listHeader({required Widget child}) {
   return Container(
       width: double.infinity,
-      padding: padding8,
+      padding: padding12,
       decoration: const BoxDecoration(color: Colors.black12),
       child: child);
 }
@@ -409,8 +409,8 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
   Duration diff = endTime.difference(startTime);
   return Container(
     padding: isCurrentSchedule
-        ? const EdgeInsets.fromLTRB(32, 4, 16, 4)
-        : const EdgeInsets.fromLTRB(0, 4, 16, 4),
+        ? const EdgeInsets.fromLTRB(32, 8, 16, 8)
+        : const EdgeInsets.fromLTRB(0, 8, 16, 8),
     margin:
         isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
     decoration: BoxDecoration(

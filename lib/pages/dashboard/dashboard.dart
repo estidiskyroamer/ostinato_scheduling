@@ -49,7 +49,6 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     _user = Config().storage.read(key: 'user');
     getCurrentSchedule();
-    startTimer();
     super.initState();
   }
 
@@ -121,18 +120,6 @@ class _DashboardPageState extends State<DashboardPage> {
         getCurrentSchedule();
       }
     });
-  }
-
-  void startTimer() {
-    _timer = Timer.periodic(const Duration(seconds: 30), (Timer timer) {
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    _timer.cancel();
-    super.dispose();
   }
 
   @override

@@ -21,7 +21,8 @@ class SchedulePage extends StatefulWidget {
   State<SchedulePage> createState() => _SchedulePageState();
 }
 
-class _SchedulePageState extends State<SchedulePage> {
+class _SchedulePageState extends State<SchedulePage>
+    with AutomaticKeepAliveClientMixin {
   late Future<ScheduleList?> _scheduleList;
   late DateTime currentTime;
 
@@ -34,6 +35,9 @@ class _SchedulePageState extends State<SchedulePage> {
     currentTime = DateTime.now();
     getSchedule();
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
   void scrollToDate(ScheduleList scheduleList) {
     int nearestIndex = -1;
@@ -103,67 +107,15 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  void updateSchedule(Schedule schedule, String status) {
-    Schedule update = Schedule(
-      id: schedule.id,
-      student: schedule.student,
-      teacher: schedule.teacher,
-      instrument: schedule.instrument,
-      date: schedule.date,
-      status: status,
-      startTime: schedule.startTime,
-      endTime: schedule.endTime,
-    );
-
-    Navigator.of(context).pop();
-    ScheduleService().updateSchedule(update).then((value) {
-      if (value) {
-        getSchedule();
-      }
-    });
-  }
-
   void addSchedule(BuildContext context) {
     Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const FormSchedulePage()))
         .then((value) => getSchedule());
   }
 
-  void editSchedule(Schedule schedule) {
-    Navigator.of(context)
-        .push(
-          MaterialPageRoute(
-            builder: (context) => FormSchedulePage(
-              schedule: schedule,
-            ),
-          ),
-        )
-        .then((value) => getSchedule());
-  }
-
-  void reschedule(Schedule schedule) {
-    Navigator.of(context)
-        .push(
-          MaterialPageRoute(
-            builder: (context) => FormReschedulePage(
-              schedule: schedule,
-            ),
-          ),
-        )
-        .then((value) => getSchedule());
-  }
-
-  void deleteSchedule(Schedule schedule) async {
-    Navigator.of(context).pop();
-    ScheduleService().deleteSchedule(schedule).then((value) {
-      if (value) {
-        getSchedule();
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
