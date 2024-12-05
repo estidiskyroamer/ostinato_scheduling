@@ -80,7 +80,6 @@ class DioInterceptor extends Interceptor {
         "Authorization": "Bearer $token",
       },
     );
-    inspect(requestOptions);
     var response = dio.request<dynamic>(requestOptions.path,
         data: requestOptions.data,
         queryParameters: requestOptions.queryParameters,

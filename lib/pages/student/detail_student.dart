@@ -166,7 +166,6 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   );
                 }
                 if (snapshot.hasError) {
-                  inspect(snapshot);
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData) {
@@ -229,7 +228,6 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       ),
                     );
                   }
-                  inspect(snapshot);
                   if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
                     return const Center(child: Text('No schedule yet'));
                   }

@@ -60,9 +60,7 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
 
   void getTeacher() async {
     String? teacher = await Config().storage.read(key: 'teacher');
-    inspect(teacher);
     if (teacher != null) {
-      inspect(teacher);
       selectedTeacher = Teacher.fromJson(jsonDecode(teacher));
     }
     teacherNameController.text = selectedTeacher.user.name;

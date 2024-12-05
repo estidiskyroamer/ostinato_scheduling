@@ -101,7 +101,6 @@ class StudentService {
     try {
       Response response =
           await ServiceConfig().dio.delete('/students/student/${student.id}');
-      inspect(response);
       return true;
     } on DioException catch (e) {
       inspect(e);

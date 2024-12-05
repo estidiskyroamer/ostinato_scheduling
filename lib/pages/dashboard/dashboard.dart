@@ -60,7 +60,6 @@ class _DashboardPageState extends State<DashboardPage> {
             year: currentDate.year,
             day: currentDate.day);
       });
-      inspect(_scheduleList);
     }
   }
 
@@ -166,7 +165,6 @@ class _DashboardPageState extends State<DashboardPage> {
                     ),
                   );
                 }
-                inspect(snapshot);
                 if (!snapshot.hasData) {
                   return const Center(child: Text('No schedule yet'));
                 }

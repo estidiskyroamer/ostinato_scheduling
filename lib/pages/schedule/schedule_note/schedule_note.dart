@@ -92,7 +92,6 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
                     ),
                   );
                 }
-                inspect(snapshot);
                 if (!snapshot.hasData) {
                   return const Center(child: Text('No notes yet'));
                 }

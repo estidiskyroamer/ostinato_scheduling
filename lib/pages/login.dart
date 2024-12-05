@@ -35,7 +35,6 @@ class _LoginPageState extends State<LoginPage> {
     AuthService()
         .login(emailController.text, passwordController.text)
         .then((value) async {
-      inspect(value);
       if (value) {
         _user = await AuthService().getMe();
         _teacherDetail = await TeacherService().getTeacherDetail();

@@ -76,7 +76,6 @@ class _StudentPageState extends State<StudentPage>
                         ),
                       );
                     }
-                    inspect(snapshot);
                     if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));
                     }

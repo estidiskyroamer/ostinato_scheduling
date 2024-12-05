@@ -19,7 +19,6 @@ class ScheduleService {
       }
       Response response = await ServiceConfig().dio.get(url);
       schedule = ScheduleList.fromJson(response.data);
-      inspect(schedule);
     } on DioException catch (e) {
       inspect(e);
     }
@@ -39,7 +38,6 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .post('/schedules/$repeatNumber', data: params);
-      inspect(response);
       if (response.statusCode != 200) {
         return false;
       }
@@ -59,7 +57,6 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .put('/schedules/schedule/${schedule.id}', data: params);
-      inspect(response);
       return true;
     } on DioException catch (e) {
       inspect(e);
@@ -72,7 +69,6 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .delete('/schedules/schedule/${schedule.id}');
-      inspect(response);
       return true;
     } on DioException catch (e) {
       inspect(e);
@@ -128,7 +124,6 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .delete('/schedule_notes/schedule_note/${note.id}');
-      inspect(response);
       return true;
     } on DioException catch (e) {
       inspect(e);

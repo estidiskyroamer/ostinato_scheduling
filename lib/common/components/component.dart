@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -332,6 +334,7 @@ Widget inputDateTimePicker({
       break;
   }
   DateTime currentTime = DateTime.now();
+  inspect(selectedTime);
   return Column(
     mainAxisSize: MainAxisSize.min,
     children: [
@@ -365,7 +368,7 @@ Widget inputDateTimePicker({
           dateFormat: dateFormat,
           minDate: DateTime(currentTime.year - 100, 1),
           maxDate: DateTime(currentTime.year + 5, 12),
-          initialDate: selectedTime,
+          initialDate: selectedTime.add(const Duration(hours: 1)),
         ),
         style: DateTimePickerStyle(
             activeStyle: const TextStyle(fontWeight: FontWeight.bold)),
