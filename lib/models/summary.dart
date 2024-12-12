@@ -9,58 +9,70 @@ Summary summaryFromJson(String str) => Summary.fromJson(json.decode(str));
 String summaryToJson(Summary data) => json.encode(data.toJson());
 
 class Summary {
-  StudentSummary students;
-  CourseSummary courses;
+  Data data;
+  String message;
+  bool success;
 
   Summary({
-    required this.students,
-    required this.courses,
+    required this.data,
+    required this.message,
+    required this.success,
   });
 
   factory Summary.fromJson(Map<String, dynamic> json) => Summary(
-        students: StudentSummary.fromJson(json["students"]),
-        courses: CourseSummary.fromJson(json["courses"]),
+        data: Data.fromJson(json["data"]),
+        message: json["message"],
+        success: json["success"],
       );
 
   Map<String, dynamic> toJson() => {
-        "students": students.toJson(),
-        "courses": courses.toJson(),
+        "data": data.toJson(),
+        "message": message,
+        "success": success,
+      };
+}
+
+class Data {
+  StudentSummary studentSummary;
+  CourseSummary courseSummary;
+
+  Data({
+    required this.studentSummary,
+    required this.courseSummary,
+  });
+
+  factory Data.fromJson(Map<String, dynamic> json) => Data(
+        studentSummary: StudentSummary.fromJson(json["students"]),
+        courseSummary: CourseSummary.fromJson(json["courses"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "students": studentSummary.toJson(),
+        "courses": courseSummary.toJson(),
       };
 }
 
 class CourseSummary {
-  int totalCourses;
-  int totalCoursesDone;
-  int totalCoursesNotStarted;
-  int totalCoursesNotUpdated;
-  int totalCoursesRescheduled;
-  int totalCoursesCanceled;
+  int canceled;
+  int done;
+  int noStatus;
 
   CourseSummary({
-    required this.totalCourses,
-    required this.totalCoursesDone,
-    required this.totalCoursesNotStarted,
-    required this.totalCoursesNotUpdated,
-    required this.totalCoursesRescheduled,
-    required this.totalCoursesCanceled,
+    required this.canceled,
+    required this.done,
+    required this.noStatus,
   });
 
   factory CourseSummary.fromJson(Map<String, dynamic> json) => CourseSummary(
-        totalCourses: json["totalCourses"],
-        totalCoursesDone: json["totalCoursesDone"],
-        totalCoursesNotStarted: json["totalCoursesNotStarted"],
-        totalCoursesNotUpdated: json["totalCoursesNotUpdated"],
-        totalCoursesRescheduled: json["totalCoursesRescheduled"],
-        totalCoursesCanceled: json["totalCoursesCanceled"],
+        canceled: json["canceled"],
+        done: json["done"],
+        noStatus: json["no_status"],
       );
 
   Map<String, dynamic> toJson() => {
-        "totalCourses": totalCourses,
-        "totalCoursesDone": totalCoursesDone,
-        "totalCoursesNotStarted": totalCoursesNotStarted,
-        "totalCoursesNotUpdated": totalCoursesNotUpdated,
-        "totalCoursesRescheduled": totalCoursesRescheduled,
-        "totalCoursesCanceled": totalCoursesCanceled,
+        "canceled": canceled,
+        "done": done,
+        "no_status": noStatus,
       };
 }
 
@@ -68,26 +80,22 @@ class StudentSummary {
   int totalStudents;
   int totalNewStudents;
   int totalLeavingStudents;
-  int totalContinuingStudents;
 
   StudentSummary({
     required this.totalStudents,
     required this.totalNewStudents,
     required this.totalLeavingStudents,
-    required this.totalContinuingStudents,
   });
 
   factory StudentSummary.fromJson(Map<String, dynamic> json) => StudentSummary(
-        totalStudents: json["totalStudents"],
-        totalNewStudents: json["totalNewStudents"],
-        totalLeavingStudents: json["totalLeavingStudents"],
-        totalContinuingStudents: json["totalContinuingStudents"],
+        totalStudents: json["total_students"],
+        totalNewStudents: json["total_new_students"],
+        totalLeavingStudents: json["total_leaving_students"],
       );
 
   Map<String, dynamic> toJson() => {
-        "totalStudents": totalStudents,
-        "totalNewStudents": totalNewStudents,
-        "totalLeavingStudents": totalLeavingStudents,
-        "totalContinuingStudents": totalContinuingStudents,
+        "total_students": totalStudents,
+        "total_new_students": totalNewStudents,
+        "total_leaving_students": totalLeavingStudents,
       };
 }

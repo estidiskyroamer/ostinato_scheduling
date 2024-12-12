@@ -33,25 +33,6 @@ class _NavigationPageState extends State<NavigationPage> {
     const AccountPage(),
   ];
 
-  List<BottomNavBarItem> items = [
-    BottomNavBarItem(
-        label: "Dashboard",
-        icon: FontAwesomeIcons.house,
-        page: const DashboardPage()),
-    BottomNavBarItem(
-        label: "Students",
-        icon: FontAwesomeIcons.child,
-        page: const StudentPage()),
-    BottomNavBarItem(
-        label: "Schedule",
-        icon: FontAwesomeIcons.calendarCheck,
-        page: const SchedulePage()),
-    BottomNavBarItem(
-        label: "Account",
-        icon: FontAwesomeIcons.userGear,
-        page: const AccountPage()),
-  ];
-
   void onTapped(int index) {
     if (currentIndex != index) {
       _controller.jumpToPage(index);
@@ -70,15 +51,14 @@ class _NavigationPageState extends State<NavigationPage> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         elevation: 0,
-        backgroundColor:
-            Theme.of(context).bottomNavigationBarTheme.backgroundColor,
+        backgroundColor: Colors.black87,
         selectedLabelStyle:
             Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
                   fontWeight: FontWeight.bold,
                 )),
         unselectedLabelStyle: Theme.of(context).textTheme.displaySmall,
-        unselectedItemColor: Colors.black54,
-        selectedItemColor: Colors.black,
+        unselectedItemColor: Colors.grey[400],
+        selectedItemColor: Colors.white,
         items: [
           BottomNavigationBarItem(
               icon: Container(

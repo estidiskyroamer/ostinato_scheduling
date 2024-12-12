@@ -89,14 +89,17 @@ class _SummaryPageState extends State<SummaryPage> {
                     ),
                   );
                 }
+                inspect(snapshot);
                 if (!snapshot.hasData) {
                   return const Center(child: Text('No summary data'));
                 }
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
-                StudentSummary studentSummary = snapshot.data!.students;
-                CourseSummary coursesSummary = snapshot.data!.courses;
+                StudentSummary studentSummary =
+                    snapshot.data!.data.studentSummary;
+                CourseSummary coursesSummary =
+                    snapshot.data!.data.courseSummary;
 
                 String totalNewStudents = studentSummary.totalNewStudents > 0
                     ? "+${studentSummary.totalNewStudents}"
@@ -117,17 +120,8 @@ class _SummaryPageState extends State<SummaryPage> {
                             studentSummary.totalStudents.toString(),
                             "Total Students"),
                         summaryItem(context, totalNewStudents, "New Students"),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
                         summaryItem(
                             context, totalLeavingStudents, "Leaving Students"),
-                        summaryItem(
-                            context,
-                            studentSummary.totalContinuingStudents.toString(),
-                            "Continuing Students"),
                       ],
                     ),
                     Row(
@@ -135,37 +129,12 @@ class _SummaryPageState extends State<SummaryPage> {
                       children: [
                         summaryItem(
                             context,
-                            coursesSummary.totalCourses.toString(),
+                            (coursesSummary.done + coursesSummary.noStatus)
+                                .toString(),
                             "Total Courses"),
-                        summaryItem(
-                            context,
-                            coursesSummary.totalCoursesDone.toString(),
+                        summaryItem(context, coursesSummary.done.toString(),
                             "Courses Done"),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        summaryItem(
-                            context,
-                            coursesSummary.totalCoursesNotStarted.toString(),
-                            "Courses Not Started"),
-                        summaryItem(
-                            context,
-                            coursesSummary.totalCoursesNotUpdated.toString(),
-                            "Courses Not Updated"),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        summaryItem(
-                            context,
-                            coursesSummary.totalCoursesRescheduled.toString(),
-                            "Courses Rescheduled"),
-                        summaryItem(
-                            context,
-                            coursesSummary.totalCoursesCanceled.toString(),
+                        summaryItem(context, coursesSummary.canceled.toString(),
                             "Courses Canceled"),
                       ],
                     ),
