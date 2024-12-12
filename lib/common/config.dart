@@ -82,11 +82,9 @@ ThemeData ostinatoTheme = ThemeData(
     ),
     applyElevationOverlayColor: false,
     scaffoldBackgroundColor: Colors.white,
-    dialogBackgroundColor: HexColor('#FFF7EA'),
-    bottomSheetTheme: BottomSheetThemeData(
-        elevation: 0, backgroundColor: HexColor('#FFF7EA')),
-    bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        elevation: 0, backgroundColor: HexColor('#FFF7EA')),
+    dialogBackgroundColor: Colors.grey[300],
+    bottomSheetTheme:
+        BottomSheetThemeData(elevation: 0, backgroundColor: Colors.grey[300]),
     appBarTheme: const AppBarTheme(
       scrolledUnderElevation: 0,
       elevation: 0,

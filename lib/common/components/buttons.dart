@@ -82,7 +82,7 @@ class RowIconButton extends StatelessWidget {
           margin: padding8,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: HexColor("#FFF0D4"),
+            color: Colors.grey[400],
           ),
           child: Column(
             children: [

@@ -51,7 +51,7 @@ class _NavigationPageState extends State<NavigationPage> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         elevation: 0,
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.black,
         selectedLabelStyle:
             Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
                   fontWeight: FontWeight.bold,

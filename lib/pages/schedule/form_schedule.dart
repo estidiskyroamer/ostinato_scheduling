@@ -245,11 +245,12 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                     showModalBottomSheet<void>(
                       context: context,
                       builder: (context) {
-                        return inputDateTimePicker(
-                            title: "Set Date",
-                            context: context,
-                            selectedTime: selectedScheduleDate,
-                            setTime: setStartDate);
+                        return ItemBottomSheet(
+                            child: inputDateTimePicker(
+                                title: "Set Date",
+                                context: context,
+                                selectedTime: selectedScheduleDate,
+                                setTime: setStartDate));
                       },
                     );
                   },
@@ -267,12 +268,13 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                           showModalBottomSheet<void>(
                             context: context,
                             builder: (context) {
-                              return inputDateTimePicker(
-                                  title: "Set Start Time",
-                                  pickerType: 'time',
-                                  context: context,
-                                  selectedTime: selectedScheduleStartTime,
-                                  setTime: setStartTime);
+                              return ItemBottomSheet(
+                                  child: inputDateTimePicker(
+                                      title: "Set Start Time",
+                                      pickerType: 'time',
+                                      context: context,
+                                      selectedTime: selectedScheduleStartTime,
+                                      setTime: setStartTime));
                             },
                           );
                         },
@@ -290,12 +292,13 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                           showModalBottomSheet<void>(
                             context: context,
                             builder: (context) {
-                              return inputDateTimePicker(
-                                  title: "Set End Time",
-                                  pickerType: 'time',
-                                  context: context,
-                                  selectedTime: selectedScheduleEndTime,
-                                  setTime: setEndTime);
+                              return ItemBottomSheet(
+                                  child: inputDateTimePicker(
+                                      title: "Set End Time",
+                                      pickerType: 'time',
+                                      context: context,
+                                      selectedTime: selectedScheduleEndTime,
+                                      setTime: setEndTime));
                             },
                           );
                         },
