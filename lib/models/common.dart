@@ -28,11 +28,11 @@ class Links {
 
 class Meta {
   final int currentPage;
-  final int from;
+  final int? from;
   final int lastPage;
   final String path;
   final int perPage;
-  final int to;
+  final int? to;
   final int total;
 
   Meta({

@@ -112,18 +112,26 @@ class _SummaryPageState extends State<SummaryPage> {
                 return Column(
                   children: [
                     Padding(padding: padding16),
+                    Text(
+                      "Students",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Padding(padding: padding8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        summaryItem(
-                            context,
-                            studentSummary.totalStudents.toString(),
-                            "Total Students"),
-                        summaryItem(context, totalNewStudents, "New Students"),
-                        summaryItem(
-                            context, totalLeavingStudents, "Leaving Students"),
+                        summaryItem(context,
+                            studentSummary.totalStudents.toString(), "Total"),
+                        summaryItem(context, totalNewStudents, "New"),
+                        summaryItem(context, totalLeavingStudents, "Leaving"),
                       ],
                     ),
+                    Padding(padding: padding16),
+                    Text(
+                      "Courses",
+                      style: Theme.of(context).textTheme.titleSmall,
+                    ),
+                    Padding(padding: padding8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -131,11 +139,11 @@ class _SummaryPageState extends State<SummaryPage> {
                             context,
                             (coursesSummary.done + coursesSummary.noStatus)
                                 .toString(),
-                            "Total Courses"),
-                        summaryItem(context, coursesSummary.done.toString(),
-                            "Courses Done"),
+                            "Total"),
+                        summaryItem(
+                            context, coursesSummary.done.toString(), "Done"),
                         summaryItem(context, coursesSummary.canceled.toString(),
-                            "Courses Canceled"),
+                            "Canceled"),
                       ],
                     ),
                   ],

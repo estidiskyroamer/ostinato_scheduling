@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
+import 'package:ostinato/common/components/buttons.dart';
+import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/schedule_note.dart';
-import 'package:ostinato/pages/schedule/common.dart';
-import 'package:ostinato/pages/schedule/schedule_note/form_schedule_note.dart';
 import 'package:ostinato/services/schedule_service.dart';
 
 class ScheduleNotePage extends StatefulWidget {
@@ -17,7 +15,10 @@ class ScheduleNotePage extends StatefulWidget {
 }
 
 class _ScheduleNotePageState extends State<ScheduleNotePage> {
-  late Future<ScheduleNoteList?> _scheduleNoteList;
+  late ScheduleNote _scheduleNote;
+  TextEditingController noteController = TextEditingController();
+  bool isLoading = false;
+  bool isEdit = false;
 
   @override
   void initState() {
@@ -25,137 +26,113 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
     super.initState();
   }
 
-  void getScheduleNotes() {
+  void getScheduleNotes() async {
+    isLoading = true;
+    ScheduleNoteList? list =
+        await ScheduleService().getAllNotes(widget.schedule);
     if (mounted) {
-      setState(() {
-        _scheduleNoteList = ScheduleService().getAllNotes(widget.schedule);
-      });
-    }
-  }
-
-  void editNote(ScheduleNote scheduleNote) {
-    Navigator.pop(context);
-    Navigator.of(context)
-        .push(MaterialPageRoute(
-            builder: (context) => FormScheduleNotePage(
-                  scheduleNote: scheduleNote,
-                  scheduleId: scheduleNote.scheduleId,
-                )))
-        .then((value) => getScheduleNotes());
-  }
-
-  void deleteNote(ScheduleNote scheduleNote) async {
-    ScheduleService().deleteNote(scheduleNote).then((value) {
-      if (value) {
-        getScheduleNotes();
-        Navigator.of(context).pop();
+      if (list != null && list.scheduleNote.isNotEmpty) {
+        setState(() {
+          isEdit = true;
+          isLoading = false;
+          _scheduleNote = list.scheduleNote[0];
+          noteController.text = _scheduleNote.note;
+        });
+      } else {
+        setState(() {
+          isEdit = false;
+          isLoading = false;
+        });
       }
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          title: Text(
-            "Notes",
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
-                          builder: (context) => FormScheduleNotePage(
-                                scheduleId: widget.schedule.id!,
-                              )))
-                      .then((value) => getScheduleNotes());
-                },
-                icon: const Icon(FontAwesomeIcons.plus))
-          ],
+        title: Text(
+          "Notes",
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-        body: SizedBox(
-          height: double.infinity,
-          child: FutureBuilder(
-              future: _scheduleNoteList,
-              builder: (BuildContext context,
-                  AsyncSnapshot<ScheduleNoteList?> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 6,
-                      child: Config().loadingIndicator,
-                    ),
-                  );
-                }
-                if (!snapshot.hasData) {
-                  return const Center(child: Text('No notes yet'));
-                }
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-                ScheduleNoteList noteList = snapshot.data!;
-                List<ScheduleNote> notes = noteList.scheduleNote;
-                return ListView.builder(
-                  itemCount: notes.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    ScheduleNote note = notes[index];
-                    return noteItem(context, note);
-                  },
-                );
-              }),
-        ));
-  }
-
-  Widget noteItem(BuildContext context, ScheduleNote note) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-      margin: const EdgeInsets.only(top: 8, left: 32),
-      decoration: const BoxDecoration(
-          border: Border(
-        bottom: BorderSide(color: Colors.black38),
-      )),
-      child: Row(
-        children: [
-          Expanded(
-              flex: 6,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(note.note),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-                    child: Text(
-                      DateFormat("dd MMMM yyyy HH:mm").format(note.createdAt!),
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                  ),
-                ],
-              )),
-          Expanded(
-            flex: 1,
-            child: IconButton(
-              icon: const Icon(
-                FontAwesomeIcons.ellipsisVertical,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                showModalBottomSheet<void>(
-                    context: context,
-                    builder: (context) {
-                      return noteBottomSheet(context, note, () {
-                        editNote(note);
-                      }, () {
-                        deleteNote(note);
-                      });
-                    });
-              },
-            ),
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: padding16,
+          child: Column(
+            children: [
+              Image(
+                  width: MediaQuery.sizeOf(context).width / 2,
+                  image: const AssetImage('assets/images/notes.jpeg')),
+              Padding(padding: padding16),
+              InputField(
+                  textEditingController: noteController,
+                  maxLines: 7,
+                  inputType: TextInputType.multiline,
+                  capitalization: TextCapitalization.sentences,
+                  hintText: "Write notes on this lesson..."),
+              Padding(padding: padding16),
+              isLoading
+                  ? Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 6,
+                        child: Config().loadingIndicator,
+                      ),
+                    )
+                  : isEdit
+                      ? SolidButton(
+                          action: () {
+                            updateNote(context);
+                          },
+                          text: "Update")
+                      : SolidButton(
+                          action: () {
+                            createNote(context);
+                          },
+                          text: "Save"),
+            ],
           ),
-        ],
+        ),
       ),
     );
+  }
+
+  void createNote(BuildContext context) {
+    setState(() {
+      isLoading = true;
+    });
+    ScheduleNote create = ScheduleNote(
+      note: noteController.text,
+      scheduleId: widget.schedule.id!,
+    );
+    ScheduleService().createNote(create).then((result) {
+      setState(() {
+        isLoading = false;
+      });
+      if (result) {
+        getScheduleNotes();
+      }
+    });
+  }
+
+  void updateNote(BuildContext context) {
+    setState(() {
+      isLoading = true;
+    });
+    ScheduleNote update = ScheduleNote(
+      id: _scheduleNote.id,
+      note: noteController.text,
+      scheduleId: widget.schedule.id!,
+    );
+    ScheduleService().updateNote(update).then((result) {
+      setState(() {
+        isLoading = false;
+      });
+      if (result) {
+        getScheduleNotes();
+      }
+    });
   }
 }

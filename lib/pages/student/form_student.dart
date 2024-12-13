@@ -116,11 +116,12 @@ class _FormStudentPageState extends State<FormStudentPage> {
             showModalBottomSheet<void>(
               context: context,
               builder: (context) {
-                return inputDateTimePicker(
-                    title: "Set Birth Date",
-                    context: context,
-                    selectedTime: studentBirthDate,
-                    setTime: setBirthDate);
+                return ItemBottomSheet(
+                    child: inputDateTimePicker(
+                        title: "Set Birth Date",
+                        context: context,
+                        selectedTime: studentBirthDate,
+                        setTime: setBirthDate));
               },
             );
           },

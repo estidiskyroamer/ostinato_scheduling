@@ -8,10 +8,12 @@ import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/summary.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
+import 'package:ostinato/services/summary_service.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -38,11 +40,13 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   late Future<String?> _user;
+  late Future<Summary?> _summary;
 
   @override
   void initState() {
     _user = Config().storage.read(key: 'user');
     getCurrentSchedule();
+    getSummary();
     super.initState();
   }
 
@@ -53,6 +57,14 @@ class _DashboardPageState extends State<DashboardPage> {
             month: currentDate.month,
             year: currentDate.year,
             day: currentDate.day);
+      });
+    }
+  }
+
+  void getSummary() {
+    if (mounted) {
+      setState(() {
+        _summary = SummaryService().getSummary();
       });
     }
   }
@@ -145,47 +157,85 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Expanded(
+              flex: 2,
               child: SizedBox(
-            width: double.infinity,
-            child: FutureBuilder(
-              future: _scheduleList,
-              builder: (BuildContext context,
-                  AsyncSnapshot<ScheduleList?> snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: SizedBox(
-                      width: MediaQuery.of(context).size.width / 6,
-                      child: Config().loadingIndicator,
-                    ),
+                width: double.infinity,
+                child: FutureBuilder(
+                  future: _scheduleList,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<ScheduleList?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 6,
+                          child: Config().loadingIndicator,
+                        ),
+                      );
+                    }
+                    if (!snapshot.hasData) {
+                      return const Center(child: Text('No schedule yet'));
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    ScheduleList scheduleList = snapshot.data!;
+                    List<Schedule> schedules = scheduleList.data;
+                    if (schedules.isEmpty) {
+                      return const Center(child: Text('No schedule yet'));
+                    } else {
+                      return RefreshIndicator(
+                        color: Colors.black,
+                        onRefresh: () async {
+                          getCurrentSchedule();
+                        },
+                        child: ListView.builder(
+                            itemCount: schedules.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              Schedule schedule = schedules[index];
+                              return studentTime(context, schedule);
+                            }),
+                      );
+                    }
+                  },
+                ),
+              )),
+          Expanded(
+            flex: 1,
+            child: Container(
+              width: double.infinity,
+              padding: padding16,
+              child: FutureBuilder(
+                future: _summary,
+                builder:
+                    (BuildContext context, AsyncSnapshot<Summary?> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 6,
+                        child: Config().loadingIndicator,
+                      ),
+                    );
+                  }
+                  if (!snapshot.hasData || snapshot.hasError) {
+                    return const SizedBox();
+                  }
+                  CourseSummary courses = snapshot.data!.data.courseSummary;
+                  return Column(
+                    children: [
+                      const Text('You have completed'),
+                      Text(
+                        courses.done.toString(),
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      const Text('courses this month'),
+                      Padding(padding: padding4),
+                      Text('Only ${courses.noStatus} courses to go'),
+                    ],
                   );
-                }
-                if (!snapshot.hasData) {
-                  return const Center(child: Text('No schedule yet'));
-                }
-                if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                }
-                ScheduleList scheduleList = snapshot.data!;
-                List<Schedule> schedules = scheduleList.data;
-                if (schedules.isEmpty) {
-                  return const Center(child: Text('No schedule yet'));
-                } else {
-                  return RefreshIndicator(
-                    color: Colors.black,
-                    onRefresh: () async {
-                      getCurrentSchedule();
-                    },
-                    child: ListView.builder(
-                        itemCount: schedules.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          Schedule schedule = schedules[index];
-                          return studentTime(context, schedule);
-                        }),
-                  );
-                }
-              },
+                },
+              ),
             ),
-          ))
+          ),
         ],
       ),
     );
