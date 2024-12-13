@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
-import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/menu/form_account.dart';
 import 'package:ostinato/pages/menu/summary.dart';
@@ -76,7 +75,7 @@ class _AccountPageState extends State<AccountPage> {
                   StyledTextButton(
                       action: () async {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => FormAccountPage()));
+                            builder: (context) => const FormAccountPage()));
                       },
                       text: "Edit Account"),
                   StyledTextButton(

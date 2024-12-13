@@ -9,7 +9,6 @@ import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
-import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:sticky_grouped_list/sticky_grouped_list.dart';

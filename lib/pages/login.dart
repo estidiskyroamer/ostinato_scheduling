@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/input_field.dart';
@@ -12,7 +9,6 @@ import 'package:ostinato/pages/navigation.dart';
 import 'package:ostinato/pages/register.dart';
 import 'package:ostinato/services/auth_service.dart';
 import 'package:ostinato/services/teacher_service.dart';
-import 'package:toastification/toastification.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -129,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                         OutlineButton(
                             action: () {
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => RegisterPage()));
+                                  builder: (context) => const RegisterPage()));
                             },
                             text: "Register")
                       ],

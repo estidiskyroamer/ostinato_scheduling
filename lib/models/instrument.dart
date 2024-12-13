@@ -4,8 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:ostinato/models/common.dart';
-
 InstrumentList instrumentListFromJson(String str) =>
     InstrumentList.fromJson(json.decode(str));
 

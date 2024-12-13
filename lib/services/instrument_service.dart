@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/services/config.dart';
 
@@ -11,7 +10,7 @@ class InstrumentService {
       Response response = await ServiceConfig().dio.get('/instruments');
       instrumentList = InstrumentList.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return instrumentList;
   }

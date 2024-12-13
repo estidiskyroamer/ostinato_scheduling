@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/config.dart';
 
@@ -11,7 +10,7 @@ class UserService {
       Response response = await ServiceConfig().dio.get('/users/show/$id');
       user = UserDetail.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return user;
   }
@@ -28,7 +27,7 @@ class UserService {
       }
       return newUser;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return newUser;
     }
   }
@@ -45,7 +44,7 @@ class UserService {
       }
       return updatedUser;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return updatedUser;
     }
   }

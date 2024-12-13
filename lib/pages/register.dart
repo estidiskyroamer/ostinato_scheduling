@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:ostinato/common/components/buttons.dart';
-import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/navigation.dart';
@@ -64,7 +62,7 @@ class _RegisterPageState extends State<RegisterPage> {
               SolidButton(
                   action: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => NavigationPage()));
+                        builder: (context) => const NavigationPage()));
                   },
                   text: "Register"),
             ],

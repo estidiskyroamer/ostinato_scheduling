@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -11,9 +9,7 @@ import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
-import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/student/common/component.dart';
-import 'package:ostinato/pages/student/common/student_bottom_sheet.dart';
 import 'package:ostinato/pages/student/form_student.dart';
 import 'package:ostinato/pages/student/form_student_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
@@ -129,7 +125,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
       ),
-      body: SingleChildScrollView(
+      body: SizedBox(
         child: Column(
           children: [
             detailTitle(
@@ -216,38 +212,39 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                 },
               ),
             ),
-            FutureBuilder(
-                future: _studentScheduleList,
-                builder: (BuildContext context,
-                    AsyncSnapshot<ScheduleList?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 6,
-                        child: Config().loadingIndicator,
-                      ),
+            Flexible(
+              child: FutureBuilder(
+                  future: _studentScheduleList,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<ScheduleList?> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width / 6,
+                          child: Config().loadingIndicator,
+                        ),
+                      );
+                    }
+                    if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
+                      return const Center(child: Text('No schedule yet'));
+                    }
+                    if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    }
+                    ScheduleList scheduleList = snapshot.data!;
+                    return GroupedListView(
+                      order: GroupedListOrder.DESC,
+                      controller: _scrollController,
+                      elements: scheduleList.data,
+                      groupBy: (schedule) => schedule.date,
+                      groupSeparatorBuilder: (value) =>
+                          scheduleDate(context, value),
+                      itemBuilder: (context, schedule) {
+                        return detailStudentTime(schedule, schedule.student);
+                      },
                     );
-                  }
-                  if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
-                    return const Center(child: Text('No schedule yet'));
-                  }
-                  if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  }
-                  ScheduleList scheduleList = snapshot.data!;
-                  return GroupedListView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    controller: _scrollController,
-                    elements: scheduleList.data,
-                    groupBy: (schedule) => schedule.date,
-                    groupSeparatorBuilder: (value) =>
-                        scheduleDate(context, value),
-                    itemBuilder: (context, schedule) {
-                      return detailStudentTime(schedule, schedule.student);
-                    },
-                  );
-                }),
+                  }),
+            ),
           ],
         ),
       ),

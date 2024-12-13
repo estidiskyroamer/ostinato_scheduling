@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
-import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/user.dart';
@@ -21,7 +20,6 @@ class _FormAccountPageState extends State<FormAccountPage> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  late Future<String?> _user;
   late String? user;
   late User userData;
   bool isLoading = false;

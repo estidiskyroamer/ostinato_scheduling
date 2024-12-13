@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/component.dart';
-import 'package:ostinato/common/config.dart';
-import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
-import 'package:ostinato/pages/schedule/common.dart';
-import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/pages/student/form_student.dart';
 import 'package:ostinato/services/student_service.dart';

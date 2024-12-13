@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/component.dart';
-import 'package:ostinato/models/student.dart';
-import 'package:ostinato/pages/schedule/form_schedule.dart';
-import 'package:ostinato/pages/student/form_student.dart';
 
 Widget detailTitle(BuildContext context, String title, [Widget? action]) {
   return Container(

@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/pages/student/common/student_bottom_sheet.dart';

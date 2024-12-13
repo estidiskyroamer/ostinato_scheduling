@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/main.dart';
 import 'package:ostinato/models/user.dart';
-import 'dart:developer';
-
 import 'package:ostinato/pages/login.dart';
 import 'package:ostinato/services/config.dart';
 
@@ -28,7 +27,7 @@ class AuthService {
         return false;
       }
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -44,7 +43,7 @@ class AuthService {
         return false;
       }
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -58,7 +57,7 @@ class AuthService {
           .storage
           .write(key: 'user', value: jsonEncode(response.data));
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return user;
   }

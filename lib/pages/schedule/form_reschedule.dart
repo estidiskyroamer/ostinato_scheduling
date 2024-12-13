@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/buttons.dart';
@@ -9,9 +7,7 @@ import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
-import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
-import 'package:ostinato/services/student_service.dart';
 
 class FormReschedulePage extends StatefulWidget {
   final Schedule? schedule;
@@ -34,11 +30,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "Reschedule";
 
-  late String? _teacherId;
-  late String? _teacherName;
-  late StudentList? _studentList;
   late Student selectedStudent;
-  late InstrumentList? _instrumentList;
   late Instrument selectedInstrument;
   late Schedule selectedSchedule;
 
@@ -58,14 +50,6 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
 
   void setTeacher() async {
     teacherNameController.text = widget.schedule!.teacher.user.name;
-  }
-
-  void getStudentList() async {
-    _studentList = await StudentService().getStudents();
-  }
-
-  void getInstrumentList() async {
-    _instrumentList = await InstrumentService().getInstruments();
   }
 
   void setStudent() {

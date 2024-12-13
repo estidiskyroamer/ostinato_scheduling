@@ -1,19 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/user.dart';
-import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/services/schedule_service.dart';
@@ -27,7 +22,6 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   late Future<ScheduleList?> _scheduleList;
-  late Timer _timer;
 
   DateTime currentDate = DateTime.now();
   String greeting() {
@@ -151,7 +145,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Expanded(
-              child: Container(
+              child: SizedBox(
             width: double.infinity,
             child: FutureBuilder(
               future: _scheduleList,
@@ -215,7 +209,7 @@ class _DashboardPageState extends State<DashboardPage> {
       Expanded(
         flex: 1,
         child: IconButton(
-          icon: Icon(
+          icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
             color: Colors.black,
           ),
@@ -245,7 +239,7 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         }
         return Text(
-          "${greeting()}",
+          greeting(),
           style: Theme.of(context).textTheme.titleMedium,
         );
       },

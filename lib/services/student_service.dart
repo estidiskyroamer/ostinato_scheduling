@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/user.dart';
@@ -13,7 +12,7 @@ class StudentService {
       Response response = await ServiceConfig().dio.get('/students/all');
       studentList = StudentList.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return studentList;
   }
@@ -24,7 +23,7 @@ class StudentService {
       Response response = await ServiceConfig().dio.get('/students');
       studentList = StudentList.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return studentList;
   }
@@ -35,7 +34,7 @@ class StudentService {
       Response response = await ServiceConfig().dio.get('/students/show/$id');
       student = StudentDetail.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return student;
   }
@@ -47,7 +46,7 @@ class StudentService {
       Response response = await ServiceConfig().dio.get(url);
       schedule = ScheduleList.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return schedule;
   }
@@ -69,7 +68,7 @@ class StudentService {
       }
       return false;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -92,7 +91,7 @@ class StudentService {
       }
       return false;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -103,7 +102,7 @@ class StudentService {
           await ServiceConfig().dio.delete('/students/student/${student.id}');
       return true;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }

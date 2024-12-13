@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -7,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
-import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 import 'package:toastification/toastification.dart';
 

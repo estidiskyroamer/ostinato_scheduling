@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +12,6 @@ import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
-import 'package:ostinato/services/student_service.dart';
 
 class FormStudentSchedulePage extends StatefulWidget {
   final Schedule? schedule;
@@ -40,7 +38,6 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Schedule";
 
-  late StudentList? _studentList;
   late Student selectedStudent;
   late InstrumentList? _instrumentList;
   late Instrument selectedInstrument;
@@ -48,7 +45,6 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
 
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
-  bool isStudentLoading = false;
   bool isEdit = false;
 
   @override
@@ -75,16 +71,6 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
         studentNameController.text = selectedStudent.user.name;
       });
     }
-  }
-
-  void getStudentList() async {
-    setState(() {
-      isStudentLoading = true;
-    });
-    _studentList = await StudentService().getStudents();
-    setState(() {
-      isStudentLoading = false;
-    });
   }
 
   void getInstrumentList() async {
@@ -183,18 +169,11 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
             hintText: "Teacher name",
             isReadOnly: true,
           ),
-          isStudentLoading
-              ? Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 6,
-                    child: Config().loadingIndicator,
-                  ),
-                )
-              : InputField(
-                  textEditingController: studentNameController,
-                  hintText: "Student name",
-                  isReadOnly: true,
-                ),
+          InputField(
+            textEditingController: studentNameController,
+            hintText: "Student name",
+            isReadOnly: true,
+          ),
           InputField(
             textEditingController: instrumentController,
             hintText: "Instrument",

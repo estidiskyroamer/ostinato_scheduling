@@ -1,10 +1,7 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/schedule_note.dart';
-import 'package:ostinato/models/student.dart';
 import 'package:ostinato/services/config.dart';
 
 class ScheduleService {
@@ -20,7 +17,7 @@ class ScheduleService {
       Response response = await ServiceConfig().dio.get(url);
       schedule = ScheduleList.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return schedule;
   }
@@ -43,7 +40,7 @@ class ScheduleService {
       }
       return true;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -59,7 +56,7 @@ class ScheduleService {
           .put('/schedules/schedule/${schedule.id}', data: params);
       return true;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -71,7 +68,7 @@ class ScheduleService {
           .delete('/schedules/schedule/${schedule.id}');
       return true;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -83,7 +80,7 @@ class ScheduleService {
           await ServiceConfig().dio.get('/schedule_notes/${schedule.id}');
       scheduleNoteList = ScheduleNoteList.fromJson(response.data);
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
     }
     return scheduleNoteList;
   }
@@ -98,7 +95,7 @@ class ScheduleService {
       }
       return false;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -114,7 +111,7 @@ class ScheduleService {
       }
       return false;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
@@ -126,7 +123,7 @@ class ScheduleService {
           .delete('/schedule_notes/schedule_note/${note.id}');
       return true;
     } on DioException catch (e) {
-      inspect(e);
+      toastNotification(e.response!.data['errors'][0]);
       return false;
     }
   }
