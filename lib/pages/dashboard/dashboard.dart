@@ -229,7 +229,10 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       const Text('courses this month'),
                       Padding(padding: padding4),
-                      Text('Only ${courses.noStatus} courses to go'),
+                      Text(courses.done / (courses.noStatus + courses.done) >
+                              0.7
+                          ? 'Just ${courses.noStatus} courses to go, keep it up!'
+                          : "You're doing great!"),
                     ],
                   );
                 },

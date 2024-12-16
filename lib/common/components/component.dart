@@ -324,7 +324,7 @@ ToastificationItem toastNotification(String text) {
         child: Container(
           padding: padding8,
           margin: padding16,
-          color: Colors.black,
+          color: Colors.black54,
           child: Text(
             text,
             style: Theme.of(context).textTheme.displayMedium,

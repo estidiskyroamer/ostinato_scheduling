@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/models/schedule.dart';
@@ -38,6 +40,7 @@ class ScheduleService {
       if (response.statusCode != 200) {
         return false;
       }
+      toastNotification(response.data.message);
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
@@ -54,6 +57,7 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .put('/schedules/schedule/${schedule.id}', data: params);
+      toastNotification(response.data.message);
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
@@ -66,6 +70,7 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .delete('/schedules/schedule/${schedule.id}');
+      toastNotification(response.data['message']);
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
@@ -91,6 +96,7 @@ class ScheduleService {
       Response response =
           await ServiceConfig().dio.post('/schedule_notes', data: params);
       if (response.statusCode == 200) {
+        toastNotification(response.data['message']);
         return true;
       }
       return false;
@@ -107,6 +113,7 @@ class ScheduleService {
           .dio
           .put('/schedule_notes/schedule_note/${note.id}', data: params);
       if (response.statusCode == 200) {
+        toastNotification(response.data['message']);
         return true;
       }
       return false;
@@ -121,6 +128,7 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .delete('/schedule_notes/schedule_note/${note.id}');
+      toastNotification(response.data['message']);
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);

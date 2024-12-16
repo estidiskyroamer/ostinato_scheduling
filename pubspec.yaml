@@ -43,7 +43,6 @@ dependencies:
   jiffy: ^6.3.1
   font_awesome_flutter: ^10.7.0
   loading_indicator: ^3.1.1
-  dropdown_button2: ^2.3.9
   url_launcher: ^6.3.1
   scrollable_positioned_list: ^0.3.8
   grouped_list: ^6.0.0
