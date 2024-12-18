@@ -42,6 +42,7 @@ class UserService {
         UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
         updatedUser = updatedUserDetail.data;
       }
+      toastNotification(response.data['message']);
       return updatedUser;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);

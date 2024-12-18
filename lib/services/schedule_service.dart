@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/models/schedule.dart';
@@ -40,7 +38,7 @@ class ScheduleService {
       if (response.statusCode != 200) {
         return false;
       }
-      toastNotification(response.data.message);
+      toastNotification(response.data['message']);
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
@@ -57,7 +55,7 @@ class ScheduleService {
       Response response = await ServiceConfig()
           .dio
           .put('/schedules/schedule/${schedule.id}', data: params);
-      toastNotification(response.data.message);
+      toastNotification(response.data['message']);
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);

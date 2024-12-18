@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -321,13 +323,20 @@ ToastificationItem toastNotification(String text) {
     autoCloseDuration: const Duration(seconds: 5),
     builder: (context, holder) {
       return Center(
-        child: Container(
-          padding: padding8,
-          margin: padding16,
-          color: Colors.black54,
-          child: Text(
-            text,
-            style: Theme.of(context).textTheme.displayMedium,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 32),
+          child: ClipRRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
+              child: Container(
+                padding: padding8,
+                color: const Color.fromARGB(125, 60, 60, 60),
+                child: Text(
+                  text,
+                  style: Theme.of(context).textTheme.displayMedium,
+                ),
+              ),
+            ),
           ),
         ),
       );

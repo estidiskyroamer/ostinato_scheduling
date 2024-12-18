@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
+import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/menu/form_account.dart';
 import 'package:ostinato/pages/menu/summary.dart';
@@ -71,7 +72,11 @@ class _AccountPageState extends State<AccountPage> {
                             builder: (context) => const SummaryPage()));
                       },
                       text: "Summary"),
-                  StyledTextButton(action: () {}, text: "Tutorials"),
+                  StyledTextButton(
+                      action: () {
+                        toastNotification("Feature coming soon");
+                      },
+                      text: "Tutorials"),
                   StyledTextButton(
                       action: () async {
                         Navigator.of(context).push(MaterialPageRoute(

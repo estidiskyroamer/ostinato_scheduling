@@ -25,7 +25,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   late Future<ScheduleList?> _scheduleList;
 
-  DateTime currentDate = DateTime.now();
+  DateTime currentDate = DateTime(2025, 1, 7);
   String greeting() {
     final hour = DateTime.now().hour;
     if (hour >= 5 && hour < 11) {

@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ostinatoTheme,
         navigatorKey: navigatorKey,
         home: const NavigationPage(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }
