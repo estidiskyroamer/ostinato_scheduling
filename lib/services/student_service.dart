@@ -64,6 +64,7 @@ class StudentService {
       Response response =
           await ServiceConfig().dio.post('/students', data: params);
       if (response.statusCode == 200) {
+        toastNotification(response.data['message']);
         return true;
       }
       return false;
@@ -87,6 +88,7 @@ class StudentService {
           .dio
           .put('/students/student/${student.id}', data: params);
       if (response.statusCode == 200) {
+        toastNotification(response.data['message']);
         return true;
       }
       return false;

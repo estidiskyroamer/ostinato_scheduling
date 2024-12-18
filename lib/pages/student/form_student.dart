@@ -187,7 +187,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
         address: studentAddressController.text,
         birthDate: studentBirthDate,
         isActive: 1,
-        companyId: selectedTeacher.companyId);
+        companyId: selectedTeacher.companyId!);
     StudentService().createStudent(student).then((value) {
       setState(() {
         isLoading = false;

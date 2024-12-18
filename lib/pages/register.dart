@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/teacher.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/navigation.dart';
+import 'package:ostinato/services/teacher_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -16,6 +19,9 @@ class _RegisterPageState extends State<RegisterPage> {
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController companyController = TextEditingController();
+
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -58,17 +64,55 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintText: "Password",
                 isPassword: true,
               ),
+              InputField(
+                textEditingController: companyController,
+                hintText: "Company code (optional)",
+                inputType: TextInputType.text,
+              ),
               Padding(padding: padding8),
-              SolidButton(
-                  action: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const NavigationPage()));
-                  },
-                  text: "Register"),
+              isLoading
+                  ? Center(
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width / 6,
+                        child: Config().loadingIndicator,
+                      ),
+                    )
+                  : SolidButton(
+                      action: () {
+                        if (nameController.text != "" &&
+                            emailController.text != "" &&
+                            phoneController.text != "" &&
+                            passwordController.text != "") {
+                          createTeacher(context);
+                        }
+                      },
+                      text: "Register"),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void createTeacher(BuildContext context) {
+    setState(() {
+      isLoading = true;
+    });
+    User user = User(
+      name: nameController.text,
+      email: emailController.text,
+      phoneNumber: phoneController.text,
+      password: passwordController.text,
+    );
+    Teacher teacher =
+        Teacher(user: user, isActive: 1, companyCode: companyController.text);
+    TeacherService().createTeacher(teacher).then((value) {
+      setState(() {
+        isLoading = false;
+      });
+      if (value) {
+        Navigator.pop(context);
+      }
+    });
   }
 }
