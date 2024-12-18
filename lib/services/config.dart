@@ -10,16 +10,16 @@ class ServiceConfig {
 
   ServiceConfig() {
     dio = Dio(BaseOptions(
-        // baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"))
-        baseUrl: "http://localhost:8000/api"))
+        baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"))
+      // baseUrl: "http://localhost:8000/api"))
       ..interceptors.add(DioInterceptor());
   }
 }
 
 class DioInterceptor extends Interceptor {
   Dio dio = Dio(BaseOptions(
-      // baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"));
-      baseUrl: "http://localhost:8000/api"));
+      baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"));
+  // baseUrl: "http://localhost:8000/api"));
 
   @override
   void onRequest(
