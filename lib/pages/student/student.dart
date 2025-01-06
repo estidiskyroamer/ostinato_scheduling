@@ -17,8 +17,11 @@ class StudentPage extends StatefulWidget {
 class _StudentPageState extends State<StudentPage>
     with AutomaticKeepAliveClientMixin {
   TextEditingController searchController = TextEditingController();
-  late Future<StudentList?> _studentList;
+  late Future<StudentList?> _activeStudentList;
+  late Future<StudentList?> _inactiveStudentList;
   int totalStudents = 0;
+  String activeTabTitle = "Active";
+  String inactiveTabTitle = "Inactive";
 
   @override
   void initState() {
@@ -31,7 +34,8 @@ class _StudentPageState extends State<StudentPage>
 
   void getStudents() {
     setState(() {
-      _studentList = StudentService().getStudents();
+      _activeStudentList = StudentService().getStudents(1);
+      _inactiveStudentList = StudentService().getStudents(0);
     });
   }
 
@@ -44,9 +48,22 @@ class _StudentPageState extends State<StudentPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
         appBar: AppBar(
-          title: getTitle(),
+          title: Text(
+            "Student List",
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          bottom: TabBar(tabs: [
+            Tab(
+              text: activeTabTitle,
+            ),
+            Tab(
+              text: inactiveTabTitle,
+            )
+          ]),
           actions: [
             IconButton(
                 onPressed: () {
@@ -56,55 +73,120 @@ class _StudentPageState extends State<StudentPage>
           ],
           automaticallyImplyLeading: false,
         ),
-        body: Column(
+        body: TabBarView(
           children: [
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.only(left: 16),
-                width: double.infinity,
-                child: FutureBuilder(
-                  future: _studentList,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<StudentList?> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 6,
-                          child: Config().loadingIndicator,
-                        ),
-                      );
-                    }
-                    if (snapshot.hasError) {
-                      return Center(child: Text('Error: ${snapshot.error}'));
-                    }
-                    if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
-                      return const Center(child: Text('No students yet'));
-                    }
-                    final students = snapshot.data!.data;
-                    return RefreshIndicator(
-                      color: Colors.black,
-                      onRefresh: () async {
-                        getStudents();
+            Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 16),
+                    width: double.infinity,
+                    child: FutureBuilder(
+                      future: _activeStudentList,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<StudentList?> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 6,
+                              child: Config().loadingIndicator,
+                            ),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        }
+                        if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
+                          return const Center(child: Text('No students yet'));
+                        }
+                        final students = snapshot.data!.data;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() {
+                            activeTabTitle = "Active (${students.length})";
+                          });
+                        });
+
+                        return RefreshIndicator(
+                          color: Colors.black,
+                          onRefresh: () async {
+                            getStudents();
+                          },
+                          child: ListView.builder(
+                            itemCount: students.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              User student = students[index];
+                              return studentItem(context, student);
+                            },
+                          ),
+                        );
                       },
-                      child: ListView.builder(
-                        itemCount: students.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          User student = students[index];
-                          return studentItem(context, student);
-                        },
-                      ),
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+            Column(
+              children: [
+                Expanded(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 16),
+                    width: double.infinity,
+                    child: FutureBuilder(
+                      future: _inactiveStudentList,
+                      builder: (BuildContext context,
+                          AsyncSnapshot<StudentList?> snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Center(
+                            child: SizedBox(
+                              width: MediaQuery.of(context).size.width / 6,
+                              child: Config().loadingIndicator,
+                            ),
+                          );
+                        }
+                        if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
+                        }
+                        if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
+                          return const Center(child: Text('No students yet'));
+                        }
+                        final students = snapshot.data!.data;
+                        WidgetsBinding.instance.addPostFrameCallback((_) {
+                          setState(() {
+                            inactiveTabTitle = "Inactive (${students.length})";
+                          });
+                        });
+                        return RefreshIndicator(
+                          color: Colors.black,
+                          onRefresh: () async {
+                            getStudents();
+                          },
+                          child: ListView.builder(
+                            itemCount: students.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              User student = students[index];
+                              return studentItem(context, student);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                )
+              ],
             )
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   FutureBuilder<StudentList?> getTitle() {
     return FutureBuilder(
-      future: _studentList,
+      future: _activeStudentList,
       builder: (BuildContext context, AsyncSnapshot<StudentList?> snapshot) {
         if (snapshot.hasData) {
           final students = snapshot.data!.data;

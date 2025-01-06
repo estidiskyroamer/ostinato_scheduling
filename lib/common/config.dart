@@ -75,12 +75,16 @@ ThemeData ostinatoTheme = ThemeData(
           fontFamily: "Montserrat", fontSize: 12, color: Colors.black),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      labelTextStyle: MaterialStateProperty.all(const TextStyle(
+      labelTextStyle: WidgetStateProperty.all(const TextStyle(
           fontFamily: "Montserrat", fontSize: 12, color: Colors.black)),
     ),
     applyElevationOverlayColor: false,
     scaffoldBackgroundColor: Colors.white,
     dialogBackgroundColor: Colors.grey[300],
+    tabBarTheme: const TabBarTheme(
+        indicatorColor: Colors.black,
+        labelColor: Colors.black,
+        unselectedLabelColor: Color.fromARGB(255, 95, 95, 95)),
     bottomSheetTheme:
         BottomSheetThemeData(elevation: 0, backgroundColor: Colors.grey[300]),
     appBarTheme: const AppBarTheme(

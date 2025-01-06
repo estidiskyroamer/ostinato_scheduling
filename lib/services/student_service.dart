@@ -17,10 +17,11 @@ class StudentService {
     return studentList;
   }
 
-  Future<StudentList?> getStudents() async {
+  Future<StudentList?> getStudents(int isActive) async {
     StudentList? studentList;
     try {
-      Response response = await ServiceConfig().dio.get('/students');
+      Response response =
+          await ServiceConfig().dio.get('/students?isActive=$isActive');
       studentList = StudentList.fromJson(response.data);
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
@@ -39,10 +40,11 @@ class StudentService {
     return student;
   }
 
-  Future<ScheduleList?> getStudentSchedule(String id) async {
+  Future<ScheduleList?> getStudentSchedule(
+      {int? year, int? month, String? id}) async {
     ScheduleList? schedule;
     try {
-      String url = '/students/showSchedule/$id';
+      String url = '/students/showSchedule/$id?year=$year&month=$month';
       Response response = await ServiceConfig().dio.get(url);
       schedule = ScheduleList.fromJson(response.data);
     } on DioException catch (e) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
@@ -29,14 +30,16 @@ class DetailStudentPage extends StatefulWidget {
 class _DetailStudentPageState extends State<DetailStudentPage> {
   late Future<StudentDetail?> _studentDetail;
   late Future<ScheduleList?> _studentScheduleList;
+  late DateTime currentTime;
 
   final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
+    super.initState();
+    currentTime = DateTime.now();
     getStudentDetail();
     getScheduleList();
-    super.initState();
   }
 
   void getStudentDetail() {
@@ -50,8 +53,10 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   void getScheduleList() {
     if (mounted) {
       setState(() {
-        _studentScheduleList =
-            StudentService().getStudentSchedule(widget.student.id!);
+        _studentScheduleList = StudentService().getStudentSchedule(
+            month: currentTime.month,
+            year: currentTime.year,
+            id: widget.student.id!);
       });
     }
   }
@@ -116,6 +121,36 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
         Navigator.of(context).pop();
       }
     });
+  }
+
+  void changeScheduleDate(String operation) {
+    Jiffy scheduleTime = Jiffy.parseFromDateTime(currentTime);
+    switch (operation) {
+      case 'add':
+        scheduleTime = scheduleTime.add(months: 1);
+        break;
+      case 'subtract':
+        scheduleTime = scheduleTime.subtract(months: 1);
+        break;
+      default:
+        scheduleTime = scheduleTime.add(months: 1);
+        break;
+    }
+    if (mounted) {
+      setState(() {
+        currentTime = scheduleTime.dateTime;
+        getScheduleList();
+      });
+    }
+  }
+
+  void resetScheduleDate() {
+    if (mounted) {
+      setState(() {
+        currentTime = DateTime.now();
+        getScheduleList();
+      });
+    }
   }
 
   @override
@@ -219,6 +254,30 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                   addSchedule(widget.student);
                 },
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      changeScheduleDate('subtract');
+                    },
+                    icon: const Icon(FontAwesomeIcons.chevronLeft)),
+                GestureDetector(
+                  onDoubleTap: () {
+                    resetScheduleDate();
+                  },
+                  child: Text(
+                    DateFormat('MMMM yyyy').format(currentTime),
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                IconButton(
+                    onPressed: () {
+                      changeScheduleDate('add');
+                    },
+                    icon: const Icon(FontAwesomeIcons.chevronRight)),
+              ],
             ),
             Flexible(
               child: FutureBuilder(

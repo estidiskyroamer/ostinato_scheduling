@@ -7,6 +7,8 @@ import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/pages/student/form_student.dart';
+import 'package:ostinato/services/student_service.dart';
+import 'package:ostinato/services/user_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StudentBottomSheet extends StatelessWidget {
@@ -33,6 +35,27 @@ class StudentBottomSheet extends StatelessWidget {
     }); */
   }
 
+  void toggleActiveStudent(
+      User student, int isActive, BuildContext context) async {
+    User updatedStudent = User(
+        id: student.id,
+        name: student.name,
+        email: student.email,
+        phoneNumber: student.phoneNumber,
+        address: student.address,
+        birthDate: student.birthDate,
+        password: student.password,
+        roles: student.roles,
+        companies: student.companies,
+        isActive: isActive);
+    Navigator.of(context).pop();
+    UserService().updateUser(updatedStudent).then((value) {
+      if (value != null) {
+        onChanged();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return ItemBottomSheet(
@@ -49,7 +72,7 @@ class StudentBottomSheet extends StatelessWidget {
             children: [
               detailButton(context),
               contactButton(context),
-              deleteButton(context),
+              activeToggleButton(context),
             ],
           ),
         ],
@@ -57,7 +80,7 @@ class StudentBottomSheet extends StatelessWidget {
     );
   }
 
-  RowIconButton deleteButton(BuildContext context) {
+  RowIconButton activeToggleButton(BuildContext context) {
     return RowIconButton(
         onTap: () {
           Navigator.pop(context);
@@ -66,17 +89,24 @@ class StudentBottomSheet extends StatelessWidget {
             builder: (BuildContext context) {
               return ActionDialog(
                 action: () {
-                  deleteStudent(student, context);
+                  student.isActive == 1
+                      ? toggleActiveStudent(student, 0, context)
+                      : toggleActiveStudent(student, 1, context);
+                  // deleteStudent(student, context);
                 },
-                contentText:
-                    "Are you sure you want to delete this data? Student: ${student.name}\nTheir schedules will also be removed.",
+                contentText: student.isActive == 1
+                    ? "Are you sure you want to deactivate ${student.name}?"
+                    : "Are you sure you want to activate ${student.name}?",
+                // "Are you sure you want to delete this data? Student: ${student.name}\nTheir schedules will also be removed.",
                 actionText: "Delete",
               );
             },
           );
         },
-        icon: FontAwesomeIcons.trash,
-        label: "Delete");
+        icon: student.isActive == 1
+            ? FontAwesomeIcons.xmark
+            : FontAwesomeIcons.check,
+        label: student.isActive == 1 ? "Deactivate" : "Activate");
   }
 
   RowIconButton contactButton(BuildContext context) {

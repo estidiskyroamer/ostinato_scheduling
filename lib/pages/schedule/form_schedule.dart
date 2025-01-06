@@ -73,7 +73,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     setState(() {
       isStudentLoading = true;
     });
-    _studentList = await StudentService().getStudents();
+    _studentList = await StudentService().getStudents(1);
     setState(() {
       isStudentLoading = false;
     });
