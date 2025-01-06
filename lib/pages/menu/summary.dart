@@ -178,8 +178,8 @@ class _SummaryPageState extends State<SummaryPage> {
         String company = '';
         if (snapshot.hasData) {
           var jsonData = jsonDecode(snapshot.data!);
-          Teacher teacher = Teacher.fromJson(jsonData);
-          company = teacher.company!.name;
+          User teacher = User.fromJson(jsonData);
+          company = teacher.companies![0].name;
         }
         return Container(
           padding: padding4,

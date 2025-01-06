@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:intl/intl.dart';
+import 'package:ostinato/models/company.dart';
+import 'package:ostinato/models/role.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/user.dart';
 
@@ -10,7 +12,7 @@ StudentList studentListFromJson(String str) =>
 String studentListToJson(StudentList data) => json.encode(data.toJson());
 
 class StudentList {
-  final List<Student> data;
+  final List<User> data;
   final String message;
   final bool success;
 
@@ -21,7 +23,7 @@ class StudentList {
   });
 
   factory StudentList.fromJson(Map<String, dynamic> json) => StudentList(
-        data: List<Student>.from(json["data"].map((x) => Student.fromJson(x))),
+        data: List<User>.from(json["data"].map((x) => User.fromJson(x))),
         message: json["message"],
         success: json["success"],
       );
@@ -39,7 +41,7 @@ StudentDetail studentDetailFromJson(String str) =>
 String studentDetailToJson(StudentDetail data) => json.encode(data.toJson());
 
 class StudentDetail {
-  final Student data;
+  final User data;
   final String message;
   final bool success;
 
@@ -50,7 +52,7 @@ class StudentDetail {
   });
 
   factory StudentDetail.fromJson(Map<String, dynamic> json) => StudentDetail(
-        data: Student.fromJson(json["data"]),
+        data: User.fromJson(json["data"]),
         message: json["message"],
         success: json["success"],
       );
@@ -63,46 +65,30 @@ class StudentDetail {
 }
 
 class Student {
-  String? id;
-  final String address;
-  final DateTime birthDate;
   final User user;
-  final int isActive;
+  final Role? role;
+  final Company? company;
   List<Schedule>? schedules;
-  final String companyId;
 
-  Student(
-      {this.id,
-      required this.address,
-      required this.birthDate,
-      required this.user,
-      required this.isActive,
-      this.schedules,
-      required this.companyId});
+  Student({required this.user, this.role, this.company, this.schedules});
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
-        id: json["id"],
-        address: json["address"],
-        birthDate: DateTime.parse(json["birthDate"]),
         user: User.fromJson(json["user"]),
-        isActive: json["isActive"],
+        role: json["role"] == null ? null : Role.fromJson(json["role"]),
+        company:
+            json["company"] == null ? null : Company.fromJson(json["company"]),
         schedules: json["schedules"] == null || json["schedules"].length == 0
             ? null
             : List<Schedule>.from(
                 json["schedules"].map((x) => Schedule.fromJson(x))),
-        companyId: json["companyId"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "user": user,
-        "userId": user.id,
-        "address": address,
-        "birthDate": DateFormat('yyyy-MM-dd').format(birthDate),
-        "isActive": isActive,
+        "role": role,
+        "company": company,
         "schedules": schedules == null
             ? null
             : List<dynamic>.from(schedules!.map((x) => x.toJson())),
-        "companyId": companyId
       };
 }

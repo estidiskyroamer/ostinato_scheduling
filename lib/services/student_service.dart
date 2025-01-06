@@ -86,7 +86,7 @@ class StudentService {
     try {
       Response response = await ServiceConfig()
           .dio
-          .put('/students/student/${student.id}', data: params);
+          .put('/students/student/${student.user.id}', data: params);
       if (response.statusCode == 200) {
         toastNotification(response.data['message']);
         return true;
@@ -100,8 +100,9 @@ class StudentService {
 
   Future<bool> deleteStudent(Student student) async {
     try {
-      Response response =
-          await ServiceConfig().dio.delete('/students/student/${student.id}');
+      Response response = await ServiceConfig()
+          .dio
+          .delete('/students/student/${student.user.id}');
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);

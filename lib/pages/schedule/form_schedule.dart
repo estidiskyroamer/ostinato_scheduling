@@ -10,6 +10,7 @@ import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/teacher.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:ostinato/services/student_service.dart';
@@ -37,11 +38,11 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   String pageTitle = "New Schedule";
 
   late StudentList? _studentList;
-  late Student selectedStudent;
+  late User selectedStudent;
   late InstrumentList? _instrumentList;
   late Instrument selectedInstrument;
   late Schedule selectedSchedule;
-  late Teacher selectedTeacher;
+  late User selectedTeacher;
 
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
@@ -60,8 +61,8 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
 
   void getTeacher() {
     Config().storage.read(key: 'teacher').then((value) {
-      selectedTeacher = Teacher.fromJson(jsonDecode(value!));
-      teacherNameController.text = selectedTeacher.user.name;
+      selectedTeacher = User.fromJson(jsonDecode(value!));
+      teacherNameController.text = selectedTeacher.name;
     });
     //if (teacher != null) {
 
@@ -111,11 +112,11 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     }
   }
 
-  void setStudent(Student student) {
+  void setStudent(User student) {
     if (mounted) {
       setState(() {
         selectedStudent = student;
-        studentNameController.text = selectedStudent.user.name;
+        studentNameController.text = selectedStudent.name;
       });
     }
   }
@@ -202,13 +203,13 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                   : showModalBottomSheet<void>(
                       context: context,
                       builder: (context) {
-                        return listBottomSheet<Student>(
+                        return listBottomSheet<User>(
                           context: context,
                           items: _studentList!.data,
                           title: "Set student",
                           onItemSelected: setStudent,
-                          itemContentBuilder: (Student student) =>
-                              Text(student.user.name),
+                          itemContentBuilder: (User student) =>
+                              Text(student.name),
                         );
                       });
             },

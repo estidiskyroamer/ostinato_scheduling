@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/component.dart';
@@ -35,11 +37,17 @@ class _LoginPageState extends State<LoginPage> {
         .then((value) async {
       if (value) {
         _user = await AuthService().getMe();
-        _teacherDetail = await TeacherService().getTeacherDetail();
-        Teacher teacher = _teacherDetail!.data;
+        /* _teacherDetail = await TeacherService().getTeacherDetail();
+        Teacher teacher = _teacherDetail!.data; */
 
         setState(() {
           _isLoading = false;
+          Config().storage.write(
+                key: 'teacher',
+                value: jsonEncode(
+                  _user!.toJson(),
+                ),
+              );
         });
         if (mounted) {
           Navigator.of(context).push(

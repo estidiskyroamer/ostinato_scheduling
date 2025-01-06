@@ -10,12 +10,13 @@ import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/teacher.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
 
 class FormStudentSchedulePage extends StatefulWidget {
   final Schedule? schedule;
-  final Student student;
+  final User student;
   const FormStudentSchedulePage(
       {super.key, this.schedule, required this.student});
 
@@ -38,10 +39,10 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Schedule";
 
-  late Student selectedStudent;
+  late User selectedStudent;
   late InstrumentList? _instrumentList;
   late Instrument selectedInstrument;
-  late Teacher selectedTeacher;
+  late User selectedTeacher;
 
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
@@ -59,16 +60,16 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
   void getTeacher() async {
     String? teacher = await Config().storage.read(key: 'teacher');
     if (teacher != null) {
-      selectedTeacher = Teacher.fromJson(jsonDecode(teacher));
+      selectedTeacher = User.fromJson(jsonDecode(teacher));
     }
-    teacherNameController.text = selectedTeacher.user.name;
+    teacherNameController.text = selectedTeacher.name;
   }
 
   void getStudent() async {
     if (mounted) {
       setState(() {
         selectedStudent = widget.student;
-        studentNameController.text = selectedStudent.user.name;
+        studentNameController.text = selectedStudent.name;
       });
     }
   }
@@ -88,11 +89,11 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
     }
   }
 
-  void setStudent(Student student) {
+  void setStudent(User student) {
     if (mounted) {
       setState(() {
         selectedStudent = student;
-        studentNameController.text = selectedStudent.user.name;
+        studentNameController.text = selectedStudent.name;
       });
     }
   }

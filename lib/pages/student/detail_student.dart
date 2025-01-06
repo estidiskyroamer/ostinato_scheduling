@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_list/grouped_list.dart';
@@ -7,6 +9,7 @@ import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/schedule/common.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/student/common/component.dart';
@@ -16,7 +19,7 @@ import 'package:ostinato/services/schedule_service.dart';
 import 'package:ostinato/services/student_service.dart';
 
 class DetailStudentPage extends StatefulWidget {
-  final Student student;
+  final User student;
   const DetailStudentPage({super.key, required this.student});
 
   @override
@@ -72,7 +75,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
     });
   }
 
-  void addSchedule(Student student) {
+  void addSchedule(User student) {
     Navigator.of(context)
         .push(MaterialPageRoute(
             builder: (context) => FormStudentSchedulePage(
@@ -81,7 +84,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
         .then((value) => getScheduleList());
   }
 
-  void editSchedule(Schedule schedule, Student student) {
+  void editSchedule(Schedule schedule, User student) {
     Navigator.of(context)
         .push(
           MaterialPageRoute(
@@ -167,32 +170,37 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                 if (!snapshot.hasData) {
                   return const Center(child: Text('No student found'));
                 }
-                Student student = snapshot.data!.data;
+                User student = snapshot.data!.data;
                 return Column(
                   children: [
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
+                      child: detailItem(context, "Full name", student.name),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 16, top: 8),
+                      child: detailItem(
+                          context,
+                          "Birth date",
+                          student.birthDate != null
+                              ? DateFormat("dd MMMM yyyy")
+                                  .format(student.birthDate!)
+                              : ''),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 16, top: 8),
                       child:
-                          detailItem(context, "Full name", student.user.name),
+                          detailItem(context, "Address", student.address ?? ''),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child: detailItem(context, "Birth date",
-                          DateFormat("dd MMMM yyyy").format(student.birthDate)),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 16, top: 8),
-                      child: detailItem(context, "Address", student.address),
+                      child:
+                          detailItem(context, "E-mail address", student.email),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
                       child: detailItem(
-                          context, "E-mail address", student.user.email),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.only(left: 16, top: 8),
-                      child: detailItem(
-                          context, "Phone number", student.user.phoneNumber),
+                          context, "Phone number", student.phoneNumber),
                     ),
                   ],
                 );
@@ -251,7 +259,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
     );
   }
 
-  Widget detailStudentTime(Schedule schedule, Student student) {
+  Widget detailStudentTime(Schedule schedule, User student) {
     return scheduleItem(
       false,
       schedule,

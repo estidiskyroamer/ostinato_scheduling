@@ -251,7 +251,7 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
               Row(
                 children: [
                   Text(
-                    schedule.student.user.name,
+                    schedule.student.name,
                   ),
                   rescheduleStatus(schedule.isRescheduled ?? false),
                   scheduleStatus(schedule.status),

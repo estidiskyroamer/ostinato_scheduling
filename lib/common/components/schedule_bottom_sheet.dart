@@ -117,7 +117,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                     String date = DateFormat("EEEE, dd MMMM y")
                         .format(widget.schedule.date);
                     Share.share(
-                        "Hi ${widget.schedule.student.user.name}, this is a reminder for your piano lesson scheduled on $date at ${widget.schedule.startTime}. If you need to reschedule, please let me know in advance.");
+                        "Hi ${widget.schedule.student.name}, this is a reminder for your piano lesson scheduled on $date at ${widget.schedule.startTime}. If you need to reschedule, please let me know in advance.");
                   },
                   icon: FontAwesomeIcons.shareNodes,
                   label: "Share"),
@@ -191,7 +191,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                 },
                 contentText:
                     "Are you sure you want to mark this schedule as $status?"
-                    "\n$date\n${widget.schedule.startTime} - ${widget.schedule.student.user.name} (${widget.schedule.instrument.name})",
+                    "\n$date\n${widget.schedule.startTime} - ${widget.schedule.student.name} (${widget.schedule.instrument.name})",
                 actionText: "Mark as $status",
               );
             },

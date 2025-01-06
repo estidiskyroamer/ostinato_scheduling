@@ -49,11 +49,11 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   }
 
   void setTeacher() async {
-    teacherNameController.text = widget.schedule!.teacher.user.name;
+    teacherNameController.text = widget.schedule!.teacher.name;
   }
 
   void setStudent() {
-    studentNameController.text = widget.schedule!.student.user.name;
+    studentNameController.text = widget.schedule!.student.name;
   }
 
   void setInstrument() {

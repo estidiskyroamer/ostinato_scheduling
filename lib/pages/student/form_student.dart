@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,13 +8,13 @@ import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
-import 'package:ostinato/models/student.dart';
-import 'package:ostinato/models/user.dart';
+import 'package:ostinato/models/role.dart';
 import 'package:ostinato/models/teacher.dart';
-import 'package:ostinato/services/student_service.dart';
+import 'package:ostinato/models/user.dart';
+import 'package:ostinato/services/user_service.dart';
 
 class FormStudentPage extends StatefulWidget {
-  final Student? student;
+  final User? student;
   const FormStudentPage({super.key, this.student});
 
   @override
@@ -35,7 +36,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
   DateTime selectedScheduleEndTime = DateTime.now();
   String pageTitle = "New Student";
 
-  late Teacher selectedTeacher;
+  late User selectedTeacher;
 
   bool isLoading = false;
 
@@ -51,14 +52,15 @@ class _FormStudentPageState extends State<FormStudentPage> {
       if (widget.student != null) {
         setState(() {
           pageTitle = "Edit Student";
-          Student student = widget.student!;
-          studentNameController.text = student.user.name;
-          studentAddressController.text = student.address;
-          studentPhoneController.text = student.user.phoneNumber;
-          studentEmailController.text = student.user.email;
-          studentBirthDate = student.birthDate;
+          User student = widget.student!;
+          inspect(student);
+          studentNameController.text = student.name;
+          studentAddressController.text = student.address ?? '';
+          studentPhoneController.text = student.phoneNumber;
+          studentEmailController.text = student.email;
+          studentBirthDate = student.birthDate ?? studentBirthDate;
           dateController.text =
-              DateFormat("dd MMMM yyyy").format(student.birthDate);
+              DateFormat("dd MMMM yyyy").format(studentBirthDate);
         });
       }
     }
@@ -83,7 +85,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
   void getTeacher() async {
     String? teacher = await Config().storage.read(key: 'teacher');
     if (teacher != null) {
-      selectedTeacher = Teacher.fromJson(jsonDecode(teacher));
+      selectedTeacher = User.fromJson(jsonDecode(teacher));
     }
   }
 
@@ -177,22 +179,26 @@ class _FormStudentPageState extends State<FormStudentPage> {
       isLoading = true;
     });
     User user = User(
-      name: studentNameController.text,
-      email: studentEmailController.text,
-      phoneNumber: studentPhoneController.text,
-      password: studentPhoneController.text,
-    );
-    Student student = Student(
+        name: studentNameController.text,
+        email: studentEmailController.text,
+        phoneNumber: studentPhoneController.text,
+        address: studentAddressController.text,
+        birthDate: studentBirthDate,
+        password: studentPhoneController.text,
+        isActive: 1,
+        roles: [Role(id: '', name: 'student')],
+        companies: selectedTeacher.companies);
+    /* Student student = Student(
         user: user,
         address: studentAddressController.text,
         birthDate: studentBirthDate,
         isActive: 1,
-        companyId: selectedTeacher.companyId!);
-    StudentService().createStudent(student).then((value) {
+        companyId: selectedTeacher.companyId!); */
+    UserService().createUser(user).then((value) {
       setState(() {
         isLoading = false;
       });
-      if (value) {
+      if (value != null && context.mounted) {
         Navigator.pop(context);
       }
     });
@@ -203,24 +209,28 @@ class _FormStudentPageState extends State<FormStudentPage> {
       isLoading = true;
     });
     User user = User(
-      id: widget.student!.user.id,
-      name: studentNameController.text,
-      email: studentEmailController.text,
-      phoneNumber: studentPhoneController.text,
-      password: 'password',
-    );
-    Student student = Student(
+        id: widget.student!.id,
+        name: studentNameController.text,
+        email: studentEmailController.text,
+        phoneNumber: studentPhoneController.text,
+        address: studentAddressController.text,
+        birthDate: studentBirthDate,
+        password: widget.student!.password,
+        isActive: 1,
+        roles: widget.student!.roles,
+        companies: widget.student!.companies);
+    /* Student student = Student(
         id: widget.student!.id,
         user: user,
         address: studentAddressController.text,
         birthDate: studentBirthDate,
         isActive: 1,
-        companyId: widget.student!.companyId);
-    StudentService().updateStudent(student).then((value) {
+        companyId: widget.student!.companyId); */
+    UserService().updateUser(user).then((value) {
       setState(() {
         isLoading = false;
       });
-      if (value) {
+      if (value != null && context.mounted) {
         Navigator.pop(context);
       }
     });

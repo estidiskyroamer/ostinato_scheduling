@@ -113,7 +113,10 @@ class _FormAccountPageState extends State<FormAccountPage> {
                   email: emailController.text,
                   name: nameController.text,
                   phoneNumber: phoneController.text,
-                  password: passwordController.text);
+                  password: passwordController.text,
+                  roles: userData.roles,
+                  companies: userData.companies,
+                  isActive: userData.isActive);
               UserService().updateUser(update).then((value) {
                 Config()
                     .storage

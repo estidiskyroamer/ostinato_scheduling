@@ -64,9 +64,9 @@ class CourseSummary {
   });
 
   factory CourseSummary.fromJson(Map<String, dynamic> json) => CourseSummary(
-        canceled: json["canceled"],
-        done: json["done"],
-        noStatus: json["no_status"],
+        canceled: json["canceled"] ?? 0,
+        done: json["done"] ?? 0,
+        noStatus: json["no_status"] ?? 0,
       );
 
   Map<String, dynamic> toJson() => {

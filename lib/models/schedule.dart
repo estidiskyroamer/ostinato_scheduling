@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/teacher.dart';
+import 'package:ostinato/models/user.dart';
 
 ScheduleList scheduleListFromJson(String str) =>
     ScheduleList.fromJson(json.decode(str));
@@ -47,8 +48,8 @@ class Schedule {
   final bool? isRescheduled;
   final String startTime;
   final String endTime;
-  final Student student;
-  final Teacher teacher;
+  final User student;
+  final User teacher;
   final Instrument instrument;
 
   Schedule({
@@ -72,8 +73,8 @@ class Schedule {
         isRescheduled: json['isRescheduled'] == 1 ? true : false,
         startTime: _formatTime(json["startTime"]),
         endTime: _formatTime(json["endTime"]),
-        student: Student.fromJson(json["student"]),
-        teacher: Teacher.fromJson(json["teacher"]),
+        student: User.fromJson(json["student"]),
+        teacher: User.fromJson(json["teacher"]),
         instrument: Instrument.fromJson(json["instrument"]),
       );
 

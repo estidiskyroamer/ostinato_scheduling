@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
+import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/student/common/student_bottom_sheet.dart';
 import 'package:ostinato/pages/student/form_student.dart';
 import 'package:ostinato/services/student_service.dart';
@@ -88,7 +89,7 @@ class _StudentPageState extends State<StudentPage>
                       child: ListView.builder(
                         itemCount: students.length,
                         itemBuilder: (BuildContext context, int index) {
-                          Student student = students[index];
+                          User student = students[index];
                           return studentItem(context, student);
                         },
                       ),
@@ -120,7 +121,7 @@ class _StudentPageState extends State<StudentPage>
     );
   }
 
-  Widget studentItem(BuildContext context, Student student) {
+  Widget studentItem(BuildContext context, User student) {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 16),
       decoration: const BoxDecoration(
@@ -128,7 +129,7 @@ class _StudentPageState extends State<StudentPage>
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(student.user.name),
+          Text(student.name),
           IconButton(
             icon: const Icon(
               FontAwesomeIcons.ellipsisVertical,

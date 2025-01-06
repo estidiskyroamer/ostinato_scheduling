@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
-import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
-import 'package:ostinato/pages/navigation.dart';
-import 'package:ostinato/services/teacher_service.dart';
+import 'package:ostinato/services/user_service.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -103,14 +101,16 @@ class _RegisterPageState extends State<RegisterPage> {
       email: emailController.text,
       phoneNumber: phoneController.text,
       password: passwordController.text,
+      isActive: 1,
     );
-    Teacher teacher =
-        Teacher(user: user, isActive: 1, companyCode: companyController.text);
-    TeacherService().createTeacher(teacher).then((value) {
+    /* Teacher teacher =
+        Teacher(user: user, isActive: 1, companyCode: companyController.text); */
+
+    UserService().createUser(user).then((value) {
       setState(() {
         isLoading = false;
       });
-      if (value) {
+      if (value != null && context.mounted) {
         Navigator.pop(context);
       }
     });
