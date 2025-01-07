@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -44,6 +45,9 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   late Schedule selectedSchedule;
   late User selectedTeacher;
 
+  late String courseLength;
+  late String repeat;
+
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
   bool isStudentLoading = false;
@@ -52,11 +56,12 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
 
   @override
   void initState() {
+    super.initState();
     setEdit();
     getTeacher();
     getStudentList();
     getInstrumentList();
-    super.initState();
+    getSettings();
   }
 
   void getTeacher() {
@@ -86,6 +91,16 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     _instrumentList = await InstrumentService().getInstruments();
     setState(() {
       isInstrumentLoading = false;
+    });
+  }
+
+  void getSettings() async {
+    String? courseLengthString =
+        await Config().storage.read(key: 'course_length');
+    String? repeatString = await Config().storage.read(key: 'repeat');
+    setState(() {
+      courseLength = courseLengthString ?? Config().courseLengthDef.toString();
+      repeatController.text = repeatString ?? Config().repeatDef.toString();
     });
   }
 
@@ -149,7 +164,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
       });
       setEndTime(
         selectedDate.add(
-          const Duration(minutes: 30),
+          Duration(minutes: int.parse(courseLength)),
         ),
       );
     }

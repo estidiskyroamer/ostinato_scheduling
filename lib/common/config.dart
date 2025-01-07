@@ -4,6 +4,11 @@ import 'package:loading_indicator/loading_indicator.dart';
 
 class Config {
   final storage = const FlutterSecureStorage();
+
+  //default settings value
+  int courseLengthDef = 30;
+  int repeatDef = 4;
+
   LoadingIndicator loadingIndicator = LoadingIndicator(
     indicatorType: Indicator.ballPulseSync,
     colors: [

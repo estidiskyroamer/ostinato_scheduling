@@ -5,6 +5,7 @@ import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/menu/form_account.dart';
+import 'package:ostinato/pages/menu/settings.dart';
 import 'package:ostinato/pages/menu/summary.dart';
 import 'package:ostinato/services/auth_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -77,6 +78,12 @@ class _AccountPageState extends State<AccountPage> {
                         toastNotification("Feature coming soon");
                       },
                       text: "Tutorials"),
+                  StyledTextButton(
+                      action: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SettingsPage()));
+                      },
+                      text: "Settings"),
                   StyledTextButton(
                       action: () async {
                         Navigator.of(context).push(MaterialPageRoute(

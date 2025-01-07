@@ -333,6 +333,7 @@ ToastificationItem toastNotification(String text) {
                 color: const Color.fromARGB(125, 60, 60, 60),
                 child: Text(
                   text,
+                  textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.displayMedium,
                 ),
               ),

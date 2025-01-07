@@ -53,11 +53,12 @@ class StudentService {
     return schedule;
   }
 
-  Future<bool> createStudent(Student student) async {
+  Future<User?> createStudent(User student) async {
     Map<String, dynamic> params = student.toJson();
+    User? updatedUser;
 
     if (params['user'] != null) {
-      User paramUser = student.user;
+      User paramUser = student;
       Map<String, dynamic> user = paramUser.toJson();
       params.remove('user');
       params.addAll(user);
@@ -66,21 +67,23 @@ class StudentService {
       Response response =
           await ServiceConfig().dio.post('/students', data: params);
       if (response.statusCode == 200) {
-        toastNotification(response.data['message']);
-        return true;
+        UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
+        updatedUser = updatedUserDetail.data;
       }
-      return false;
+      toastNotification(response.data['message']);
+      return updatedUser;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
-      return false;
+      return updatedUser;
     }
   }
 
-  Future<bool> updateStudent(Student student) async {
+  Future<User?> updateStudent(User student) async {
     Map<String, dynamic> params = student.toJson();
+    User? updatedUser;
 
     if (params['user'] != null) {
-      User paramUser = student.user;
+      User paramUser = student;
       Map<String, dynamic> user = paramUser.toJson();
       params.remove('user');
       params.addAll(user);
@@ -88,15 +91,16 @@ class StudentService {
     try {
       Response response = await ServiceConfig()
           .dio
-          .put('/students/student/${student.user.id}', data: params);
+          .put('/students/student/${student.id}', data: params);
       if (response.statusCode == 200) {
-        toastNotification(response.data['message']);
-        return true;
+        UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
+        updatedUser = updatedUserDetail.data;
       }
-      return false;
+      toastNotification(response.data['message']);
+      return updatedUser;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
-      return false;
+      return updatedUser;
     }
   }
 

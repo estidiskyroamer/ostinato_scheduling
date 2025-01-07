@@ -72,7 +72,7 @@ class _SummaryPageState extends State<SummaryPage> {
                           .merge(const TextStyle(color: Colors.black))), */
                   Padding(padding: padding4),
                   Text(
-                      "Data ranged from ${DateFormat("dd MMMM yyyy").format(firstDayCurrentMonth)} to ${DateFormat("dd MMMM yyyy").format(lastDayCurrentMonth)}",
+                      "Data from ${DateFormat("dd").format(firstDayCurrentMonth)} to ${DateFormat("dd MMMM yyyy").format(lastDayCurrentMonth)}",
                       style: Theme.of(context).textTheme.labelSmall),
                 ],
               ),
@@ -120,10 +120,15 @@ class _SummaryPageState extends State<SummaryPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        summaryItem(context,
-                            studentSummary.totalStudents.toString(), "Total"),
-                        summaryItem(context, totalNewStudents, "New"),
-                        summaryItem(context, totalLeavingStudents, "Leaving"),
+                        summaryItem(
+                            context,
+                            studentSummary.totalStudents.toString(),
+                            "Total",
+                            "Total of active students assigned to you with scheduled courses within the date range"),
+                        summaryItem(context, totalNewStudents, "New",
+                            "Total of new students assigned to or added by you with scheduled courses within the date range"),
+                        summaryItem(context, totalLeavingStudents, "Leaving",
+                            "Total of leaving students which has been assigned to or added by you with scheduled courses within the date range"),
                       ],
                     ),
                     Padding(padding: padding16),
@@ -139,11 +144,18 @@ class _SummaryPageState extends State<SummaryPage> {
                             context,
                             (coursesSummary.done + coursesSummary.noStatus)
                                 .toString(),
-                            "Total"),
+                            "Total",
+                            "Total courses scheduled to you within the date range"),
                         summaryItem(
-                            context, coursesSummary.done.toString(), "Done"),
-                        summaryItem(context, coursesSummary.canceled.toString(),
-                            "Canceled"),
+                            context,
+                            coursesSummary.done.toString(),
+                            "Done",
+                            "Total courses scheduled to you and marked as done within the date range"),
+                        summaryItem(
+                            context,
+                            coursesSummary.canceled.toString(),
+                            "Canceled",
+                            "Total courses scheduled to you and marked as canceled within the date range"),
                       ],
                     ),
                   ],

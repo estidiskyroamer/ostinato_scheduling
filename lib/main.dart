@@ -7,6 +7,20 @@ import 'package:toastification/toastification.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //await Prefs().init();
+  //Check default settings
+  Config().storage.read(key: 'course_length').then((value) {
+    if (value == null) {
+      Config().storage.write(
+          key: 'course_length', value: Config().courseLengthDef.toString());
+    }
+  });
+  Config().storage.read(key: 'repeat').then((value) {
+    if (value == null) {
+      Config()
+          .storage
+          .write(key: 'repeat', value: Config().repeatDef.toString());
+    }
+  });
   runApp(const MyApp());
 }
 

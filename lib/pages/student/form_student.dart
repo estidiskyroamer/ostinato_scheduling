@@ -11,6 +11,7 @@ import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/role.dart';
 import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
+import 'package:ostinato/services/student_service.dart';
 import 'package:ostinato/services/user_service.dart';
 
 class FormStudentPage extends StatefulWidget {
@@ -188,13 +189,8 @@ class _FormStudentPageState extends State<FormStudentPage> {
         isActive: 1,
         roles: [Role(id: '', name: 'student')],
         companies: selectedTeacher.companies);
-    /* Student student = Student(
-        user: user,
-        address: studentAddressController.text,
-        birthDate: studentBirthDate,
-        isActive: 1,
-        companyId: selectedTeacher.companyId!); */
-    UserService().createUser(user).then((value) {
+
+    StudentService().createStudent(user).then((value) {
       setState(() {
         isLoading = false;
       });

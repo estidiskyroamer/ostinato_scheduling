@@ -27,10 +27,10 @@ class ScheduleService {
     params['studentId'] = params['student']['id'];
     params['teacherId'] = params['teacher']['id'];
     params['instrumentId'] = params['instrument']['id'];
-    int repeatNumber = 4;
-    if (repeat != null && repeat.isNotEmpty) {
-      repeatNumber = int.parse(repeat);
-    }
+    int repeatNumber =
+        (repeat != null && repeat.isNotEmpty && int.tryParse(repeat) != null)
+            ? (int.parse(repeat) < 1 ? 1 : int.parse(repeat))
+            : 1;
     try {
       Response response = await ServiceConfig()
           .dio

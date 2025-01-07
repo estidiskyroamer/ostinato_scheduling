@@ -49,7 +49,7 @@ class StudentBottomSheet extends StatelessWidget {
         companies: student.companies,
         isActive: isActive);
     Navigator.of(context).pop();
-    UserService().updateUser(updatedStudent).then((value) {
+    StudentService().updateStudent(updatedStudent).then((value) {
       if (value != null) {
         onChanged();
       }
@@ -92,13 +92,11 @@ class StudentBottomSheet extends StatelessWidget {
                   student.isActive == 1
                       ? toggleActiveStudent(student, 0, context)
                       : toggleActiveStudent(student, 1, context);
-                  // deleteStudent(student, context);
                 },
                 contentText: student.isActive == 1
                     ? "Are you sure you want to deactivate ${student.name}?"
                     : "Are you sure you want to activate ${student.name}?",
-                // "Are you sure you want to delete this data? Student: ${student.name}\nTheir schedules will also be removed.",
-                actionText: "Delete",
+                actionText: student.isActive == 1 ? "Deactivate" : "Activate",
               );
             },
           );
