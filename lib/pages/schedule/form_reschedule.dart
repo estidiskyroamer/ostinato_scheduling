@@ -37,6 +37,9 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
 
+  late String courseLength;
+  late String repeat;
+
   @override
   void initState() {
     setTeacher();
@@ -79,7 +82,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
       });
       setEndTime(
         selectedDate.add(
-          const Duration(minutes: 30),
+          Duration(minutes: int.parse(courseLength)),
         ),
       );
     }
@@ -93,6 +96,13 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
             DateFormat('HH:mm').format(selectedScheduleEndTime);
       });
     }
+  }
+
+  void getSettings() async {
+    Map<String, String> settings = await Settings.getSettings();
+    setState(() {
+      courseLength = settings['courseLength']!;
+    });
   }
 
   @override

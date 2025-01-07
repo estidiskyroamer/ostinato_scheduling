@@ -44,6 +44,8 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
   late Instrument selectedInstrument;
   late User selectedTeacher;
 
+  late String courseLength;
+
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
   bool isEdit = false;
@@ -76,6 +78,14 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
 
   void getInstrumentList() async {
     _instrumentList = await InstrumentService().getInstruments();
+  }
+
+  void getSettings() async {
+    Map<String, String> settings = await Settings.getSettings();
+    setState(() {
+      courseLength = settings['courseLength']!;
+      repeatController.text = settings['repeat']!;
+    });
   }
 
   void setEdit() {
@@ -125,7 +135,7 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
             DateFormat('HH:mm').format(selectedScheduleStartTime);
         setEndTime(
           selectedDate.add(
-            const Duration(minutes: 30),
+            Duration(minutes: int.parse(courseLength)),
           ),
         );
       });

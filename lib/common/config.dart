@@ -115,3 +115,16 @@ extension StringCapitalization on String {
         .join(' ');
   }
 }
+
+class Settings {
+  static Future<Map<String, String>> getSettings() async {
+    String? courseLengthString =
+        await Config().storage.read(key: 'course_length');
+    String? repeatString = await Config().storage.read(key: 'repeat');
+
+    return {
+      'courseLength': courseLengthString ?? Config().courseLengthDef.toString(),
+      'repeat': repeatString ?? Config().repeatDef.toString(),
+    };
+  }
+}

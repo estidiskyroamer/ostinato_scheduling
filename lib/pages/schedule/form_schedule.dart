@@ -46,7 +46,6 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   late User selectedTeacher;
 
   late String courseLength;
-  late String repeat;
 
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
@@ -95,12 +94,10 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   }
 
   void getSettings() async {
-    String? courseLengthString =
-        await Config().storage.read(key: 'course_length');
-    String? repeatString = await Config().storage.read(key: 'repeat');
+    Map<String, String> settings = await Settings.getSettings();
     setState(() {
-      courseLength = courseLengthString ?? Config().courseLengthDef.toString();
-      repeatController.text = repeatString ?? Config().repeatDef.toString();
+      courseLength = settings['courseLength']!;
+      repeatController.text = settings['repeat']!;
     });
   }
 
