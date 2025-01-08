@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
@@ -19,6 +20,7 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
   TextEditingController noteController = TextEditingController();
   bool isLoading = false;
   bool isEdit = false;
+  String scheduleData = "";
 
   @override
   void initState() {
@@ -31,12 +33,14 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
     ScheduleNoteList? list =
         await ScheduleService().getAllNotes(widget.schedule);
     if (mounted) {
-      if (list != null && list.scheduleNote.isNotEmpty) {
+      if (list != null) {
         setState(() {
           isEdit = true;
           isLoading = false;
-          _scheduleNote = list.scheduleNote[0];
+          _scheduleNote = list.data[0];
           noteController.text = _scheduleNote.note;
+          scheduleData =
+              "${_scheduleNote.schedule!.student.name} (${_scheduleNote.schedule!.instrument.name}) \n${DateFormat("dd MMMM yyyy").format(_scheduleNote.schedule!.date)}";
         });
       } else {
         setState(() {
@@ -67,6 +71,12 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
                   width: MediaQuery.sizeOf(context).width / 2,
                   image: const AssetImage('assets/images/notes.jpeg')),
               Padding(padding: padding16),
+              Text(
+                scheduleData,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.titleSmall,
+              ),
+              Padding(padding: padding4),
               InputField(
                   textEditingController: noteController,
                   maxLines: 7,

@@ -37,7 +37,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   DateTime currentTime = DateTime.now();
   bool isLoading = false;
 
-  late String courseLength;
+  String? courseLength;
   late String repeat;
 
   @override
@@ -46,10 +46,17 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
     setTeacher();
     setStudent();
     setInstrument();
+    getSettings();
     setStartDate(widget.schedule!.date);
     setStartTime(DateFormat.Hm().parse(widget.schedule!.startTime));
     setEndTime(DateFormat.Hm().parse(widget.schedule!.endTime));
-    getSettings();
+  }
+
+  void getSettings() async {
+    Map<String, String> settings = await Settings.getSettings();
+    setState(() {
+      courseLength = settings['courseLength']!;
+    });
   }
 
   void setTeacher() async {
@@ -81,11 +88,13 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
         startTimeController.text =
             DateFormat('HH:mm').format(selectedScheduleStartTime);
       });
-      setEndTime(
-        selectedDate.add(
-          Duration(minutes: int.parse(courseLength)),
-        ),
-      );
+      courseLength != null
+          ? setEndTime(
+              selectedDate.add(
+                Duration(minutes: int.parse(courseLength!)),
+              ),
+            )
+          : null;
     }
   }
 
@@ -97,13 +106,6 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
             DateFormat('HH:mm').format(selectedScheduleEndTime);
       });
     }
-  }
-
-  void getSettings() async {
-    Map<String, String> settings = await Settings.getSettings();
-    setState(() {
-      courseLength = settings['courseLength']!;
-    });
   }
 
   @override

@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:intl/intl.dart';
 import 'package:ostinato/models/common.dart';
+import 'package:ostinato/models/schedule.dart';
 
 ScheduleNoteList scheduleNoteListFromJson(String str) =>
     ScheduleNoteList.fromJson(json.decode(str));
@@ -14,36 +15,28 @@ String scheduleNoteListToJson(ScheduleNoteList data) =>
     json.encode(data.toJson());
 
 class ScheduleNoteList {
-  List<ScheduleNote> scheduleNote;
-  String message;
-  bool success;
-  Links links;
-  Meta meta;
+  final List<ScheduleNote> data;
+  final String message;
+  final bool success;
 
   ScheduleNoteList({
-    required this.scheduleNote,
+    required this.data,
     required this.message,
     required this.success,
-    required this.links,
-    required this.meta,
   });
 
   factory ScheduleNoteList.fromJson(Map<String, dynamic> json) =>
       ScheduleNoteList(
-        scheduleNote: List<ScheduleNote>.from(
+        data: List<ScheduleNote>.from(
             json["data"].map((x) => ScheduleNote.fromJson(x))),
         message: json["message"],
         success: json["success"],
-        links: Links.fromJson(json["links"]),
-        meta: Meta.fromJson(json["meta"]),
       );
 
   Map<String, dynamic> toJson() => {
-        "scheduleNote": List<dynamic>.from(scheduleNote.map((x) => x.toJson())),
+        "data": List<dynamic>.from(data.map((x) => x.toJson())),
         "message": message,
         "success": success,
-        "links": links.toJson(),
-        "meta": meta.toJson(),
       };
 }
 
@@ -51,12 +44,14 @@ class ScheduleNote {
   String? id;
   String scheduleId;
   String note;
+  Schedule? schedule;
   DateTime? createdAt;
 
   ScheduleNote({
     this.id,
     required this.scheduleId,
     required this.note,
+    this.schedule,
     this.createdAt,
   });
 
@@ -64,6 +59,7 @@ class ScheduleNote {
         id: json["id"],
         scheduleId: json["scheduleId"],
         note: json["note"],
+        schedule: Schedule.fromJson(json["schedule"]),
         createdAt: json['createdAt'] == null
             ? null
             : DateTime.parse(json['createdAt']),
@@ -73,6 +69,7 @@ class ScheduleNote {
         "id": id,
         "scheduleId": scheduleId,
         "note": note,
+        "schedule": schedule?.toJson(),
         "createdAt": createdAt == null
             ? null
             : DateFormat('yyyy-MM-dd').format(createdAt!),

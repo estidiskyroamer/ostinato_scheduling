@@ -208,14 +208,6 @@ class _DashboardPageState extends State<DashboardPage> {
                 future: _summary,
                 builder:
                     (BuildContext context, AsyncSnapshot<Summary?> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(
-                      child: SizedBox(
-                        width: MediaQuery.of(context).size.width / 6,
-                        child: Config().loadingIndicator,
-                      ),
-                    );
-                  }
                   if (!snapshot.hasData || snapshot.hasError) {
                     return const SizedBox();
                   }
