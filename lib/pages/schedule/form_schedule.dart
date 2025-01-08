@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -10,7 +9,6 @@ import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
-import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
@@ -336,7 +334,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                           inputType: TextInputType.number,
                         ),
                       ),
-                      const Text("weeks")
+                      const Text("week(s)")
                     ],
                   ),
                 ),

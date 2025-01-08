@@ -24,8 +24,8 @@ class _FormScheduleNotePageState extends State<FormScheduleNotePage> {
 
   @override
   void initState() {
-    setEdit();
     super.initState();
+    setEdit();
   }
 
   void setEdit() {

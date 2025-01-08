@@ -22,9 +22,9 @@ class _AccountPageState extends State<AccountPage> {
       PackageInfo(appName: '', packageName: '', version: '', buildNumber: '');
   @override
   void initState() {
+    super.initState();
     setRandomImage();
     getPackageInfo();
-    super.initState();
   }
 
   int setRandomImage() {

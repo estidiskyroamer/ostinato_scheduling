@@ -22,8 +22,8 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
 
   @override
   void initState() {
-    getScheduleNotes();
     super.initState();
+    getScheduleNotes();
   }
 
   void getScheduleNotes() async {

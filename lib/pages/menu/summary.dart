@@ -24,10 +24,10 @@ class _SummaryPageState extends State<SummaryPage> {
 
   @override
   void initState() {
+    super.initState();
     _user = Config().storage.read(key: 'user');
     _teacher = Config().storage.read(key: 'teacher');
     getSummary();
-    super.initState();
   }
 
   void getSummary() {

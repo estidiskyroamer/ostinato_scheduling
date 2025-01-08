@@ -42,13 +42,14 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
 
   @override
   void initState() {
+    super.initState();
     setTeacher();
     setStudent();
     setInstrument();
     setStartDate(widget.schedule!.date);
     setStartTime(DateFormat.Hm().parse(widget.schedule!.startTime));
     setEndTime(DateFormat.Hm().parse(widget.schedule!.endTime));
-    super.initState();
+    getSettings();
   }
 
   void setTeacher() async {

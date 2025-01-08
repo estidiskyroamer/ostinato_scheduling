@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
@@ -259,6 +260,62 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
               ),
               Text(
                 schedule.instrument.name,
+                style: Theme.of(context).textTheme.labelSmall,
+              )
+            ],
+          ),
+        ),
+        button
+      ],
+    ),
+  );
+}
+
+Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
+    BuildContext context, Widget button) {
+  Duration diff = event.endTime.difference(event.startTime);
+  return Container(
+    padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+    margin: const EdgeInsets.only(left: 32),
+    decoration: const BoxDecoration(
+        border: Border(
+      bottom: BorderSide(color: Colors.black38),
+    )),
+    child: Row(
+      children: [
+        Expanded(
+            flex: 3,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  DateFormat("HH:mm").format(event.startTime),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "${diff.inMinutes} minutes",
+                  style: Theme.of(context).textTheme.labelSmall,
+                )
+              ],
+            )),
+        Expanded(
+          flex: 7,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Text(
+                    event.summary,
+                  ),
+                  rescheduleStatus(schedule.isRescheduled ?? false),
+                  scheduleStatus(schedule.status),
+                ],
+              ),
+              Text(
+                event.description,
                 style: Theme.of(context).textTheme.labelSmall,
               )
             ],

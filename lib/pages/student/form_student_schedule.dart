@@ -8,8 +8,6 @@ import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
-import 'package:ostinato/models/student.dart';
-import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
@@ -52,11 +50,12 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
 
   @override
   void initState() {
+    super.initState();
     setEdit();
     getTeacher();
     getStudent();
     getInstrumentList();
-    super.initState();
+    getSettings();
   }
 
   void getTeacher() async {
@@ -291,7 +290,7 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
                     inputType: TextInputType.number,
                   ),
                 ),
-                const Text("weeks")
+                const Text("week(s)")
               ],
             ),
           ),

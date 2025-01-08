@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
@@ -115,83 +116,210 @@ class _SchedulePageState extends State<SchedulePage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IconButton(
-                onPressed: () {
-                  changeScheduleDate('subtract');
-                },
-                icon: const Icon(FontAwesomeIcons.chevronLeft)),
-            GestureDetector(
-              onDoubleTap: () {
-                resetScheduleDate();
-              },
-              child: Text(
-                DateFormat('MMMM yyyy').format(currentTime),
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          title: const TabBar(tabs: [
+            Tab(
+              text: "List view",
             ),
+            Tab(
+              text: "Calendar view",
+            )
+          ]),
+          actions: [
             IconButton(
                 onPressed: () {
-                  changeScheduleDate('add');
+                  addSchedule(context);
                 },
-                icon: const Icon(FontAwesomeIcons.chevronRight)),
+                icon: const Icon(FontAwesomeIcons.plus))
           ],
+          automaticallyImplyLeading: false,
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                addSchedule(context);
-              },
-              icon: const Icon(FontAwesomeIcons.plus))
-        ],
-        automaticallyImplyLeading: false,
-      ),
-      body: SizedBox(
-        height: double.infinity,
-        child: FutureBuilder(
-            future: _scheduleList,
-            builder:
-                (BuildContext context, AsyncSnapshot<ScheduleList?> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width / 6,
-                    child: Config().loadingIndicator,
+        body: TabBarView(children: [
+          Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        changeScheduleDate('subtract');
+                      },
+                      icon: const Icon(FontAwesomeIcons.chevronLeft)),
+                  GestureDetector(
+                    onDoubleTap: () {
+                      resetScheduleDate();
+                    },
+                    child: Text(
+                      DateFormat('MMMM yyyy').format(currentTime),
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
                   ),
-                );
-              }
-              if (!snapshot.hasData) {
-                return const Center(child: Text('No schedule yet'));
-              }
-              if (snapshot.hasError) {
-                return Center(child: Text('Error: ${snapshot.error}'));
-              }
-              ScheduleList scheduleList = snapshot.data!;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                scrollToDate(scheduleList);
-              });
-              return RefreshIndicator(
-                color: Colors.black,
-                onRefresh: () async {
-                  getSchedule();
-                },
-                child: StickyGroupedListView(
-                    elements: scheduleList.data,
-                    elementIdentifier: (schedule) => schedule.date,
-                    itemScrollController: _scrollController,
-                    groupBy: (schedule) => schedule.date,
-                    groupSeparatorBuilder: (value) =>
-                        scheduleDate(context, value.date),
-                    itemBuilder: (context, schedule) {
-                      return studentTime(context, schedule);
+                  IconButton(
+                      onPressed: () {
+                        changeScheduleDate('add');
+                      },
+                      icon: const Icon(FontAwesomeIcons.chevronRight)),
+                ],
+              ),
+              Expanded(
+                child: FutureBuilder(
+                    future: _scheduleList,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<ScheduleList?> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width / 6,
+                            child: Config().loadingIndicator,
+                          ),
+                        );
+                      }
+                      if (!snapshot.hasData) {
+                        return const Center(child: Text('No schedule yet'));
+                      }
+                      if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      }
+                      ScheduleList scheduleList = snapshot.data!;
+                      WidgetsBinding.instance.addPostFrameCallback((_) {
+                        scrollToDate(scheduleList);
+                      });
+                      return RefreshIndicator(
+                        color: Colors.black,
+                        onRefresh: () async {
+                          getSchedule();
+                        },
+                        child: StickyGroupedListView(
+                            elements: scheduleList.data,
+                            elementIdentifier: (schedule) => schedule.date,
+                            itemScrollController: _scrollController,
+                            groupBy: (schedule) => schedule.date,
+                            groupSeparatorBuilder: (value) =>
+                                scheduleDate(context, value.date),
+                            itemBuilder: (context, schedule) {
+                              return studentTime(context, schedule);
+                            }),
+                      );
                     }),
-              );
-            }),
+              ),
+            ],
+          ),
+          FutureBuilder(
+              future: _scheduleList,
+              builder: (BuildContext context,
+                  AsyncSnapshot<ScheduleList?> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width / 6,
+                      child: Config().loadingIndicator,
+                    ),
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return const Center(child: Text('No schedule yet'));
+                }
+                if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                }
+                ScheduleList scheduleList = snapshot.data!;
+                List<Schedule> schedules = scheduleList.data;
+                Map<NeatCleanCalendarEvent, Schedule> eventToScheduleMap = {};
+
+                List<NeatCleanCalendarEvent> events = schedules.map((schedule) {
+                  DateTime startTime = DateTime(
+                    schedule.date.year,
+                    schedule.date.month,
+                    schedule.date.day,
+                    int.parse(schedule.startTime.split(':')[0]),
+                    int.parse(schedule.startTime.split(':')[1]),
+                  );
+
+                  DateTime endTime = DateTime(
+                    schedule.date.year,
+                    schedule.date.month,
+                    schedule.date.day,
+                    int.parse(schedule.endTime.split(':')[0]),
+                    int.parse(schedule.endTime.split(':')[1]),
+                  );
+
+                  NeatCleanCalendarEvent event = NeatCleanCalendarEvent(
+                      schedule.student.name,
+                      description: schedule.instrument.name,
+                      startTime: startTime,
+                      endTime: endTime);
+                  eventToScheduleMap[event] = schedule;
+                  return event;
+                }).toList();
+                return Calendar(
+                  initialDate: currentTime,
+                  eventsList: events,
+                  eventListBuilder: (context, events) {
+                    return Expanded(
+                      child: RefreshIndicator(
+                        onRefresh: () async {
+                          getSchedule();
+                        },
+                        child: ListView.builder(
+                          itemCount: events.length,
+                          itemBuilder: (context, index) {
+                            NeatCleanCalendarEvent event = events[index];
+                            Schedule? schedule = eventToScheduleMap[event];
+                            return eventItem(
+                                event,
+                                schedule!,
+                                context,
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      FontAwesomeIcons.ellipsisVertical,
+                                      color: Colors.black,
+                                    ),
+                                    onPressed: () {
+                                      showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (context) {
+                                            return ScheduleBottomSheet(
+                                                schedule: schedule!,
+                                                onChanged: getSchedule);
+                                          });
+                                    },
+                                  ),
+                                ));
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                  locale: 'en_US',
+                  isExpandable: true,
+                  isExpanded: true,
+                  showEventListViewIcon: false,
+                  showEvents: true,
+                  hideTodayIcon: true,
+                  topRowIconColor: Colors.black,
+                  selectedColor: Colors.black,
+                  todayColor: Colors.black,
+                  eventColor: Colors.black54,
+                  selectedTodayColor: Colors.blueGrey,
+                  expandableDateFormat: "EEEE, dd MMMM yyyy",
+                  dayOfWeekStyle: Theme.of(context).textTheme.bodyMedium,
+                  displayMonthTextStyle:
+                      Theme.of(context).textTheme.titleMedium,
+                  onMonthChanged: (value) {
+                    setState(() {
+                      currentTime = value;
+                      getSchedule();
+                    });
+                  },
+                );
+              }),
+        ]),
       ),
     );
   }

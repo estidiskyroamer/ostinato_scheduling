@@ -44,10 +44,10 @@ class _DashboardPageState extends State<DashboardPage> {
 
   @override
   void initState() {
+    super.initState();
     _user = Config().storage.read(key: 'user');
     getCurrentSchedule();
     getSummary();
-    super.initState();
   }
 
   void getCurrentSchedule() {

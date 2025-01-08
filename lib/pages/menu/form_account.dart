@@ -26,8 +26,8 @@ class _FormAccountPageState extends State<FormAccountPage> {
 
   @override
   void initState() {
-    getUserData();
     super.initState();
+    getUserData();
   }
 
   void getUserData() async {
