@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:intl/intl.dart';
 import 'package:ostinato/models/company.dart';
 import 'package:ostinato/models/role.dart';
 import 'package:ostinato/models/schedule.dart';

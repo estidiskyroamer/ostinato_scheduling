@@ -35,12 +35,12 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
     if (mounted) {
       if (list != null) {
         setState(() {
-          isEdit = true;
           isLoading = false;
-          _scheduleNote = list.data[0];
-          noteController.text = _scheduleNote.note;
-          scheduleData =
-              "${_scheduleNote.schedule!.student.name} (${_scheduleNote.schedule!.instrument.name}) \n${DateFormat("dd MMMM yyyy").format(_scheduleNote.schedule!.date)}";
+          if (list.data.isNotEmpty) {
+            isEdit = true;
+            _scheduleNote = list.data[0];
+            noteController.text = _scheduleNote.note;
+          }
         });
       } else {
         setState(() {
@@ -72,7 +72,7 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
                   image: const AssetImage('assets/images/notes.jpeg')),
               Padding(padding: padding16),
               Text(
-                scheduleData,
+                "${widget.schedule.student.name} (${widget.schedule.instrument.name}) \n${DateFormat("dd MMMM yyyy").format(widget.schedule.date)}",
                 textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.titleSmall,
               ),

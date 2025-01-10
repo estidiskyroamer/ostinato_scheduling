@@ -5,12 +5,10 @@ import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
-import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/navigation.dart';
 import 'package:ostinato/pages/register.dart';
 import 'package:ostinato/services/auth_service.dart';
-import 'package:ostinato/services/teacher_service.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   bool _isLoading = false;
 
-  late TeacherDetail? _teacherDetail;
   late User? _user;
 
   void doLogin() async {

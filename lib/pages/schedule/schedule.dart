@@ -285,7 +285,7 @@ class _SchedulePageState extends State<SchedulePage>
                                           context: context,
                                           builder: (context) {
                                             return ScheduleBottomSheet(
-                                                schedule: schedule!,
+                                                schedule: schedule,
                                                 onChanged: getSchedule);
                                           });
                                     },

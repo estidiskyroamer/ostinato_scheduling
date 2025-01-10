@@ -9,7 +9,6 @@ import 'package:ostinato/common/components/component.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/role.dart';
-import 'package:ostinato/models/teacher.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/student_service.dart';
 import 'package:ostinato/services/user_service.dart';
