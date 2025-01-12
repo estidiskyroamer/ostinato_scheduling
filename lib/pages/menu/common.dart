@@ -21,10 +21,7 @@ Widget summaryItem(
             children: [
               Text(title,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium!
-                      .merge(const TextStyle(color: Colors.black))),
+                  style: Theme.of(context).textTheme.displayMedium),
             ],
           ),
           Padding(padding: padding8),

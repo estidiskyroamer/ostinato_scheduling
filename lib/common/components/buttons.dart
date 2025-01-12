@@ -22,10 +22,7 @@ class OutlineButton extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium!
-              .merge(const TextStyle(color: Colors.black)),
+          style: Theme.of(context).textTheme.displayMedium,
         ),
       ),
     );
@@ -46,14 +43,9 @@ class StyledTextButton extends StatelessWidget {
         constraints: BoxConstraints(
             minWidth: MediaQuery.of(context).size.width / 4,
             maxWidth: MediaQuery.of(context).size.width),
-        child: Text(
-          text,
-          textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium!
-              .merge(const TextStyle(color: Colors.black)),
-        ),
+        child: Text(text,
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.displayMedium),
       ),
     );
   }
@@ -125,7 +117,10 @@ class SolidButton extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.displayMedium,
+          style: Theme.of(context)
+              .textTheme
+              .displayMedium!
+              .merge(const TextStyle(color: Colors.white)),
         ),
       ),
     );

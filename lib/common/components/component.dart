@@ -391,7 +391,10 @@ ToastificationItem toastNotification(String text) {
                 child: Text(
                   text,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displayMedium,
+                  style: Theme.of(context)
+                      .textTheme
+                      .displayMedium!
+                      .merge(const TextStyle(color: Colors.white)),
                 ),
               ),
             ),

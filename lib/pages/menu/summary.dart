@@ -64,11 +64,6 @@ class _SummaryPageState extends State<SummaryPage> {
                 children: [
                   getTeacherName(),
                   getTeacherCompany(),
-                  /* Text("Monthly Summary for Teacher",
-                      style: Theme.of(context)
-                          .textTheme
-                          .displayMedium!
-                          .merge(const TextStyle(color: Colors.black))), */
                   Padding(padding: padding4),
                   Text(
                       "Data from ${DateFormat("dd").format(firstDayCurrentMonth)} to ${DateFormat("dd MMMM yyyy").format(lastDayCurrentMonth)}",
@@ -194,11 +189,8 @@ class _SummaryPageState extends State<SummaryPage> {
         }
         return Container(
           padding: padding4,
-          child: Text(company,
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium!
-                  .merge(const TextStyle(color: Colors.black))),
+          child:
+              Text(company, style: Theme.of(context).textTheme.displayMedium),
         );
       },
     );

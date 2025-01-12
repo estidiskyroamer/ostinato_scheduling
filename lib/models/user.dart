@@ -47,6 +47,7 @@ class User {
   String? password;
   List<Role>? roles;
   List<Company>? companies;
+  String? companyCode;
   final int isActive;
 
   User(
@@ -59,6 +60,7 @@ class User {
       this.password,
       this.roles,
       this.companies,
+      this.companyCode,
       required this.isActive});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -95,6 +97,7 @@ class User {
         "companies": companies != null
             ? List<dynamic>.from(companies!.map((x) => x.toJson()))
             : null,
+        "companyCode": companyCode,
         "isActive": isActive
       };
 }

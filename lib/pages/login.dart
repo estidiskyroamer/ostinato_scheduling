@@ -34,9 +34,6 @@ class _LoginPageState extends State<LoginPage> {
         .then((value) async {
       if (value) {
         _user = await AuthService().getMe();
-        /* _teacherDetail = await TeacherService().getTeacherDetail();
-        Teacher teacher = _teacherDetail!.data; */
-
         setState(() {
           _isLoading = false;
           Config().storage.write(

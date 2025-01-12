@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/company.dart';
+import 'package:ostinato/models/role.dart';
 import 'package:ostinato/models/user.dart';
+import 'package:ostinato/services/teacher_service.dart';
 import 'package:ostinato/services/user_service.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -97,16 +100,17 @@ class _RegisterPageState extends State<RegisterPage> {
       isLoading = true;
     });
     User user = User(
-      name: nameController.text,
-      email: emailController.text,
-      phoneNumber: phoneController.text,
-      password: passwordController.text,
-      isActive: 1,
-    );
+        name: nameController.text,
+        email: emailController.text,
+        phoneNumber: phoneController.text,
+        password: passwordController.text,
+        isActive: 1,
+        roles: [Role(id: '', name: 'teacher')],
+        companyCode: companyController.text);
     /* Teacher teacher =
         Teacher(user: user, isActive: 1, companyCode: companyController.text); */
 
-    UserService().createUser(user).then((value) {
+    TeacherService().createTeacher(user).then((value) {
       setState(() {
         isLoading = false;
       });

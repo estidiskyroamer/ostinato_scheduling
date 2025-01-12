@@ -58,20 +58,11 @@ ThemeData ostinatoTheme = ThemeData(
         color: Colors.black,
       ),
       displayLarge: TextStyle(
-        fontSize: 26,
-        fontStyle: FontStyle.italic,
-        color: Colors.white,
-      ),
+          fontSize: 26, fontStyle: FontStyle.italic, color: Colors.black),
       displayMedium: TextStyle(
-        fontSize: 20,
-        fontStyle: FontStyle.italic,
-        color: Colors.white,
-      ),
+          fontSize: 20, fontStyle: FontStyle.italic, color: Colors.black),
       displaySmall: TextStyle(
-        fontSize: 16,
-        fontStyle: FontStyle.italic,
-        color: Colors.white,
-      ),
+          fontSize: 16, fontStyle: FontStyle.italic, color: Colors.black),
       labelLarge: TextStyle(
           fontFamily: "Montserrat", fontSize: 16, color: Colors.black),
       labelMedium: TextStyle(

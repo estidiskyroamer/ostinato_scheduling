@@ -23,11 +23,12 @@ class TeacherService {
     return teacher;
   }
 
-  Future<bool> createTeacher(Teacher teacher) async {
+  Future<User?> createTeacher(User teacher) async {
     Map<String, dynamic> params = teacher.toJson();
+    User? updatedUser;
 
     if (params['user'] != null) {
-      User paramUser = teacher.user;
+      User paramUser = teacher;
       Map<String, dynamic> user = paramUser.toJson();
       params.remove('user');
       params.addAll(user);
@@ -36,14 +37,15 @@ class TeacherService {
       Response response =
           await ServiceConfig().dio.post('/teachers', data: params);
       if (response.statusCode == 200) {
-        toastNotification(response.data['message']);
-        return true;
+        UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
+        updatedUser = updatedUserDetail.data;
       }
-      return false;
+      toastNotification(
+          'You have successfully registered as a teacher. Check your email to verify your account.');
+      return updatedUser;
     } on DioException catch (e) {
-      inspect(e);
       toastNotification(e.response!.data['errors'][0]);
-      return false;
+      return updatedUser;
     }
   }
 }
