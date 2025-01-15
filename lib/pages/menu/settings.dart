@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
-import 'package:ostinato/common/components/component.dart';
+import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 

@@ -5,7 +5,7 @@ import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
-import 'package:ostinato/common/components/component.dart';
+import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
@@ -329,6 +329,8 @@ class _SchedulePageState extends State<SchedulePage>
                       elements: scheduleList.data,
                       elementIdentifier: (schedule) => schedule.date,
                       itemScrollController: _scrollController,
+                      itemComparator: (e1, e2) =>
+                          e1.startTime.compareTo(e2.startTime),
                       groupBy: (schedule) => schedule.date,
                       groupSeparatorBuilder: (value) =>
                           scheduleDate(context, value.date),

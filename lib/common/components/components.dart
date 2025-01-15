@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
@@ -202,7 +203,7 @@ Widget inputDateTimePicker({
 Widget listHeader({required Widget child}) {
   return Container(
       width: double.infinity,
-      padding: padding12,
+      padding: padding8,
       decoration: const BoxDecoration(color: Colors.black12),
       child: child);
 }
@@ -214,8 +215,8 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
   Duration diff = endTime.difference(startTime);
   return Container(
     padding: isCurrentSchedule
-        ? const EdgeInsets.fromLTRB(32, 8, 16, 8)
-        : const EdgeInsets.fromLTRB(0, 8, 16, 8),
+        ? const EdgeInsets.fromLTRB(32, 4, 12, 4)
+        : const EdgeInsets.fromLTRB(0, 4, 12, 4),
     margin:
         isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
     decoration: BoxDecoration(
@@ -224,6 +225,7 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
           bottom: BorderSide(color: Colors.black38),
         )),
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
             flex: 3,
@@ -239,8 +241,11 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
                           : TextDecoration.none),
                 ),
                 Text(
-                  '${diff.inMinutes} minutes',
-                  style: Theme.of(context).textTheme.labelSmall,
+                  schedule.endTime,
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall!
+                      .merge(const TextStyle(color: Colors.grey)),
                 )
               ],
             )),
@@ -260,8 +265,20 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
               ),
               Text(
                 schedule.instrument.name,
-                style: Theme.of(context).textTheme.labelSmall,
-              )
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall!
+                    .merge(const TextStyle(color: Colors.grey)),
+              ),
+              schedule.scheduleNote != null
+                  ? Container(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        schedule.scheduleNote!.note,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    )
+                  : const SizedBox()
             ],
           ),
         ),
@@ -275,7 +292,7 @@ Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
     BuildContext context, Widget button) {
   Duration diff = event.endTime.difference(event.startTime);
   return Container(
-    padding: const EdgeInsets.fromLTRB(0, 8, 16, 8),
+    padding: const EdgeInsets.fromLTRB(0, 4, 12, 4),
     margin: const EdgeInsets.only(left: 32),
     decoration: const BoxDecoration(
         border: Border(
@@ -295,8 +312,11 @@ Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
                   ),
                 ),
                 Text(
-                  "${diff.inMinutes} minutes",
-                  style: Theme.of(context).textTheme.labelSmall,
+                  DateFormat("HH:mm").format(event.endTime),
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall!
+                      .merge(const TextStyle(color: Colors.grey)),
                 )
               ],
             )),
@@ -316,7 +336,10 @@ Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
               ),
               Text(
                 event.description,
-                style: Theme.of(context).textTheme.labelSmall,
+                style: Theme.of(context)
+                    .textTheme
+                    .labelSmall!
+                    .merge(const TextStyle(color: Colors.grey)),
               )
             ],
           ),
@@ -335,7 +358,7 @@ Widget scheduleStatus(String? status) {
         child: Icon(
           FontAwesomeIcons.circleCheck,
           color: HexColor('#2ec27d'),
-          size: 18,
+          size: 14,
         ),
       );
     case "rescheduled":
@@ -344,7 +367,7 @@ Widget scheduleStatus(String? status) {
         child: Icon(
           FontAwesomeIcons.rotate,
           color: HexColor('#ffba47'),
-          size: 18,
+          size: 14,
         ),
       );
     case "canceled":
@@ -353,7 +376,7 @@ Widget scheduleStatus(String? status) {
         child: Icon(
           FontAwesomeIcons.circleXmark,
           color: HexColor('#c70e03'),
-          size: 18,
+          size: 14,
         ),
       );
     default:
@@ -368,7 +391,7 @@ Widget rescheduleStatus(bool status) {
           child: Icon(
             FontAwesomeIcons.rotate,
             color: HexColor('#ffba47'),
-            size: 18,
+            size: 14,
           ),
         )
       : const SizedBox();

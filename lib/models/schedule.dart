@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import 'package:intl/intl.dart';
 import 'package:ostinato/models/instrument.dart';
+import 'package:ostinato/models/schedule_note.dart';
 import 'package:ostinato/models/user.dart';
 
 ScheduleList scheduleListFromJson(String str) =>
@@ -49,32 +50,35 @@ class Schedule {
   final User student;
   final User teacher;
   final Instrument instrument;
+  final ScheduleNote? scheduleNote;
 
-  Schedule({
-    this.id,
-    required this.date,
-    this.createdBy,
-    this.status,
-    this.isRescheduled,
-    required this.startTime,
-    required this.endTime,
-    required this.student,
-    required this.teacher,
-    required this.instrument,
-  });
+  Schedule(
+      {this.id,
+      required this.date,
+      this.createdBy,
+      this.status,
+      this.isRescheduled,
+      required this.startTime,
+      required this.endTime,
+      required this.student,
+      required this.teacher,
+      required this.instrument,
+      this.scheduleNote});
 
   factory Schedule.fromJson(Map<String, dynamic> json) => Schedule(
-        id: json["id"],
-        date: DateTime.parse(json["date"]),
-        createdBy: json['createdBy'] == null ? null : json["createdBy"],
-        status: json['status'] == null ? null : json["status"],
-        isRescheduled: json['isRescheduled'] == 1 ? true : false,
-        startTime: _formatTime(json["startTime"]),
-        endTime: _formatTime(json["endTime"]),
-        student: User.fromJson(json["student"]),
-        teacher: User.fromJson(json["teacher"]),
-        instrument: Instrument.fromJson(json["instrument"]),
-      );
+      id: json["id"],
+      date: DateTime.parse(json["date"]),
+      createdBy: json['createdBy'] == null ? null : json["createdBy"],
+      status: json['status'] == null ? null : json["status"],
+      isRescheduled: json['isRescheduled'] == 1 ? true : false,
+      startTime: _formatTime(json["startTime"]),
+      endTime: _formatTime(json["endTime"]),
+      student: User.fromJson(json["student"]),
+      teacher: User.fromJson(json["teacher"]),
+      instrument: Instrument.fromJson(json["instrument"]),
+      scheduleNote: json["schedule_note"] == null
+          ? null
+          : ScheduleNote.fromJson(json["schedule_note"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,

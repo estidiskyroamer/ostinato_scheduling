@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
-import 'package:ostinato/common/components/component.dart';
+import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/menu/form_account.dart';
 import 'package:ostinato/pages/menu/settings.dart';

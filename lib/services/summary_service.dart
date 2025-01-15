@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:ostinato/common/components/component.dart';
+import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/models/summary.dart';
 import 'package:ostinato/services/config.dart';
 
