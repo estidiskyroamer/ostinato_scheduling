@@ -146,7 +146,9 @@ class _StudentPageState extends State<StudentPage>
             icon: const Icon(
               FontAwesomeIcons.ellipsisVertical,
               color: Colors.black,
+              size: 16,
             ),
+            visualDensity: VisualDensity.comfortable,
             onPressed: () {
               showModalBottomSheet<void>(
                   context: context,

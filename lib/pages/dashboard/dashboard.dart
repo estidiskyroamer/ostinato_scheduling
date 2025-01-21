@@ -157,7 +157,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Expanded(
-              flex: 2,
+              flex: 3,
               child: SizedBox(
                 width: double.infinity,
                 child: FutureBuilder(

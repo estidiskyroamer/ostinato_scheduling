@@ -361,15 +361,6 @@ Widget scheduleStatus(String? status) {
           size: 14,
         ),
       );
-    case "rescheduled":
-      return Container(
-        padding: const EdgeInsets.only(left: 8),
-        child: Icon(
-          FontAwesomeIcons.rotate,
-          color: HexColor('#ffba47'),
-          size: 14,
-        ),
-      );
     case "canceled":
       return Container(
         padding: const EdgeInsets.only(left: 8),

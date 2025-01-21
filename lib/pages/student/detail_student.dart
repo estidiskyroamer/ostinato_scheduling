@@ -257,10 +257,14 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 IconButton(
-                    onPressed: () {
-                      changeScheduleDate('subtract');
-                    },
-                    icon: const Icon(FontAwesomeIcons.chevronLeft)),
+                  onPressed: () {
+                    changeScheduleDate('subtract');
+                  },
+                  icon: const Icon(
+                    FontAwesomeIcons.chevronLeft,
+                    size: 16,
+                  ),
+                ),
                 GestureDetector(
                   onDoubleTap: () {
                     resetScheduleDate();
@@ -274,7 +278,10 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                     onPressed: () {
                       changeScheduleDate('add');
                     },
-                    icon: const Icon(FontAwesomeIcons.chevronRight)),
+                    icon: const Icon(
+                      FontAwesomeIcons.chevronRight,
+                      size: 16,
+                    )),
               ],
             ),
             Flexible(
@@ -327,6 +334,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
           icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
             color: Colors.black,
+            size: 16,
           ),
           onPressed: () {
             showModalBottomSheet<void>(

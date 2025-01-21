@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:ostinato/common/components/components.dart';
@@ -188,13 +189,13 @@ class _SchedulePageState extends State<SchedulePage>
             Color eventColor = Colors.grey;
 
             if (schedule.isRescheduled == true) {
-              eventColor = Colors.yellow;
+              eventColor = HexColor('#ffba47');
             }
             if (schedule.status == 'done') {
-              eventColor = Colors.green;
+              eventColor = HexColor('#2ec27d');
             }
             if (schedule.status == 'canceled') {
-              eventColor = Colors.red;
+              eventColor = HexColor('#c70e03');
             }
 
             NeatCleanCalendarEvent event = NeatCleanCalendarEvent(
@@ -277,10 +278,14 @@ class _SchedulePageState extends State<SchedulePage>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             IconButton(
-                onPressed: () {
-                  changeScheduleDate('subtract');
-                },
-                icon: const Icon(FontAwesomeIcons.chevronLeft)),
+              onPressed: () {
+                changeScheduleDate('subtract');
+              },
+              icon: const Icon(
+                FontAwesomeIcons.chevronLeft,
+                size: 16,
+              ),
+            ),
             GestureDetector(
               onDoubleTap: () {
                 resetScheduleDate();
@@ -294,7 +299,10 @@ class _SchedulePageState extends State<SchedulePage>
                 onPressed: () {
                   changeScheduleDate('add');
                 },
-                icon: const Icon(FontAwesomeIcons.chevronRight)),
+                icon: const Icon(
+                  FontAwesomeIcons.chevronRight,
+                  size: 16,
+                )),
           ],
         ),
         Expanded(
@@ -365,6 +373,7 @@ class _SchedulePageState extends State<SchedulePage>
           icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
             color: Colors.black,
+            size: 16,
           ),
           onPressed: () {
             showModalBottomSheet<void>(
