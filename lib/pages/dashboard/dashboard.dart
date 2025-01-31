@@ -257,7 +257,9 @@ class _DashboardPageState extends State<DashboardPage> {
           icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
             color: Colors.black,
+            size: 16,
           ),
+          visualDensity: VisualDensity.compact,
           onPressed: () {
             showModalBottomSheet<void>(
                 context: context,

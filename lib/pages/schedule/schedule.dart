@@ -231,7 +231,9 @@ class _SchedulePageState extends State<SchedulePage>
                               icon: const Icon(
                                 FontAwesomeIcons.ellipsisVertical,
                                 color: Colors.black,
+                                size: 16,
                               ),
+                              visualDensity: VisualDensity.compact,
                               onPressed: () {
                                 showModalBottomSheet<void>(
                                     context: context,
@@ -375,6 +377,7 @@ class _SchedulePageState extends State<SchedulePage>
             color: Colors.black,
             size: 16,
           ),
+          visualDensity: VisualDensity.compact,
           onPressed: () {
             showModalBottomSheet<void>(
                 context: context,
