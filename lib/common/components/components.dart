@@ -340,7 +340,16 @@ Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
                     .textTheme
                     .labelSmall!
                     .merge(const TextStyle(color: Colors.grey)),
-              )
+              ),
+              schedule.scheduleNote != null
+                  ? Container(
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Text(
+                        schedule.scheduleNote!.note,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                    )
+                  : const SizedBox()
             ],
           ),
         ),
