@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
@@ -155,7 +156,6 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           "Student Detail",
           style: Theme.of(context).textTheme.titleMedium,
@@ -168,10 +168,10 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
               context,
               "Data",
               IconButton(
-                icon: const Icon(
+                icon:  Icon(
                   FontAwesomeIcons.pencil,
                   size: 20,
-                  color: Colors.black,
+                  color:  Theme.of(context).extension<OstinatoThemeExtension>()!.headerForegroundColor,
                 ),
                 onPressed: () {
                   Navigator.of(context)
@@ -246,7 +246,6 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                 icon: const Icon(
                   FontAwesomeIcons.plus,
                   size: 20,
-                  color: Colors.black,
                 ),
                 onPressed: () {
                   addSchedule(widget.student);

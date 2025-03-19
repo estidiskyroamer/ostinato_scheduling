@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/summary.dart';
@@ -139,6 +140,7 @@ class _DashboardPageState extends State<DashboardPage> {
         mainAxisSize: MainAxisSize.max,
         children: [
           listHeader(
+            context: context,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
@@ -146,8 +148,8 @@ class _DashboardPageState extends State<DashboardPage> {
                 Text("Today's Schedule",
                     style: Theme.of(context)
                         .textTheme
-                        .titleSmall!
-                        .copyWith(color: Colors.black45)),
+                        .titleSmall! 
+                        .copyWith(color: Theme.of(context).extension<OstinatoThemeExtension>()!.headerForegroundColor)),
                 Padding(padding: padding4),
                 Text(
                   DateFormat("EEEE, dd MMMM yyyy").format(currentDate),
@@ -256,7 +258,6 @@ class _DashboardPageState extends State<DashboardPage> {
         child: IconButton(
           icon: const Icon(
             FontAwesomeIcons.ellipsisVertical,
-            color: Colors.black,
             size: 16,
           ),
           visualDensity: VisualDensity.compact,

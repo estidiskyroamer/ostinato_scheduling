@@ -155,7 +155,6 @@ class _FormStudentSchedulePageState extends State<FormStudentSchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           pageTitle,
           style: Theme.of(context).textTheme.titleMedium,

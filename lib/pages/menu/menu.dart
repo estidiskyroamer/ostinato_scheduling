@@ -45,7 +45,6 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           "Menu",
           style: Theme.of(context).textTheme.titleMedium,

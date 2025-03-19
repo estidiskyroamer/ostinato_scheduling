@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
 import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/common.dart';
@@ -120,7 +121,6 @@ class _SchedulePageState extends State<SchedulePage>
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
           title: const TabBar(tabs: [
             Tab(
@@ -230,7 +230,6 @@ class _SchedulePageState extends State<SchedulePage>
                             child: IconButton(
                               icon: const Icon(
                                 FontAwesomeIcons.ellipsisVertical,
-                                color: Colors.black,
                                 size: 16,
                               ),
                               visualDensity: VisualDensity.compact,
@@ -258,7 +257,8 @@ class _SchedulePageState extends State<SchedulePage>
             hideTodayIcon: true,
             topRowIconColor: Colors.black,
             selectedColor: Colors.black,
-            todayColor: Colors.black,
+            todayColor: Colors.blueGrey,
+            defaultDayColor:  Theme.of(context).extension<OstinatoThemeExtension>()!.textColor,
             selectedTodayColor: Colors.blueGrey,
             expandableDateFormat: "EEEE, dd MMMM yyyy",
             dayOfWeekStyle: Theme.of(context).textTheme.bodyMedium,

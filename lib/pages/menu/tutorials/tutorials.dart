@@ -9,7 +9,6 @@ class TutorialsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           "Tutorials",
           style: Theme.of(context).textTheme.titleMedium,

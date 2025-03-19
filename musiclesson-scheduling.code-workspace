@@ -1,14 +1,18 @@
 {
 	"folders": [
 		{
-			"path": "C:/xampp/htdocs/musiclesson-scheduling"
-		},
-		{
 			"path": "."
 		},
 		{
 			"name": "ostinato-admin",
 			"path": "../ostinato-admin"
+		},
+		{
+			"name": "musiclesson-scheduling",
+			"path": "../musiclesson-scheduling"
+		},
+		{
+			"path": "../ostinato-admin-vue"
 		}
 	],
 	"settings": {}

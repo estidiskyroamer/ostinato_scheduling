@@ -47,6 +47,7 @@ Widget detailItem(BuildContext context, String title, String content) {
 
 Widget detailScheduleDate(BuildContext context, DateTime date) {
   return listHeader(
+    context: context,
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

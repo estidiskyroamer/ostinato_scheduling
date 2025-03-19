@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 
 class OutlineButton extends StatelessWidget {
@@ -73,13 +74,12 @@ class RowIconButton extends StatelessWidget {
           margin: padding8,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.grey[400],
+            color: Theme.of(context).extension<OstinatoThemeExtension>()!.rowIconColor
           ),
           child: Column(
             children: [
               Icon(
                 icon,
-                color: Colors.black,
               ),
               Padding(
                 padding: padding4,

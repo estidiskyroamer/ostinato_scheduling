@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 
 class InputField extends StatefulWidget {
   final TextEditingController textEditingController;
   final String hintText;
   final double marginTop;
   final double marginBottom;
-  final Color borderColor;
   final TextInputType inputType;
   final TextCapitalization capitalization;
   final VoidCallback? onTap;
@@ -19,7 +19,6 @@ class InputField extends StatefulWidget {
       required this.hintText,
       this.marginTop = 6.0,
       this.marginBottom = 6.0,
-      this.borderColor = Colors.black,
       this.inputType = TextInputType.text,
       this.capitalization = TextCapitalization.words,
       this.onTap,
@@ -40,9 +39,9 @@ class _InputFieldState extends State<InputField> {
           EdgeInsets.only(top: widget.marginTop, bottom: widget.marginBottom),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: widget.borderColor, width: 1.0),
-          bottom: BorderSide(color: widget.borderColor, width: 1.0),
-          left: BorderSide(color: widget.borderColor, width: 6.0),
+          top: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
+          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
+          left: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 6.0),
         ),
       ),
       child: TextField(
@@ -52,7 +51,7 @@ class _InputFieldState extends State<InputField> {
           hintStyle: Theme.of(context)
               .textTheme
               .bodyMedium!
-              .copyWith(fontStyle: FontStyle.italic, color: Colors.black38),
+              .copyWith(fontStyle: FontStyle.italic, color:  Theme.of(context).extension<OstinatoThemeExtension>()!.inputHintColor),
           isDense: true,
           border: InputBorder.none,
         ),
@@ -72,7 +71,6 @@ class SmallInputField extends StatefulWidget {
   final String hintText;
   final double marginTop;
   final double marginBottom;
-  final Color borderColor;
   final TextInputType inputType;
   final TextCapitalization capitalization;
   final VoidCallback? onTap;
@@ -86,7 +84,6 @@ class SmallInputField extends StatefulWidget {
       required this.hintText,
       this.marginTop = 6.0,
       this.marginBottom = 6.0,
-      this.borderColor = Colors.black,
       this.inputType = TextInputType.text,
       this.capitalization = TextCapitalization.words,
       this.onTap,
@@ -108,9 +105,9 @@ class _SmallInputFieldState extends State<SmallInputField> {
           EdgeInsets.only(top: widget.marginTop, bottom: widget.marginBottom),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: widget.borderColor, width: 1.0),
-          bottom: BorderSide(color: widget.borderColor, width: 1.0),
-          left: BorderSide(color: widget.borderColor, width: 6.0),
+          top: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
+          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
+          left: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 6.0),
         ),
       ),
       child: TextField(

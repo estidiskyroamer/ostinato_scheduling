@@ -54,9 +54,7 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.white,
         title: Text(
           "Notes",
           style: Theme.of(context).textTheme.titleMedium,
@@ -67,9 +65,6 @@ class _ScheduleNotePageState extends State<ScheduleNotePage> {
           padding: padding16,
           child: Column(
             children: [
-              Image(
-                  width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/notes.jpeg')),
               Padding(padding: padding16),
               Text(
                 "${widget.schedule.student.name} (${widget.schedule.instrument.name}) \n${DateFormat("dd MMMM yyyy").format(widget.schedule.date)}",

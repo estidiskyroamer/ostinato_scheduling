@@ -7,6 +7,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/buttons.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
@@ -200,11 +201,11 @@ Widget inputDateTimePicker({
   );
 }
 
-Widget listHeader({required Widget child}) {
+Widget listHeader({required BuildContext context, required Widget child}) {
   return Container(
       width: double.infinity,
       padding: padding8,
-      decoration: const BoxDecoration(color: Colors.black12),
+      decoration:  BoxDecoration(color: Theme.of(context).extension<OstinatoThemeExtension>()!.headerBackgroundColor),
       child: child);
 }
 

@@ -6,8 +6,6 @@ import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await Prefs().init();
-  //Check default settings
   Config().storage.read(key: 'course_length').then((value) {
     if (value == null) {
       Config().storage.write(
@@ -29,17 +27,14 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    /* if (!Prefs().preferences.containsKey("region")) {
-      Prefs().preferences.setString("region", "US");
-      Prefs().preferences.setString("region_name", "United States of America");
-    } */
     return ToastificationWrapper(
       child: MaterialApp(
         title: 'Ostinato',
-        theme: ostinatoTheme,
+        theme: lightTheme, // Light Mode Theme
+        darkTheme: darkTheme, // Dark Mode Theme
+        themeMode: ThemeMode.system, // Follows system dark mode setting
         navigatorKey: navigatorKey,
         home: const NavigationPage(),
         debugShowCheckedModeBanner: false,

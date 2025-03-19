@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/components.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule_note.dart';
 
@@ -54,6 +55,7 @@ Widget noteBottomSheet(BuildContext context, ScheduleNote scheduleNote,
 
 Widget scheduleDate(BuildContext context, DateTime date) {
   return listHeader(
+    context: context,
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -68,7 +70,7 @@ Widget scheduleDate(BuildContext context, DateTime date) {
           style: Theme.of(context)
               .textTheme
               .titleSmall!
-              .copyWith(color: Colors.black45),
+              .copyWith(color:  Theme.of(context).extension<OstinatoThemeExtension>()!.headerForegroundColor),
         )
       ],
     ),

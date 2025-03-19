@@ -108,7 +108,6 @@ class _StudentPageState extends State<StudentPage>
             children: [
               Expanded(
                 child: RefreshIndicator(
-                  color: Colors.black,
                   onRefresh: () async {
                     getStudents();
                   },
@@ -145,7 +144,6 @@ class _StudentPageState extends State<StudentPage>
           IconButton(
             icon: const Icon(
               FontAwesomeIcons.ellipsisVertical,
-              color: Colors.black,
               size: 16,
             ),
             visualDensity: VisualDensity.comfortable,
