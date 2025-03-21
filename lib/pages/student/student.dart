@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/user.dart';
@@ -135,8 +136,8 @@ class _StudentPageState extends State<StudentPage>
   Widget studentItem(BuildContext context, User student) {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 12),
-      decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.black38))),
+      decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.separatorColor))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

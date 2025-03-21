@@ -39,8 +39,8 @@ class _InputFieldState extends State<InputField> {
           EdgeInsets.only(top: widget.marginTop, bottom: widget.marginBottom),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
-          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
+          top: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 0.8),
+          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 0.8),
           left: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 6.0),
         ),
       ),
@@ -105,8 +105,8 @@ class _SmallInputFieldState extends State<SmallInputField> {
           EdgeInsets.only(top: widget.marginTop, bottom: widget.marginBottom),
       decoration: BoxDecoration(
         border: Border(
-          top: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
-          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 1.0),
+          top: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 0.8),
+          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 0.8),
           left: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.borderColor, width: 6.0),
         ),
       ),

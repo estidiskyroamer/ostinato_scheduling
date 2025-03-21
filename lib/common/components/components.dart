@@ -20,12 +20,7 @@ class ItemBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Wrap(children: [
-      Container(
-          padding: padding16,
-          color: Theme.of(context).bottomSheetTheme.backgroundColor,
-          child: child)
-    ]);
+    return Wrap(children: [Container(padding: padding16, color: Theme.of(context).bottomSheetTheme.backgroundColor, child: child)]);
   }
 }
 
@@ -34,11 +29,7 @@ class ActionDialog extends StatelessWidget {
   final String contentText;
   final String actionText;
 
-  const ActionDialog(
-      {super.key,
-      required this.action,
-      required this.contentText,
-      required this.actionText});
+  const ActionDialog({super.key, required this.action, required this.contentText, required this.actionText});
 
   @override
   Widget build(BuildContext context) {
@@ -86,10 +77,7 @@ Widget listBottomSheet<T>(
       children: [
         Text(
           title,
-          style: Theme.of(context)
-              .textTheme
-              .bodyLarge!
-              .copyWith(fontStyle: FontStyle.italic),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontStyle: FontStyle.italic),
         ),
         Padding(padding: padding16),
         SizedBox(
@@ -105,9 +93,7 @@ Widget listBottomSheet<T>(
                   },
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
-                    decoration: const BoxDecoration(
-                        border:
-                            Border(bottom: BorderSide(color: Colors.black38))),
+                    decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: Colors.black38))),
                     child: itemContentBuilder(item),
                   ),
                 );
@@ -144,10 +130,7 @@ Widget inputDateTimePicker({
     children: [
       Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .bodyLarge!
-            .copyWith(fontStyle: FontStyle.italic),
+        style: Theme.of(context).textTheme.bodyLarge!.copyWith(fontStyle: FontStyle.italic),
       ),
       ScrollDateTimePicker(
         itemExtent: 48,
@@ -174,8 +157,7 @@ Widget inputDateTimePicker({
           maxDate: DateTime(currentTime.year + 5, 12),
           initialDate: selectedTime.add(const Duration(hours: 1)),
         ),
-        style: DateTimePickerStyle(
-            activeStyle: const TextStyle(fontWeight: FontWeight.bold)),
+        style: DateTimePickerStyle(activeStyle: const TextStyle(fontWeight: FontWeight.bold)),
         onChange: (time) {
           setTime(time);
         },
@@ -205,25 +187,24 @@ Widget listHeader({required BuildContext context, required Widget child}) {
   return Container(
       width: double.infinity,
       padding: padding8,
-      decoration:  BoxDecoration(color: Theme.of(context).extension<OstinatoThemeExtension>()!.headerBackgroundColor),
+      decoration: BoxDecoration(color: Theme.of(context).extension<OstinatoThemeExtension>()!.headerBackgroundColor),
       child: child);
 }
 
-Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
-    BuildContext context, Widget button) {
+Container scheduleItem(DateTime currentTime, Schedule schedule, BuildContext context, Widget button) {
   DateTime startTime = DateFormat.Hm().parse(schedule.startTime);
+  startTime = DateTime(schedule.date.year, schedule.date.month, schedule.date.day, startTime.hour, startTime.minute);
   DateTime endTime = DateFormat.Hm().parse(schedule.endTime);
-  Duration diff = endTime.difference(startTime);
+  endTime = DateTime(schedule.date.year, schedule.date.month, schedule.date.day, endTime.hour, endTime.minute);
+  bool isCurrentSchedule = (startTime.isBefore(currentTime) || currentTime == startTime) && (endTime.isAfter(currentTime) || currentTime == endTime);
+
   return Container(
-    padding: isCurrentSchedule
-        ? const EdgeInsets.fromLTRB(32, 4, 12, 4)
-        : const EdgeInsets.fromLTRB(0, 4, 12, 4),
-    margin:
-        isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
+    padding: isCurrentSchedule ? const EdgeInsets.fromLTRB(32, 4, 12, 4) : const EdgeInsets.fromLTRB(0, 4, 12, 4),
+    margin: isCurrentSchedule ? EdgeInsets.zero : const EdgeInsets.only(left: 32),
     decoration: BoxDecoration(
-        color: isCurrentSchedule ? HexColor("#FFF0D4") : Colors.transparent,
-        border: const Border(
-          bottom: BorderSide(color: Colors.black38),
+        color: isCurrentSchedule ? Theme.of(context).extension<OstinatoThemeExtension>()!.scheduleHighlightColor : Colors.transparent,
+        border: Border(
+          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.separatorColor),
         )),
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -235,18 +216,11 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
               children: [
                 Text(
                   schedule.startTime,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      decoration: schedule.status == 'canceled'
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none),
+                  style: TextStyle(fontWeight: FontWeight.bold, decoration: schedule.status == 'canceled' ? TextDecoration.lineThrough : TextDecoration.none),
                 ),
                 Text(
                   schedule.endTime,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .merge(const TextStyle(color: Colors.grey)),
+                  style: Theme.of(context).textTheme.labelSmall!.merge(const TextStyle(color: Colors.grey)),
                 )
               ],
             )),
@@ -266,10 +240,7 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
               ),
               Text(
                 schedule.instrument.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall!
-                    .merge(const TextStyle(color: Colors.grey)),
+                style: Theme.of(context).textTheme.labelSmall!.merge(const TextStyle(color: Colors.grey)),
               ),
               schedule.scheduleNote != null
                   ? Container(
@@ -289,16 +260,20 @@ Container scheduleItem(bool isCurrentSchedule, Schedule schedule,
   );
 }
 
-Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
-    BuildContext context, Widget button) {
-  Duration diff = event.endTime.difference(event.startTime);
+Container eventItem(DateTime currentTime, NeatCleanCalendarEvent event, Schedule schedule, BuildContext context, Widget button) {
+  DateTime startTime = DateFormat.Hm().parse(schedule.startTime);
+  startTime = DateTime(schedule.date.year, schedule.date.month, schedule.date.day, startTime.hour, startTime.minute);
+  DateTime endTime = DateFormat.Hm().parse(schedule.endTime);
+  endTime = DateTime(schedule.date.year, schedule.date.month, schedule.date.day, endTime.hour, endTime.minute);
+  bool isCurrentSchedule = (startTime.isBefore(currentTime) || currentTime == startTime) && (endTime.isAfter(currentTime) || currentTime == endTime);
+
   return Container(
-    padding: const EdgeInsets.fromLTRB(0, 4, 12, 4),
-    margin: const EdgeInsets.only(left: 32),
-    decoration: const BoxDecoration(
+    padding: const EdgeInsets.fromLTRB(32, 4, 12, 4),
+    decoration: BoxDecoration(
+        color: isCurrentSchedule ? Theme.of(context).extension<OstinatoThemeExtension>()!.scheduleHighlightColor : Colors.transparent,
         border: Border(
-      bottom: BorderSide(color: Colors.black38),
-    )),
+          bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.separatorColor),
+        )),
     child: Row(
       children: [
         Expanded(
@@ -314,10 +289,7 @@ Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
                 ),
                 Text(
                   DateFormat("HH:mm").format(event.endTime),
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall!
-                      .merge(const TextStyle(color: Colors.grey)),
+                  style: Theme.of(context).textTheme.labelSmall!.merge(const TextStyle(color: Colors.grey)),
                 )
               ],
             )),
@@ -337,10 +309,7 @@ Container eventItem(NeatCleanCalendarEvent event, Schedule schedule,
               ),
               Text(
                 event.description,
-                style: Theme.of(context)
-                    .textTheme
-                    .labelSmall!
-                    .merge(const TextStyle(color: Colors.grey)),
+                style: Theme.of(context).textTheme.labelSmall!.merge(const TextStyle(color: Colors.grey)),
               ),
               schedule.scheduleNote != null
                   ? Container(
@@ -415,10 +384,7 @@ ToastificationItem toastNotification(String text) {
                 child: Text(
                   text,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium!
-                      .merge(const TextStyle(color: Colors.white)),
+                  style: Theme.of(context).textTheme.displayMedium!.merge(const TextStyle(color: Colors.white)),
                 ),
               ),
             ),

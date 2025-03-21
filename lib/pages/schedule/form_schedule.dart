@@ -92,7 +92,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   }
 
   void getSettings() async {
-    Map<String, String> settings = await Settings.getSettings();
+    Map<String, String> settings = await LocalSettings.getSettings();
     setState(() {
       courseLength = settings['courseLength']!;
       repeatController.text = settings['repeat']!;
@@ -108,8 +108,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
           isEditSchedule = true;
         });
       }
-      StudentDetail? studentDetail =
-          await StudentService().getStudentDetail(widget.schedule!.student.id!);
+      StudentDetail? studentDetail = await StudentService().getStudentDetail(widget.schedule!.student.id!);
       if (studentDetail != null) {
         setStudent(studentDetail.data);
         setStartDate(widget.schedule!.date);
@@ -144,8 +143,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleDate = selectedDate;
-        dateController.text =
-            DateFormat('dd MMMM yyyy').format(selectedScheduleDate);
+        dateController.text = DateFormat('dd MMMM yyyy').format(selectedScheduleDate);
       });
     }
   }
@@ -154,8 +152,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleStartTime = selectedDate;
-        startTimeController.text =
-            DateFormat('HH:mm').format(selectedScheduleStartTime);
+        startTimeController.text = DateFormat('HH:mm').format(selectedScheduleStartTime);
       });
       setEndTime(
         selectedDate.add(
@@ -169,8 +166,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleEndTime = selectedDate;
-        endTimeController.text =
-            DateFormat('HH:mm').format(selectedScheduleEndTime);
+        endTimeController.text = DateFormat('HH:mm').format(selectedScheduleEndTime);
       });
     }
   }
@@ -193,9 +189,6 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
       padding: padding16,
       child: Column(
         children: [
-          Image(
-              width: MediaQuery.sizeOf(context).width / 2,
-              image: const AssetImage('assets/images/schedule.jpeg')),
           Padding(padding: padding16),
           InputField(
             textEditingController: teacherNameController,
@@ -217,8 +210,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                           items: _studentList!.data,
                           title: "Set student",
                           onItemSelected: setStudent,
-                          itemContentBuilder: (User student) =>
-                              Text(student.name),
+                          itemContentBuilder: (User student) => Text(student.name),
                         );
                       });
             },
@@ -238,8 +230,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                           items: _instrumentList!.data,
                           title: "Choose instrument",
                           onItemSelected: setInstrument,
-                          itemContentBuilder: (Instrument instrument) =>
-                              Text(instrument.name),
+                          itemContentBuilder: (Instrument instrument) => Text(instrument.name),
                         );
                       });
             },
@@ -255,11 +246,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                       context: context,
                       builder: (context) {
                         return ItemBottomSheet(
-                            child: inputDateTimePicker(
-                                title: "Set Date",
-                                context: context,
-                                selectedTime: selectedScheduleDate,
-                                setTime: setStartDate));
+                            child: inputDateTimePicker(title: "Set Date", context: context, selectedTime: selectedScheduleDate, setTime: setStartDate));
                       },
                     );
                   },
@@ -303,11 +290,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
                             builder: (context) {
                               return ItemBottomSheet(
                                   child: inputDateTimePicker(
-                                      title: "Set End Time",
-                                      pickerType: 'time',
-                                      context: context,
-                                      selectedTime: selectedScheduleEndTime,
-                                      setTime: setEndTime));
+                                      title: "Set End Time", pickerType: 'time', context: context, selectedTime: selectedScheduleEndTime, setTime: setEndTime));
                             },
                           );
                         },
@@ -391,9 +374,7 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
         date: selectedScheduleDate,
         startTime: DateFormat('HH:mm').format(selectedScheduleStartTime),
         endTime: DateFormat('HH:mm').format(selectedScheduleEndTime));
-    ScheduleService()
-        .createSchedule(create, repeat: repeatController.text)
-        .then((result) {
+    ScheduleService().createSchedule(create, repeat: repeatController.text).then((result) {
       setState(() {
         isLoading = false;
       });

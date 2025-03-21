@@ -62,10 +62,6 @@ class _AccountPageState extends State<AccountPage> {
               padding: padding4,
               child: Column(
                 children: [
-                  Image(
-                      width: MediaQuery.sizeOf(context).width / 2,
-                      image: AssetImage(
-                          'assets/images/dashboard${setRandomImage()}.jpeg')),
                   Padding(padding: padding16),
                   StyledTextButton(
                       action: () {

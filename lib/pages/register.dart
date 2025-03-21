@@ -27,17 +27,13 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Container(
           padding: padding16,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
-                  width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/register.jpeg')),
               Padding(padding: padding16),
               Text(
                 "Register as Teacher",
@@ -79,10 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     )
                   : SolidButton(
                       action: () {
-                        if (nameController.text != "" &&
-                            emailController.text != "" &&
-                            phoneController.text != "" &&
-                            passwordController.text != "") {
+                        if (nameController.text != "" && emailController.text != "" && phoneController.text != "" && passwordController.text != "") {
                           createTeacher(context);
                         }
                       },

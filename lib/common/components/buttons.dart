@@ -12,8 +12,8 @@ class OutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-          shape: const RoundedRectangleBorder(
-              side: BorderSide(width: 1.0, color: Colors.black)),
+          shape: RoundedRectangleBorder(
+              side: BorderSide(width: 1.0, color: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonBackgroundColor)),
           padding: padding8),
       onPressed: action,
       child: ConstrainedBox(
@@ -106,7 +106,7 @@ class SolidButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonBackgroundColor,
           shape: const LinearBorder(),
           padding: padding8),
       onPressed: action,
@@ -120,7 +120,7 @@ class SolidButton extends StatelessWidget {
           style: Theme.of(context)
               .textTheme
               .displayMedium!
-              .merge(const TextStyle(color: Colors.white)),
+              .merge(TextStyle(color: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonForegroundColor)),
         ),
       ),
     );

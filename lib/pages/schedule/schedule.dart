@@ -23,13 +23,11 @@ class SchedulePage extends StatefulWidget {
   State<SchedulePage> createState() => _SchedulePageState();
 }
 
-class _SchedulePageState extends State<SchedulePage>
-    with AutomaticKeepAliveClientMixin {
+class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClientMixin {
   late Future<ScheduleList?> _scheduleList;
   late DateTime currentTime;
 
-  final GroupedItemScrollController _scrollController =
-      GroupedItemScrollController();
+  final GroupedItemScrollController _scrollController = GroupedItemScrollController();
 
   @override
   void initState() {
@@ -57,16 +55,14 @@ class _SchedulePageState extends State<SchedulePage>
         break;
       }
 
-      if (nearestDate == null ||
-          (date.isBefore(targetDate) && date.isAfter(nearestDate))) {
+      if (nearestDate == null || (date.isBefore(targetDate) && date.isAfter(nearestDate))) {
         nearestIndex = i;
         nearestDate = date;
       }
     }
 
     if (nearestIndex != -1) {
-      _scrollController.jumpToElement(
-          alignment: 0.05, automaticAlignment: false, identifier: nearestDate);
+      _scrollController.jumpToElement(alignment: 0.05, automaticAlignment: false, identifier: nearestDate);
     }
   }
 
@@ -103,16 +99,13 @@ class _SchedulePageState extends State<SchedulePage>
   void getSchedule() {
     if (mounted) {
       setState(() {
-        _scheduleList = ScheduleService()
-            .getScheduleList(month: currentTime.month, year: currentTime.year);
+        _scheduleList = ScheduleService().getScheduleList(month: currentTime.month, year: currentTime.year);
       });
     }
   }
 
   void addSchedule(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const FormSchedulePage()))
-        .then((value) => getSchedule());
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FormSchedulePage())).then((value) => getSchedule());
   }
 
   @override
@@ -198,12 +191,8 @@ class _SchedulePageState extends State<SchedulePage>
               eventColor = HexColor('#c70e03');
             }
 
-            NeatCleanCalendarEvent event = NeatCleanCalendarEvent(
-                schedule.student.name,
-                description: schedule.instrument.name,
-                startTime: startTime,
-                endTime: endTime,
-                color: eventColor);
+            NeatCleanCalendarEvent event =
+                NeatCleanCalendarEvent(schedule.student.name, description: schedule.instrument.name, startTime: startTime, endTime: endTime, color: eventColor);
             eventToScheduleMap[event] = schedule;
             return event;
           }).toList();
@@ -222,6 +211,7 @@ class _SchedulePageState extends State<SchedulePage>
                       NeatCleanCalendarEvent event = events[index];
                       Schedule? schedule = eventToScheduleMap[event];
                       return eventItem(
+                          currentTime,
                           event,
                           schedule!,
                           context,
@@ -237,9 +227,7 @@ class _SchedulePageState extends State<SchedulePage>
                                 showModalBottomSheet<void>(
                                     context: context,
                                     builder: (context) {
-                                      return ScheduleBottomSheet(
-                                          schedule: schedule,
-                                          onChanged: getSchedule);
+                                      return ScheduleBottomSheet(schedule: schedule, onChanged: getSchedule);
                                     });
                               },
                             ),
@@ -256,9 +244,9 @@ class _SchedulePageState extends State<SchedulePage>
             showEvents: true,
             hideTodayIcon: true,
             topRowIconColor: Colors.black,
-            selectedColor: Colors.black,
+            selectedColor: Colors.blueGrey,
             todayColor: Colors.blueGrey,
-            defaultDayColor:  Theme.of(context).extension<OstinatoThemeExtension>()!.textColor,
+            defaultDayColor: Theme.of(context).extension<OstinatoThemeExtension>()!.textColor,
             selectedTodayColor: Colors.blueGrey,
             expandableDateFormat: "EEEE, dd MMMM yyyy",
             dayOfWeekStyle: Theme.of(context).textTheme.bodyMedium,
@@ -310,8 +298,7 @@ class _SchedulePageState extends State<SchedulePage>
         Expanded(
           child: FutureBuilder(
               future: _scheduleList,
-              builder: (BuildContext context,
-                  AsyncSnapshot<ScheduleList?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<ScheduleList?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: SizedBox(
@@ -331,7 +318,6 @@ class _SchedulePageState extends State<SchedulePage>
                   scrollToDate(scheduleList);
                 });
                 return RefreshIndicator(
-                  color: Colors.black,
                   onRefresh: () async {
                     getSchedule();
                   },
@@ -339,55 +325,37 @@ class _SchedulePageState extends State<SchedulePage>
                       elements: scheduleList.data,
                       elementIdentifier: (schedule) => schedule.date,
                       itemScrollController: _scrollController,
-                      itemComparator: (e1, e2) =>
-                          e1.startTime.compareTo(e2.startTime),
+                      itemComparator: (e1, e2) => e1.startTime.compareTo(e2.startTime),
                       groupBy: (schedule) => schedule.date,
-                      groupSeparatorBuilder: (value) =>
-                          scheduleDate(context, value.date),
+                      groupSeparatorBuilder: (value) => scheduleDate(context, value.date),
                       itemBuilder: (context, schedule) {
-                        return studentTime(context, schedule);
+                        return scheduleItem(
+                          currentTime,
+                          schedule,
+                          context,
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              icon: const Icon(
+                                FontAwesomeIcons.ellipsisVertical,
+                                size: 16,
+                              ),
+                              visualDensity: VisualDensity.compact,
+                              onPressed: () {
+                                showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return ScheduleBottomSheet(schedule: schedule, onChanged: getSchedule);
+                                    });
+                              },
+                            ),
+                          ),
+                        );
                       }),
                 );
               }),
         ),
       ],
-    );
-  }
-
-  Widget studentTime(BuildContext context, Schedule schedule) {
-    DateTime currentTime = DateTime.now();
-    DateTime startTime = DateFormat('HH:mm').parse(schedule.startTime);
-    startTime = DateTime(schedule.date.year, schedule.date.month,
-        schedule.date.day, startTime.hour, startTime.minute);
-    DateTime endTime = DateFormat('HH:mm').parse(schedule.endTime);
-    endTime = DateTime(schedule.date.year, schedule.date.month,
-        schedule.date.day, endTime.hour, endTime.minute);
-    bool isCurrentSchedule =
-        (startTime.isBefore(currentTime) || currentTime == startTime) &&
-            (endTime.isAfter(currentTime) || currentTime == endTime);
-    return scheduleItem(
-      isCurrentSchedule,
-      schedule,
-      context,
-      Expanded(
-        flex: 1,
-        child: IconButton(
-          icon: const Icon(
-            FontAwesomeIcons.ellipsisVertical,
-            color: Colors.black,
-            size: 16,
-          ),
-          visualDensity: VisualDensity.compact,
-          onPressed: () {
-            showModalBottomSheet<void>(
-                context: context,
-                builder: (context) {
-                  return ScheduleBottomSheet(
-                      schedule: schedule, onChanged: getSchedule);
-                });
-          },
-        ),
-      ),
     );
   }
 }

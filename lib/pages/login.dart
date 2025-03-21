@@ -76,22 +76,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
       body: Container(
         width: double.infinity,
         padding: padding16,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image(
-                      width: MediaQuery.sizeOf(context).width / 2,
-                      image: const AssetImage('assets/images/login.jpeg')),
                   Padding(padding: padding16),
                   Text(
                     "Ostinato",

@@ -53,9 +53,6 @@ class _SummaryPageState extends State<SummaryPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image(
-                width: MediaQuery.sizeOf(context).width / 2,
-                image: const AssetImage('assets/images/summary.jpeg')),
             Padding(padding: padding16),
             SizedBox(
               width: double.infinity,
@@ -64,16 +61,14 @@ class _SummaryPageState extends State<SummaryPage> {
                   getTeacherName(),
                   getTeacherCompany(),
                   Padding(padding: padding4),
-                  Text(
-                      "Data from ${DateFormat("dd").format(firstDayCurrentMonth)} to ${DateFormat("dd MMMM yyyy").format(lastDayCurrentMonth)}",
+                  Text("Data from ${DateFormat("dd").format(firstDayCurrentMonth)} to ${DateFormat("dd MMMM yyyy").format(lastDayCurrentMonth)}",
                       style: Theme.of(context).textTheme.labelSmall),
                 ],
               ),
             ),
             FutureBuilder(
               future: _summary,
-              builder:
-                  (BuildContext context, AsyncSnapshot<Summary?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<Summary?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: SizedBox(
@@ -89,19 +84,14 @@ class _SummaryPageState extends State<SummaryPage> {
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
-                StudentSummary studentSummary =
-                    snapshot.data!.data.studentSummary;
-                CourseSummary coursesSummary =
-                    snapshot.data!.data.courseSummary;
+                StudentSummary studentSummary = snapshot.data!.data.studentSummary;
+                CourseSummary coursesSummary = snapshot.data!.data.courseSummary;
 
-                String totalNewStudents = studentSummary.totalNewStudents > 0
-                    ? "+${studentSummary.totalNewStudents}"
-                    : studentSummary.totalNewStudents.toString();
+                String totalNewStudents =
+                    studentSummary.totalNewStudents > 0 ? "+${studentSummary.totalNewStudents}" : studentSummary.totalNewStudents.toString();
 
                 String totalLeavingStudents =
-                    studentSummary.totalLeavingStudents > 0
-                        ? "-${studentSummary.totalLeavingStudents}"
-                        : studentSummary.totalLeavingStudents.toString();
+                    studentSummary.totalLeavingStudents > 0 ? "-${studentSummary.totalLeavingStudents}" : studentSummary.totalLeavingStudents.toString();
                 return Column(
                   children: [
                     Padding(padding: padding16),
@@ -113,13 +103,10 @@ class _SummaryPageState extends State<SummaryPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        summaryItem(
-                            context,
-                            studentSummary.totalStudents.toString(),
-                            "Total",
+                        summaryItem(context, studentSummary.totalStudents.toString(), "Total",
                             "Total of active students assigned to you with scheduled courses within the date range"),
-                        summaryItem(context, totalNewStudents, "New",
-                            "Total of new students assigned to or added by you with scheduled courses within the date range"),
+                        summaryItem(
+                            context, totalNewStudents, "New", "Total of new students assigned to or added by you with scheduled courses within the date range"),
                         summaryItem(context, totalLeavingStudents, "Leaving",
                             "Total of leaving students which has been assigned to or added by you with scheduled courses within the date range"),
                       ],
@@ -133,21 +120,10 @@ class _SummaryPageState extends State<SummaryPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        summaryItem(
-                            context,
-                            (coursesSummary.done + coursesSummary.noStatus)
-                                .toString(),
-                            "Total",
+                        summaryItem(context, (coursesSummary.done + coursesSummary.noStatus).toString(), "Total",
                             "Total courses scheduled to you within the date range"),
-                        summaryItem(
-                            context,
-                            coursesSummary.done.toString(),
-                            "Done",
-                            "Total courses scheduled to you and marked as done within the date range"),
-                        summaryItem(
-                            context,
-                            coursesSummary.canceled.toString(),
-                            "Canceled",
+                        summaryItem(context, coursesSummary.done.toString(), "Done", "Total courses scheduled to you and marked as done within the date range"),
+                        summaryItem(context, coursesSummary.canceled.toString(), "Canceled",
                             "Total courses scheduled to you and marked as canceled within the date range"),
                       ],
                     ),
@@ -188,8 +164,7 @@ class _SummaryPageState extends State<SummaryPage> {
         }
         return Container(
           padding: padding4,
-          child:
-              Text(company, style: Theme.of(context).textTheme.displayMedium),
+          child: Text(company, style: Theme.of(context).textTheme.displayMedium),
         );
       },
     );

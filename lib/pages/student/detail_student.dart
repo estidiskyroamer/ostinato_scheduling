@@ -52,10 +52,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
   void getScheduleList() {
     if (mounted) {
       setState(() {
-        _studentScheduleList = StudentService().getStudentSchedule(
-            month: currentTime.month,
-            year: currentTime.year,
-            id: widget.student.id!);
+        _studentScheduleList = StudentService().getStudentSchedule(month: currentTime.month, year: currentTime.year, id: widget.student.id!);
       });
     }
   }
@@ -168,10 +165,9 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
               context,
               "Data",
               IconButton(
-                icon:  Icon(
+                icon: const Icon(
                   FontAwesomeIcons.pencil,
                   size: 20,
-                  color:  Theme.of(context).extension<OstinatoThemeExtension>()!.headerForegroundColor,
                 ),
                 onPressed: () {
                   Navigator.of(context)
@@ -187,8 +183,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             ),
             FutureBuilder(
               future: _studentDetail,
-              builder: (BuildContext context,
-                  AsyncSnapshot<StudentDetail?> snapshot) {
+              builder: (BuildContext context, AsyncSnapshot<StudentDetail?> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(
                     child: SizedBox(
@@ -212,28 +207,19 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child: detailItem(
-                          context,
-                          "Birth date",
-                          student.birthDate != null
-                              ? DateFormat("dd MMMM yyyy")
-                                  .format(student.birthDate!)
-                              : ''),
+                      child: detailItem(context, "Birth date", student.birthDate != null ? DateFormat("dd MMMM yyyy").format(student.birthDate!) : ''),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child:
-                          detailItem(context, "Address", student.address ?? ''),
+                      child: detailItem(context, "Address", student.address ?? ''),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child:
-                          detailItem(context, "E-mail address", student.email),
+                      child: detailItem(context, "E-mail address", student.email),
                     ),
                     Container(
                       padding: const EdgeInsets.only(left: 16, top: 8),
-                      child: detailItem(
-                          context, "Phone number", student.phoneNumber),
+                      child: detailItem(context, "Phone number", student.phoneNumber),
                     ),
                   ],
                 );
@@ -286,8 +272,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
             Flexible(
               child: FutureBuilder(
                   future: _studentScheduleList,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<ScheduleList?> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<ScheduleList?> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: SizedBox(
@@ -308,41 +293,34 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       controller: _scrollController,
                       elements: scheduleList.data,
                       groupBy: (schedule) => schedule.date,
-                      groupSeparatorBuilder: (value) =>
-                          scheduleDate(context, value),
+                      groupSeparatorBuilder: (value) => scheduleDate(context, value),
                       itemBuilder: (context, schedule) {
-                        return detailStudentTime(schedule, schedule.student);
+                        return scheduleItem(
+                          currentTime,
+                          schedule,
+                          context,
+                          Expanded(
+                            flex: 1,
+                            child: IconButton(
+                              icon: const Icon(
+                                FontAwesomeIcons.ellipsisVertical,
+                                size: 16,
+                              ),
+                              onPressed: () {
+                                showModalBottomSheet<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return ScheduleBottomSheet(schedule: schedule, onChanged: getScheduleList);
+                                    });
+                              },
+                            ),
+                          ),
+                        );
                       },
                     );
                   }),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget detailStudentTime(Schedule schedule, User student) {
-    return scheduleItem(
-      false,
-      schedule,
-      context,
-      Expanded(
-        flex: 1,
-        child: IconButton(
-          icon: const Icon(
-            FontAwesomeIcons.ellipsisVertical,
-            color: Colors.black,
-            size: 16,
-          ),
-          onPressed: () {
-            showModalBottomSheet<void>(
-                context: context,
-                builder: (context) {
-                  return ScheduleBottomSheet(
-                      schedule: schedule, onChanged: getScheduleList);
-                });
-          },
         ),
       ),
     );

@@ -49,17 +49,13 @@ class _FormAccountPageState extends State<FormAccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      ),
+      appBar: AppBar(),
       body: SingleChildScrollView(
         child: Container(
           padding: padding16,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image(
-                  width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/register.jpeg')),
               Padding(padding: padding16),
               isLoading
                   ? Center(

@@ -53,7 +53,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   }
 
   void getSettings() async {
-    Map<String, String> settings = await Settings.getSettings();
+    Map<String, String> settings = await LocalSettings.getSettings();
     setState(() {
       courseLength = settings['courseLength']!;
     });
@@ -75,8 +75,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleDate = selectedDate;
-        dateController.text =
-            DateFormat('dd MMMM yyyy').format(selectedScheduleDate);
+        dateController.text = DateFormat('dd MMMM yyyy').format(selectedScheduleDate);
       });
     }
   }
@@ -85,8 +84,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleStartTime = selectedDate;
-        startTimeController.text =
-            DateFormat('HH:mm').format(selectedScheduleStartTime);
+        startTimeController.text = DateFormat('HH:mm').format(selectedScheduleStartTime);
       });
       courseLength != null
           ? setEndTime(
@@ -102,8 +100,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
     if (mounted) {
       setState(() {
         selectedScheduleEndTime = selectedDate;
-        endTimeController.text =
-            DateFormat('HH:mm').format(selectedScheduleEndTime);
+        endTimeController.text = DateFormat('HH:mm').format(selectedScheduleEndTime);
       });
     }
   }
@@ -126,9 +123,6 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
       padding: padding16,
       child: Column(
         children: [
-          Image(
-              width: MediaQuery.sizeOf(context).width / 2,
-              image: const AssetImage('assets/images/schedule.jpeg')),
           Padding(padding: padding16),
           InputField(
             textEditingController: teacherNameController,
@@ -154,11 +148,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
                 context: context,
                 builder: (context) {
                   return ItemBottomSheet(
-                      child: inputDateTimePicker(
-                          title: "Set Date",
-                          context: context,
-                          selectedTime: selectedScheduleDate,
-                          setTime: setStartDate));
+                      child: inputDateTimePicker(title: "Set Date", context: context, selectedTime: selectedScheduleDate, setTime: setStartDate));
                 },
               );
             },
@@ -176,11 +166,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
                       builder: (context) {
                         return ItemBottomSheet(
                             child: inputDateTimePicker(
-                                title: "Set Start Time",
-                                pickerType: 'time',
-                                context: context,
-                                selectedTime: selectedScheduleStartTime,
-                                setTime: setStartTime));
+                                title: "Set Start Time", pickerType: 'time', context: context, selectedTime: selectedScheduleStartTime, setTime: setStartTime));
                       },
                     );
                   },
@@ -198,11 +184,7 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
                       builder: (context) {
                         return ItemBottomSheet(
                             child: inputDateTimePicker(
-                                title: "Set End Time",
-                                pickerType: 'time',
-                                context: context,
-                                selectedTime: selectedScheduleEndTime,
-                                setTime: setEndTime));
+                                title: "Set End Time", pickerType: 'time', context: context, selectedTime: selectedScheduleEndTime, setTime: setEndTime));
                       },
                     );
                   },

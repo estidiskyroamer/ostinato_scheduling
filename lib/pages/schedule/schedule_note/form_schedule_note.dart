@@ -8,8 +8,7 @@ import 'package:ostinato/services/schedule_service.dart';
 class FormScheduleNotePage extends StatefulWidget {
   final ScheduleNote? scheduleNote;
   final String scheduleId;
-  const FormScheduleNotePage(
-      {super.key, required this.scheduleId, this.scheduleNote});
+  const FormScheduleNotePage({super.key, required this.scheduleId, this.scheduleNote});
 
   @override
   State<FormScheduleNotePage> createState() => _FormScheduleNotePageState();
@@ -54,9 +53,6 @@ class _FormScheduleNotePageState extends State<FormScheduleNotePage> {
           padding: padding16,
           child: Column(
             children: [
-              Image(
-                  width: MediaQuery.sizeOf(context).width / 2,
-                  image: const AssetImage('assets/images/notes.jpeg')),
               Padding(padding: padding16),
               InputField(
                   textEditingController: noteController,

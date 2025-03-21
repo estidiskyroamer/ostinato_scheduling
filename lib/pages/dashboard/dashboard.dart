@@ -25,6 +25,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   late Future<ScheduleList?> _scheduleList;
+  late DateTime currentTime;
 
   DateTime currentDate = DateTime.now();
   String greeting() {
@@ -47,6 +48,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void initState() {
     super.initState();
     _user = Config().storage.read(key: 'user');
+    currentTime = DateTime.now();
     getCurrentSchedule();
     getSummary();
   }
@@ -54,10 +56,7 @@ class _DashboardPageState extends State<DashboardPage> {
   void getCurrentSchedule() {
     if (mounted) {
       setState(() {
-        _scheduleList = ScheduleService().getScheduleList(
-            month: currentDate.month,
-            year: currentDate.year,
-            day: currentDate.day);
+        _scheduleList = ScheduleService().getScheduleList(month: currentDate.month, year: currentDate.year, day: currentDate.day);
       });
     }
   }
@@ -90,9 +89,7 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void addSchedule(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const FormSchedulePage()))
-        .then((value) => getCurrentSchedule());
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FormSchedulePage())).then((value) => getCurrentSchedule());
   }
 
   void editSchedule(Schedule schedule) {
@@ -146,10 +143,8 @@ class _DashboardPageState extends State<DashboardPage> {
               mainAxisSize: MainAxisSize.max,
               children: [
                 Text("Today's Schedule",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall! 
-                        .copyWith(color: Theme.of(context).extension<OstinatoThemeExtension>()!.headerForegroundColor)),
+                    style:
+                        Theme.of(context).textTheme.titleSmall!.copyWith(color: Theme.of(context).extension<OstinatoThemeExtension>()!.headerForegroundColor)),
                 Padding(padding: padding4),
                 Text(
                   DateFormat("EEEE, dd MMMM yyyy").format(currentDate),
@@ -164,8 +159,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 width: double.infinity,
                 child: FutureBuilder(
                   future: _scheduleList,
-                  builder: (BuildContext context,
-                      AsyncSnapshot<ScheduleList?> snapshot) {
+                  builder: (BuildContext context, AsyncSnapshot<ScheduleList?> snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return Center(
                         child: SizedBox(
@@ -194,7 +188,28 @@ class _DashboardPageState extends State<DashboardPage> {
                             itemCount: schedules.length,
                             itemBuilder: (BuildContext context, int index) {
                               Schedule schedule = schedules[index];
-                              return studentTime(context, schedule);
+                              return scheduleItem(
+                                currentTime,
+                                schedule,
+                                context,
+                                Expanded(
+                                  flex: 1,
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      FontAwesomeIcons.ellipsisVertical,
+                                      size: 16,
+                                    ),
+                                    visualDensity: VisualDensity.compact,
+                                    onPressed: () {
+                                      showModalBottomSheet<void>(
+                                          context: context,
+                                          builder: (context) {
+                                            return ScheduleBottomSheet(schedule: schedule, onChanged: getCurrentSchedule);
+                                          });
+                                    },
+                                  ),
+                                ),
+                              );
                             }),
                       );
                     }
@@ -208,8 +223,7 @@ class _DashboardPageState extends State<DashboardPage> {
               padding: padding16,
               child: FutureBuilder(
                 future: _summary,
-                builder:
-                    (BuildContext context, AsyncSnapshot<Summary?> snapshot) {
+                builder: (BuildContext context, AsyncSnapshot<Summary?> snapshot) {
                   if (!snapshot.hasData || snapshot.hasError) {
                     return const SizedBox();
                   }
@@ -223,8 +237,7 @@ class _DashboardPageState extends State<DashboardPage> {
                       ),
                       const Text('courses this month'),
                       Padding(padding: padding4),
-                      Text(courses.done / (courses.noStatus + courses.done) >
-                              0.7
+                      Text(courses.done / (courses.noStatus + courses.done) > 0.7
                           ? 'Just ${courses.noStatus} courses to go, keep it up!'
                           : "You're doing great!"),
                     ],
@@ -234,42 +247,6 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget studentTime(BuildContext context, Schedule schedule) {
-    DateTime currentTime = DateTime.now();
-    DateTime startTime = DateFormat('HH:mm').parse(schedule.startTime);
-    startTime = DateTime(currentTime.year, currentTime.month, currentTime.day,
-        startTime.hour, startTime.minute);
-    DateTime endTime = DateFormat('HH:mm').parse(schedule.endTime);
-    endTime = DateTime(currentTime.year, currentTime.month, currentTime.day,
-        endTime.hour, endTime.minute);
-    bool isCurrentSchedule =
-        (startTime.isBefore(currentTime) || currentTime == startTime) &&
-            (endTime.isAfter(currentTime) || currentTime == endTime);
-    return scheduleItem(
-      isCurrentSchedule,
-      schedule,
-      context,
-      Expanded(
-        flex: 1,
-        child: IconButton(
-          icon: const Icon(
-            FontAwesomeIcons.ellipsisVertical,
-            size: 16,
-          ),
-          visualDensity: VisualDensity.compact,
-          onPressed: () {
-            showModalBottomSheet<void>(
-                context: context,
-                builder: (context) {
-                  return ScheduleBottomSheet(
-                      schedule: schedule, onChanged: getCurrentSchedule);
-                });
-          },
-        ),
       ),
     );
   }

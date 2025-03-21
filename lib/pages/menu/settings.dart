@@ -3,6 +3,8 @@ import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
+import 'package:ostinato/models/settings.dart';
+import 'package:ostinato/services/settings_service.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -15,28 +17,29 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController courseLengthController = TextEditingController();
   TextEditingController scheduleRepeatController = TextEditingController();
 
+  late Settings? settings;
+
   late String courseLength;
   late String repeat;
 
   void getSettings() async {
-    String? courseLengthString =
-        await Config().storage.read(key: 'course_length');
-    String? repeatString = await Config().storage.read(key: 'repeat');
-    setState(() {
-      courseLengthController.text =
-          courseLengthString ?? Config().courseLengthDef.toString();
-      scheduleRepeatController.text =
-          repeatString ?? Config().repeatDef.toString();
-    });
+    Settings? result = await SettingsService().getSettings();
+    if (result != null) {
+      await Config().storage.write(key: 'course_length', value: result.scheduleSettings.lessonLength);
+      await Config().storage.write(key: 'repeat', value: result.scheduleSettings.repeat);
+      if (mounted) {
+        setState(() {
+          settings = result;
+          courseLengthController.text = settings!.scheduleSettings.lessonLength ?? Config().courseLengthDef.toString();
+          scheduleRepeatController.text = settings!.scheduleSettings.repeat ?? Config().repeatDef.toString();
+        });
+      }
+    }
   }
 
   void saveSettings() async {
-    await Config()
-        .storage
-        .write(key: 'course_length', value: courseLengthController.text);
-    await Config()
-        .storage
-        .write(key: 'repeat', value: scheduleRepeatController.text);
+    await Config().storage.write(key: 'course_length', value: courseLengthController.text);
+    await Config().storage.write(key: 'repeat', value: scheduleRepeatController.text);
     toastNotification("Settings saved successfully.");
   }
 
@@ -65,20 +68,14 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   settingItem(
                     itemName: "Course length",
-                    description:
-                        "Course duration in minutes, used to set the schedule end time automatically.",
-                    settingWidget: SmallInputField(
-                        textEditingController: courseLengthController,
-                        hintText: ""),
+                    description: "Course duration in minutes, used to set the schedule end time automatically.",
+                    settingWidget: SmallInputField(textEditingController: courseLengthController, hintText: ""),
                     context: context,
                   ),
                   settingItem(
                     itemName: "Schedule repeat",
-                    description:
-                        "Sets how many times the schedule repeats weekly. Enter \"1\" for no repeats.",
-                    settingWidget: SmallInputField(
-                        textEditingController: scheduleRepeatController,
-                        hintText: ""),
+                    description: "Sets how many times the schedule repeats weekly. Enter \"1\" for no repeats.",
+                    settingWidget: SmallInputField(textEditingController: scheduleRepeatController, hintText: ""),
                     context: context,
                   ),
                 ],
@@ -95,11 +92,7 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget settingItem(
-      {required String itemName,
-      required String description,
-      required Widget settingWidget,
-      required BuildContext context}) {
+  Widget settingItem({required String itemName, required String description, required Widget settingWidget, required BuildContext context}) {
     return ListTile(
       title: Text(
         itemName,
