@@ -8,10 +8,12 @@ import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/settings.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/models/user.dart';
 import 'package:ostinato/services/instrument_service.dart';
 import 'package:ostinato/services/schedule_service.dart';
+import 'package:ostinato/services/settings_service.dart';
 import 'package:ostinato/services/student_service.dart';
 
 class FormSchedulePage extends StatefulWidget {
@@ -92,11 +94,13 @@ class _FormSchedulePageState extends State<FormSchedulePage> {
   }
 
   void getSettings() async {
-    Map<String, String> settings = await LocalSettings.getSettings();
-    setState(() {
-      courseLength = settings['courseLength']!;
-      repeatController.text = settings['repeat']!;
-    });
+    ScheduleSettings? settings = await SettingsService().loadScheduleSettings();
+    if (settings != null) {
+      setState(() {
+        courseLength = settings.lessonLength;
+        repeatController.text = settings.repeat;
+      });
+    }
   }
 
   void setEdit() async {

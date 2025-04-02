@@ -9,6 +9,7 @@ import 'package:ostinato/models/user.dart';
 import 'package:ostinato/pages/navigation.dart';
 import 'package:ostinato/pages/register.dart';
 import 'package:ostinato/services/auth_service.dart';
+import 'package:ostinato/services/settings_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class LoginPage extends StatefulWidget {
@@ -25,17 +26,14 @@ class _LoginPageState extends State<LoginPage> {
 
   late User? _user;
 
-  PackageInfo info =
-      PackageInfo(appName: '', packageName: '', version: '', buildNumber: '');
+  PackageInfo info = PackageInfo(appName: '', packageName: '', version: '', buildNumber: '');
 
   void doLogin() async {
     setState(() {
       _isLoading = true;
     });
 
-    AuthService()
-        .login(emailController.text, passwordController.text)
-        .then((value) async {
+    AuthService().login(emailController.text, passwordController.text).then((value) async {
       if (value) {
         _user = await AuthService().getMe();
         setState(() {
@@ -48,8 +46,8 @@ class _LoginPageState extends State<LoginPage> {
               );
         });
         if (mounted) {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const NavigationPage()));
+          await SettingsService().getSettings();
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NavigationPage()));
         }
       } else {
         setState(() {
@@ -121,28 +119,20 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             SolidButton(
                                 action: () {
-                                  if (emailController.text.isNotEmpty &&
-                                      passwordController.text.isNotEmpty) {
+                                  if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
                                     doLogin();
                                   } else {
-                                    toastNotification(
-                                        "Email and password cannot be empty");
+                                    toastNotification("Email and password cannot be empty");
                                   }
                                 },
                                 text: "Login"),
                             Text(
                               "- or -",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodyMedium!
-                                  .merge(const TextStyle(
-                                      fontStyle: FontStyle.italic)),
+                              style: Theme.of(context).textTheme.bodyMedium!.merge(const TextStyle(fontStyle: FontStyle.italic)),
                             ),
                             OutlineButton(
                                 action: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RegisterPage()));
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => const RegisterPage()));
                                 },
                                 text: "Register")
                           ],

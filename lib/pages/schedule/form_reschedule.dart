@@ -6,8 +6,10 @@ import 'package:ostinato/common/components/input_field.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule.dart';
+import 'package:ostinato/models/settings.dart';
 import 'package:ostinato/models/student.dart';
 import 'package:ostinato/services/schedule_service.dart';
+import 'package:ostinato/services/settings_service.dart';
 
 class FormReschedulePage extends StatefulWidget {
   final Schedule? schedule;
@@ -53,10 +55,12 @@ class _FormReschedulePageState extends State<FormReschedulePage> {
   }
 
   void getSettings() async {
-    Map<String, String> settings = await LocalSettings.getSettings();
-    setState(() {
-      courseLength = settings['courseLength']!;
-    });
+    ScheduleSettings? settings = await SettingsService().loadScheduleSettings();
+    if (settings != null) {
+      setState(() {
+        courseLength = settings.lessonLength;
+      });
+    }
   }
 
   void setTeacher() async {

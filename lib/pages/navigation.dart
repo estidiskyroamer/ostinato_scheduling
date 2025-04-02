@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/pages/dashboard/dashboard.dart';
 import 'package:ostinato/pages/menu/menu.dart';
 import 'package:ostinato/pages/schedule/schedule.dart';
@@ -47,14 +48,13 @@ class _NavigationPageState extends State<NavigationPage> {
         showSelectedLabels: true,
         showUnselectedLabels: true,
         elevation: 0,
-        backgroundColor: Colors.black,
-        selectedLabelStyle:
-            Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
-                  fontWeight: FontWeight.bold,
-                )),
+        backgroundColor: Theme.of(context).extension<OstinatoThemeExtension>()!.navBarColor,
+        selectedLabelStyle: Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
+              fontWeight: FontWeight.bold,
+            )),
         unselectedLabelStyle: Theme.of(context).textTheme.displaySmall,
-        unselectedItemColor: Colors.grey[400],
-        selectedItemColor: Colors.white,
+        unselectedItemColor: Theme.of(context).extension<OstinatoThemeExtension>()!.navBarUnselectedItemColor,
+        selectedItemColor: Theme.of(context).extension<OstinatoThemeExtension>()!.navBarSelectedItemColor,
         items: [
           BottomNavigationBarItem(
               icon: Container(

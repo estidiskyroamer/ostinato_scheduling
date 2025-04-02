@@ -12,6 +12,9 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
   final Color buttonForegroundColor;
   final Color separatorColor;
   final Color scheduleHighlightColor;
+  final Color navBarColor;
+  final Color navBarSelectedItemColor;
+  final Color navBarUnselectedItemColor;
 
   const OstinatoThemeExtension({
     required this.headerBackgroundColor,
@@ -24,6 +27,9 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
     required this.buttonForegroundColor,
     required this.separatorColor,
     required this.scheduleHighlightColor,
+    required this.navBarColor,
+    required this.navBarSelectedItemColor,
+    required this.navBarUnselectedItemColor,
   });
 
   @override
@@ -38,6 +44,9 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
     Color? buttonForegroundColor,
     Color? separatorColor,
     Color? scheduleHighlightColor,
+    Color? navBarColor,
+    Color? navBarSelectedItemColor,
+    Color? navBarUnselectedItemColor,
   }) =>
       OstinatoThemeExtension(
         headerBackgroundColor: headerBackgroundColor ?? this.headerBackgroundColor,
@@ -50,6 +59,9 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
         buttonForegroundColor: buttonForegroundColor ?? this.buttonForegroundColor,
         separatorColor: separatorColor ?? this.separatorColor,
         scheduleHighlightColor: scheduleHighlightColor ?? this.scheduleHighlightColor,
+        navBarColor: navBarColor ?? this.navBarColor,
+        navBarSelectedItemColor: navBarSelectedItemColor ?? this.navBarSelectedItemColor,
+        navBarUnselectedItemColor: navBarUnselectedItemColor ?? this.navBarUnselectedItemColor,
       );
 
   @override
@@ -66,5 +78,8 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
           buttonForegroundColor: Color.lerp(buttonForegroundColor, other.buttonForegroundColor, t)!,
           separatorColor: Color.lerp(separatorColor, other.separatorColor, t)!,
           scheduleHighlightColor: Color.lerp(scheduleHighlightColor, other.scheduleHighlightColor, t)!,
+          navBarColor: Color.lerp(navBarColor, other.navBarColor, t)!,
+          navBarSelectedItemColor: Color.lerp(navBarSelectedItemColor, other.navBarSelectedItemColor, t)!,
+          navBarUnselectedItemColor: Color.lerp(navBarUnselectedItemColor, other.navBarUnselectedItemColor, t)!,
         );
 }

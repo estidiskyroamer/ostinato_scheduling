@@ -17,21 +17,27 @@ class _SettingsPageState extends State<SettingsPage> {
   TextEditingController courseLengthController = TextEditingController();
   TextEditingController scheduleRepeatController = TextEditingController();
 
-  late Settings? settings;
+  ScheduleSettings? settings;
 
   late String courseLength;
   late String repeat;
 
   void getSettings() async {
-    Settings? result = await SettingsService().getSettings();
+    ScheduleSettings? result = await SettingsService().loadScheduleSettings();
     if (result != null) {
-      await Config().storage.write(key: 'course_length', value: result.scheduleSettings.lessonLength);
-      await Config().storage.write(key: 'repeat', value: result.scheduleSettings.repeat);
       if (mounted) {
         setState(() {
           settings = result;
-          courseLengthController.text = settings!.scheduleSettings.lessonLength ?? Config().courseLengthDef.toString();
-          scheduleRepeatController.text = settings!.scheduleSettings.repeat ?? Config().repeatDef.toString();
+          courseLengthController.text = settings!.lessonLength;
+          scheduleRepeatController.text = settings!.repeat;
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          settings = result;
+          courseLengthController.text = Config().courseLengthDef.toString();
+          scheduleRepeatController.text = Config().repeatDef.toString();
         });
       }
     }
