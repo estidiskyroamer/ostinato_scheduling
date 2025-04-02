@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/student.dart';
@@ -15,8 +16,7 @@ class StudentPage extends StatefulWidget {
   State<StudentPage> createState() => _StudentPageState();
 }
 
-class _StudentPageState extends State<StudentPage>
-    with AutomaticKeepAliveClientMixin {
+class _StudentPageState extends State<StudentPage> with AutomaticKeepAliveClientMixin {
   TextEditingController searchController = TextEditingController();
   late Future<StudentList?> _activeStudentList;
   late Future<StudentList?> _inactiveStudentList;
@@ -39,9 +39,7 @@ class _StudentPageState extends State<StudentPage>
   }
 
   void addStudent(BuildContext context) {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const FormStudentPage()))
-        .then((value) => getStudents());
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FormStudentPage())).then((value) => getStudents());
   }
 
   @override
@@ -68,15 +66,12 @@ class _StudentPageState extends State<StudentPage>
                 onPressed: () {
                   addStudent(context);
                 },
-                icon: const Icon(FontAwesomeIcons.plus))
+                icon: const Icon(LucideIcons.plus))
           ],
           automaticallyImplyLeading: false,
         ),
         body: TabBarView(
-          children: [
-            studentListView(_activeStudentList),
-            studentListView(_inactiveStudentList)
-          ],
+          children: [studentListView(_activeStudentList), studentListView(_inactiveStudentList)],
         ),
       ),
     );
@@ -136,15 +131,14 @@ class _StudentPageState extends State<StudentPage>
   Widget studentItem(BuildContext context, User student) {
     return Container(
       padding: const EdgeInsets.only(left: 16, right: 12),
-      decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.separatorColor))),
+      decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Theme.of(context).extension<OstinatoThemeExtension>()!.separatorColor))),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(student.name),
           IconButton(
             icon: const Icon(
-              FontAwesomeIcons.ellipsisVertical,
+              LucideIcons.ellipsisVertical,
               size: 16,
             ),
             visualDensity: VisualDensity.comfortable,
@@ -152,8 +146,7 @@ class _StudentPageState extends State<StudentPage>
               showModalBottomSheet<void>(
                   context: context,
                   builder: (context) {
-                    return StudentBottomSheet(
-                        student: student, onChanged: getStudents);
+                    return StudentBottomSheet(student: student, onChanged: getStudents);
                   });
             },
           ),

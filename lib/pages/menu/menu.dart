@@ -19,8 +19,7 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  PackageInfo info =
-      PackageInfo(appName: '', packageName: '', version: '', buildNumber: '');
+  PackageInfo info = PackageInfo(appName: '', packageName: '', version: '', buildNumber: '');
   @override
   void initState() {
     super.initState();
@@ -55,50 +54,52 @@ class _AccountPageState extends State<AccountPage> {
         width: double.infinity,
         padding: padding16,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              padding: padding4,
-              child: Column(
-                children: [
-                  Padding(padding: padding16),
-                  StyledTextButton(
-                      action: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SummaryPage()));
-                      },
-                      text: "Summary"),
-                  /* StyledTextButton(
+            Expanded(
+              flex: 12,
+              child: Container(
+                padding: padding4,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    StyledTextButton(
+                        action: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SummaryPage()));
+                        },
+                        text: "Summary"),
+                    /* StyledTextButton(
                       action: () {
                         Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => const TutorialsPage()));
                       },
                       text: "Tutorials"), */
-                  StyledTextButton(
-                      action: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SettingsPage()));
-                      },
-                      text: "Settings"),
-                  StyledTextButton(
-                      action: () async {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const FormAccountPage()));
-                      },
-                      text: "Edit Account"),
-                  StyledTextButton(
-                      action: () {
-                        AuthService().logout();
-                      },
-                      text: "Logout"),
-                ],
+                    StyledTextButton(
+                        action: () {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SettingsPage()));
+                        },
+                        text: "Settings"),
+                    StyledTextButton(
+                        action: () async {
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const FormAccountPage()));
+                        },
+                        text: "Edit Account"),
+                    StyledTextButton(
+                        action: () {
+                          AuthService().logout();
+                        },
+                        text: "Logout"),
+                  ],
+                ),
               ),
             ),
-            Text(
-              "${info.appName} ${info.version}",
-              style: Theme.of(context).textTheme.labelSmall,
-            )
+            Expanded(
+              flex: 1,
+              child: Text(
+                "${info.appName} ${info.version}",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+            ),
           ],
         ),
       ),

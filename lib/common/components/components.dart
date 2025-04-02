@@ -6,6 +6,7 @@ import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
@@ -335,7 +336,7 @@ Widget scheduleStatus(String? status) {
       return Container(
         padding: const EdgeInsets.only(left: 8),
         child: Icon(
-          FontAwesomeIcons.circleCheck,
+          LucideIcons.circleCheck,
           color: HexColor('#2ec27d'),
           size: 14,
         ),
@@ -344,7 +345,7 @@ Widget scheduleStatus(String? status) {
       return Container(
         padding: const EdgeInsets.only(left: 8),
         child: Icon(
-          FontAwesomeIcons.circleXmark,
+          LucideIcons.circleX,
           color: HexColor('#c70e03'),
           size: 14,
         ),
@@ -359,7 +360,7 @@ Widget rescheduleStatus(bool status) {
       ? Container(
           padding: const EdgeInsets.only(left: 8),
           child: Icon(
-            FontAwesomeIcons.rotate,
+            LucideIcons.refreshCw,
             color: HexColor('#ffba47'),
             size: 14,
           ),

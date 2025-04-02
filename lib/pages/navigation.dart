@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/pages/dashboard/dashboard.dart';
 import 'package:ostinato/pages/menu/menu.dart';
@@ -60,7 +61,7 @@ class _NavigationPageState extends State<NavigationPage> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: const Icon(
-                  FontAwesomeIcons.house,
+                  LucideIcons.house,
                 ),
               ),
               label: "Dashboard"),
@@ -68,7 +69,7 @@ class _NavigationPageState extends State<NavigationPage> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: const Icon(
-                  FontAwesomeIcons.child,
+                  LucideIcons.users,
                 ),
               ),
               label: "Students"),
@@ -76,7 +77,7 @@ class _NavigationPageState extends State<NavigationPage> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: const Icon(
-                  FontAwesomeIcons.calendarCheck,
+                  LucideIcons.calendarCheck,
                 ),
               ),
               label: "Schedule"),
@@ -84,7 +85,7 @@ class _NavigationPageState extends State<NavigationPage> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 4),
                 child: const Icon(
-                  FontAwesomeIcons.userGear,
+                  LucideIcons.userCog,
                 ),
               ),
               label: "Account")

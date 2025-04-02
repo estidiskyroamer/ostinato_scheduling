@@ -12,14 +12,11 @@ class OutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-          shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1.0, color: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonBackgroundColor)),
+          shape: RoundedRectangleBorder(side: BorderSide(width: 1.0, color: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonBackgroundColor)),
           padding: padding8),
       onPressed: action,
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width / 3,
-            maxWidth: MediaQuery.of(context).size.width),
+        constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width / 3, maxWidth: MediaQuery.of(context).size.width),
         child: Text(
           text,
           textAlign: TextAlign.center,
@@ -41,12 +38,8 @@ class StyledTextButton extends StatelessWidget {
     return TextButton(
       onPressed: action,
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width / 4,
-            maxWidth: MediaQuery.of(context).size.width),
-        child: Text(text,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.displayMedium),
+        constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width / 4, maxWidth: MediaQuery.of(context).size.width),
+        child: Text(text, textAlign: TextAlign.center, style: Theme.of(context).textTheme.displayMedium),
       ),
     );
   }
@@ -72,10 +65,7 @@ class RowIconButton extends StatelessWidget {
         child: Container(
           padding: padding16,
           margin: padding8,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(16),
-            color: Theme.of(context).extension<OstinatoThemeExtension>()!.rowIconColor
-          ),
+          decoration: BoxDecoration(color: Theme.of(context).extension<OstinatoThemeExtension>()!.rowIconColor),
           child: Column(
             children: [
               Icon(
@@ -106,21 +96,15 @@ class SolidButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonBackgroundColor,
-          shape: const LinearBorder(),
-          padding: padding8),
+          backgroundColor: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonBackgroundColor, shape: const LinearBorder(), padding: padding8),
       onPressed: action,
       child: ConstrainedBox(
-        constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width / 3,
-            maxWidth: MediaQuery.of(context).size.width),
+        constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width / 3, maxWidth: MediaQuery.of(context).size.width),
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: Theme.of(context)
-              .textTheme
-              .displayMedium!
-              .merge(TextStyle(color: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonForegroundColor)),
+          style:
+              Theme.of(context).textTheme.displayMedium!.merge(TextStyle(color: Theme.of(context).extension<OstinatoThemeExtension>()!.buttonForegroundColor)),
         ),
       ),
     );

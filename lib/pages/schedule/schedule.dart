@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/components/theme_extension.dart';
@@ -128,7 +129,7 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
                 onPressed: () {
                   addSchedule(context);
                 },
-                icon: const Icon(FontAwesomeIcons.plus))
+                icon: const Icon(LucideIcons.plus))
           ],
           automaticallyImplyLeading: false,
         ),
@@ -219,7 +220,7 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
                             flex: 1,
                             child: IconButton(
                               icon: const Icon(
-                                FontAwesomeIcons.ellipsisVertical,
+                                LucideIcons.ellipsisVertical,
                                 size: 16,
                               ),
                               visualDensity: VisualDensity.compact,
@@ -243,7 +244,7 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
             showEventListViewIcon: false,
             showEvents: true,
             hideTodayIcon: true,
-            topRowIconColor: Colors.black,
+            topRowIconColor: Theme.of(context).extension<OstinatoThemeExtension>()!.textColor,
             selectedColor: Colors.blueGrey,
             todayColor: Colors.blueGrey,
             defaultDayColor: Theme.of(context).extension<OstinatoThemeExtension>()!.textColor,
@@ -272,7 +273,7 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
                 changeScheduleDate('subtract');
               },
               icon: const Icon(
-                FontAwesomeIcons.chevronLeft,
+                LucideIcons.chevronLeft,
                 size: 16,
               ),
             ),
@@ -290,7 +291,7 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
                   changeScheduleDate('add');
                 },
                 icon: const Icon(
-                  FontAwesomeIcons.chevronRight,
+                  LucideIcons.chevronRight,
                   size: 16,
                 )),
           ],
@@ -337,7 +338,7 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
                             flex: 1,
                             child: IconButton(
                               icon: const Icon(
-                                FontAwesomeIcons.ellipsisVertical,
+                                LucideIcons.ellipsisVertical,
                                 size: 16,
                               ),
                               visualDensity: VisualDensity.compact,

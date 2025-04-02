@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
 import 'package:ostinato/common/components/theme_extension.dart';
@@ -154,7 +155,7 @@ class _DashboardPageState extends State<DashboardPage> {
             ),
           ),
           Expanded(
-              flex: 3,
+              flex: 4,
               child: SizedBox(
                 width: double.infinity,
                 child: FutureBuilder(
@@ -196,7 +197,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   flex: 1,
                                   child: IconButton(
                                     icon: const Icon(
-                                      FontAwesomeIcons.ellipsisVertical,
+                                      LucideIcons.ellipsisVertical,
                                       size: 16,
                                     ),
                                     visualDensity: VisualDensity.compact,
@@ -220,7 +221,7 @@ class _DashboardPageState extends State<DashboardPage> {
             flex: 1,
             child: Container(
               width: double.infinity,
-              padding: padding16,
+              padding: padding8,
               child: FutureBuilder(
                 future: _summary,
                 builder: (BuildContext context, AsyncSnapshot<Summary?> snapshot) {
@@ -239,7 +240,9 @@ class _DashboardPageState extends State<DashboardPage> {
                       Padding(padding: padding4),
                       Text(courses.done / (courses.noStatus + courses.done) > 0.7
                           ? 'Just ${courses.noStatus} courses to go, keep it up!'
-                          : "You're doing great!"),
+                          : courses.done > 0
+                              ? "You're doing great!"
+                              : ""),
                     ],
                   );
                 },

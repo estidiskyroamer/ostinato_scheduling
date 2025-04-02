@@ -3,9 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:jiffy/jiffy.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ostinato/common/components/components.dart';
 import 'package:ostinato/common/components/schedule_bottom_sheet.dart';
-import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/models/student.dart';
@@ -166,7 +166,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
               "Data",
               IconButton(
                 icon: const Icon(
-                  FontAwesomeIcons.pencil,
+                  LucideIcons.squarePen,
                   size: 20,
                 ),
                 onPressed: () {
@@ -230,8 +230,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
               "Schedule",
               IconButton(
                 icon: const Icon(
-                  FontAwesomeIcons.plus,
-                  size: 20,
+                  LucideIcons.plus,
                 ),
                 onPressed: () {
                   addSchedule(widget.student);
@@ -246,7 +245,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                     changeScheduleDate('subtract');
                   },
                   icon: const Icon(
-                    FontAwesomeIcons.chevronLeft,
+                    LucideIcons.chevronLeft,
                     size: 16,
                   ),
                 ),
@@ -264,7 +263,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                       changeScheduleDate('add');
                     },
                     icon: const Icon(
-                      FontAwesomeIcons.chevronRight,
+                      LucideIcons.chevronRight,
                       size: 16,
                     )),
               ],
@@ -303,7 +302,7 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                             flex: 1,
                             child: IconButton(
                               icon: const Icon(
-                                FontAwesomeIcons.ellipsisVertical,
+                                LucideIcons.ellipsisVertical,
                                 size: 16,
                               ),
                               onPressed: () {
