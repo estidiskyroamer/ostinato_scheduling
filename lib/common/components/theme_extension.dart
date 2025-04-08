@@ -15,6 +15,7 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
   final Color navBarColor;
   final Color navBarSelectedItemColor;
   final Color navBarUnselectedItemColor;
+  final Color dangerColor;
 
   const OstinatoThemeExtension({
     required this.headerBackgroundColor,
@@ -30,6 +31,7 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
     required this.navBarColor,
     required this.navBarSelectedItemColor,
     required this.navBarUnselectedItemColor,
+    required this.dangerColor,
   });
 
   @override
@@ -47,6 +49,7 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
     Color? navBarColor,
     Color? navBarSelectedItemColor,
     Color? navBarUnselectedItemColor,
+    Color? dangerColor,
   }) =>
       OstinatoThemeExtension(
         headerBackgroundColor: headerBackgroundColor ?? this.headerBackgroundColor,
@@ -62,6 +65,7 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
         navBarColor: navBarColor ?? this.navBarColor,
         navBarSelectedItemColor: navBarSelectedItemColor ?? this.navBarSelectedItemColor,
         navBarUnselectedItemColor: navBarUnselectedItemColor ?? this.navBarUnselectedItemColor,
+        dangerColor: dangerColor ?? this.dangerColor,
       );
 
   @override
@@ -81,5 +85,6 @@ class OstinatoThemeExtension extends ThemeExtension<OstinatoThemeExtension> {
           navBarColor: Color.lerp(navBarColor, other.navBarColor, t)!,
           navBarSelectedItemColor: Color.lerp(navBarSelectedItemColor, other.navBarSelectedItemColor, t)!,
           navBarUnselectedItemColor: Color.lerp(navBarUnselectedItemColor, other.navBarUnselectedItemColor, t)!,
+          dangerColor: Color.lerp(dangerColor, other.dangerColor, t)!,
         );
 }

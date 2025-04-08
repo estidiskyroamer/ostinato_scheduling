@@ -49,23 +49,26 @@ class RowIconButton extends StatelessWidget {
   final VoidCallback onTap;
   final IconData icon;
   final String label;
+  final Color? color;
 
   const RowIconButton({
     super.key,
     required this.onTap,
     required this.icon,
     required this.label,
+    this.color,
   });
 
   @override
   Widget build(BuildContext context) {
+    final Color buttonColor = color ?? Theme.of(context).extension<OstinatoThemeExtension>()!.rowIconColor;
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: padding16,
           margin: padding8,
-          decoration: BoxDecoration(color: Theme.of(context).extension<OstinatoThemeExtension>()!.rowIconColor),
+          decoration: BoxDecoration(color: buttonColor),
           child: Column(
             children: [
               Icon(
@@ -77,6 +80,9 @@ class RowIconButton extends StatelessWidget {
               Text(
                 label,
                 style: Theme.of(context).textTheme.labelSmall,
+                textAlign: TextAlign.center,
+                overflow: TextOverflow.fade,
+                maxLines: 1,
               )
             ],
           ),

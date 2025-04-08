@@ -228,7 +228,11 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
                                 showModalBottomSheet<void>(
                                     context: context,
                                     builder: (context) {
-                                      return ScheduleBottomSheet(schedule: schedule, onChanged: getSchedule);
+                                      return ScheduleBottomSheet(
+                                        schedule: schedule,
+                                        onChanged: getSchedule,
+                                        page: 'schedule',
+                                      );
                                     });
                               },
                             ),
@@ -346,7 +350,11 @@ class _SchedulePageState extends State<SchedulePage> with AutomaticKeepAliveClie
                                 showModalBottomSheet<void>(
                                     context: context,
                                     builder: (context) {
-                                      return ScheduleBottomSheet(schedule: schedule, onChanged: getSchedule);
+                                      return ScheduleBottomSheet(
+                                        schedule: schedule,
+                                        onChanged: getSchedule,
+                                        page: 'schedule',
+                                      );
                                     });
                               },
                             ),

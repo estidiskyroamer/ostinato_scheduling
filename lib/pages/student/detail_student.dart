@@ -309,7 +309,11 @@ class _DetailStudentPageState extends State<DetailStudentPage> {
                                 showModalBottomSheet<void>(
                                     context: context,
                                     builder: (context) {
-                                      return ScheduleBottomSheet(schedule: schedule, onChanged: getScheduleList);
+                                      return ScheduleBottomSheet(
+                                        schedule: schedule,
+                                        onChanged: getScheduleList,
+                                        page: 'student',
+                                      );
                                     });
                               },
                             ),

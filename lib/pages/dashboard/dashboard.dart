@@ -205,7 +205,11 @@ class _DashboardPageState extends State<DashboardPage> {
                                       showModalBottomSheet<void>(
                                           context: context,
                                           builder: (context) {
-                                            return ScheduleBottomSheet(schedule: schedule, onChanged: getCurrentSchedule);
+                                            return ScheduleBottomSheet(
+                                              schedule: schedule,
+                                              onChanged: getCurrentSchedule,
+                                              page: 'schedule',
+                                            );
                                           });
                                     },
                                   ),

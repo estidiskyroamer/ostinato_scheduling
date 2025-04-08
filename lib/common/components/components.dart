@@ -232,8 +232,11 @@ Container scheduleItem(DateTime currentTime, Schedule schedule, BuildContext con
             children: [
               Row(
                 children: [
-                  Text(
-                    schedule.student.name,
+                  Expanded(
+                    child: Text(
+                      schedule.student.name,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                   rescheduleStatus(schedule.isRescheduled ?? false),
                   scheduleStatus(schedule.status),

@@ -3,18 +3,21 @@ import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/components.dart';
+import 'package:ostinato/common/components/theme_extension.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/models/schedule.dart';
 import 'package:ostinato/pages/schedule/form_reschedule.dart';
 import 'package:ostinato/pages/schedule/form_schedule.dart';
 import 'package:ostinato/pages/schedule/schedule_note/schedule_note.dart';
+import 'package:ostinato/pages/student/detail_student.dart';
 import 'package:ostinato/services/schedule_service.dart';
 import 'package:share_plus/share_plus.dart';
 
 class ScheduleBottomSheet extends StatelessWidget {
   final Schedule schedule;
   final VoidCallback onChanged;
-  const ScheduleBottomSheet({super.key, required this.schedule, required this.onChanged});
+  final String page;
+  const ScheduleBottomSheet({super.key, required this.schedule, required this.onChanged, required this.page});
 
   void updateSchedule(Schedule schedule, String status, BuildContext context) {
     Schedule update = Schedule(
@@ -103,9 +106,24 @@ class ScheduleBottomSheet extends StatelessWidget {
                   },
                   icon: LucideIcons.share2,
                   label: "Share"),
-              deleteButton(context),
+              page == 'schedule'
+                  ? RowIconButton(
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => DetailStudentPage(
+                              student: schedule.student,
+                            ),
+                          ),
+                        );
+                      },
+                      icon: LucideIcons.search,
+                      label: "View Student",
+                    )
+                  : deleteButton(context),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -115,6 +133,7 @@ class ScheduleBottomSheet extends StatelessWidget {
     return RowIconButton(
         onTap: () {
           Navigator.of(context).pop();
+          String date = DateFormat("dd MMMM yyyy").format(schedule.date);
           showDialog(
             context: context,
             builder: (BuildContext context) {
@@ -124,7 +143,8 @@ class ScheduleBottomSheet extends StatelessWidget {
                     action: () {
                       deleteSchedule(schedule, context);
                     },
-                    contentText: "Are you sure you want to delete this data?",
+                    contentText: "Are you sure you want to delete this data?"
+                        "\n$date\n${schedule.startTime} - ${schedule.student.name} (${schedule.instrument.name})",
                     actionText: "Delete",
                   );
                 },
@@ -132,6 +152,7 @@ class ScheduleBottomSheet extends StatelessWidget {
             },
           );
         },
+        color: Theme.of(context).extension<OstinatoThemeExtension>()!.dangerColor,
         icon: LucideIcons.trash,
         label: "Delete");
   }

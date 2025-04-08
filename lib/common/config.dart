@@ -23,7 +23,7 @@ EdgeInsetsGeometry padding8 = const EdgeInsets.all(8);
 EdgeInsetsGeometry padding4 = const EdgeInsets.all(4);
 
 ThemeData lightTheme = ThemeData(
-    fontFamily: 'Garamond',
+    fontFamily: 'Alegreya',
     textTheme: const TextTheme(
       titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.black, height: 1.0),
       titleMedium: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.black, height: 1.0),
@@ -67,11 +67,12 @@ ThemeData lightTheme = ThemeData(
         navBarColor: HexColor("#dedede"),
         navBarSelectedItemColor: Colors.black,
         navBarUnselectedItemColor: HexColor("#4c4c4c"),
+        dangerColor: Colors.red,
       )
     ]);
 
 ThemeData darkTheme = ThemeData(
-    fontFamily: 'Garamond',
+    fontFamily: 'Alegreya',
     brightness: Brightness.dark,
     textTheme: const TextTheme(
       titleLarge: TextStyle(fontSize: 36, fontWeight: FontWeight.bold, color: Colors.white, height: 1.0),
@@ -106,19 +107,21 @@ ThemeData darkTheme = ThemeData(
     iconTheme: const IconThemeData(color: Colors.white),
     extensions: <ThemeExtension<dynamic>>[
       OstinatoThemeExtension(
-          headerBackgroundColor: HexColor("#1e1e1e"),
-          headerForegroundColor: Colors.white60,
-          rowIconColor: HexColor("#2d2d2d"),
-          inputHintColor: Colors.white30,
-          textColor: Colors.white,
-          borderColor: Colors.white,
-          buttonBackgroundColor: Colors.white,
-          buttonForegroundColor: Colors.black,
-          separatorColor: Colors.white12,
-          scheduleHighlightColor: HexColor("#453d2d"),
-          navBarColor: Colors.black,
-          navBarSelectedItemColor: Colors.white,
-          navBarUnselectedItemColor: HexColor("acacac"))
+        headerBackgroundColor: HexColor("#1e1e1e"),
+        headerForegroundColor: Colors.white60,
+        rowIconColor: HexColor("#2d2d2d"),
+        inputHintColor: Colors.white30,
+        textColor: Colors.white,
+        borderColor: Colors.white,
+        buttonBackgroundColor: Colors.white,
+        buttonForegroundColor: Colors.black,
+        separatorColor: Colors.white12,
+        scheduleHighlightColor: HexColor("#453d2d"),
+        navBarColor: Colors.black,
+        navBarSelectedItemColor: Colors.white,
+        navBarUnselectedItemColor: HexColor("acacac"),
+        dangerColor: HexColor("#b01b10"),
+      )
     ]);
 
 extension StringCapitalization on String {
