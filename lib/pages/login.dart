@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/components/buttons.dart';
 import 'package:ostinato/common/components/components.dart';
@@ -45,7 +46,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               );
         });
+
+        FirebaseMessaging messaging = FirebaseMessaging.instance;
+        String? fcmToken = await messaging.getToken();
+        print("FCM Token: $fcmToken");
+
         if (mounted) {
+          await AuthService().updateFcmToken(_user!.id!, fcmToken);
           await SettingsService().getSettings();
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NavigationPage()));
         }

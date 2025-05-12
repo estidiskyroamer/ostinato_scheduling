@@ -46,3 +46,4 @@ app.*.map.json
 /macos/
 /windows/
 musiclesson-scheduling.code-workspace
+android/app/google-services.json

@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:ostinato/common/config.dart';
 import 'package:ostinato/pages/login.dart';
@@ -8,6 +10,7 @@ import 'package:toastification/toastification.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   String? token = await AuthService().getToken();
   Widget homePage = const LoginPage();
 
@@ -15,6 +18,9 @@ void main() async {
     await SettingsService().getSettings();
     homePage = const NavigationPage();
   }
+
+  // Setup background message handler
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   runApp(MyApp(homepage: homePage));
 }
@@ -39,4 +45,9 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print("Handling background message: ${message.messageId}");
 }
