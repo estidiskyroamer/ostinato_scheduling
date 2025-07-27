@@ -1,9 +1,7 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_neat_and_clean_calendar/flutter_neat_and_clean_calendar.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -37,7 +35,7 @@ class ActionDialog extends StatelessWidget {
     return Dialog(
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       elevation: 0,
-      backgroundColor: Theme.of(context).dialogBackgroundColor,
+      backgroundColor: Theme.of(context).dialogTheme.backgroundColor,
       insetPadding: EdgeInsets.zero,
       child: Container(
         padding: padding16,
@@ -374,7 +372,8 @@ Widget rescheduleStatus(bool status) {
 ToastificationItem toastNotification(String text) {
   return toastification.showCustom(
     alignment: Alignment.bottomCenter,
-    autoCloseDuration: const Duration(seconds: 5),
+    autoCloseDuration: const Duration(seconds: 3),
+    dismissDirection: DismissDirection.horizontal,
     builder: (context, holder) {
       return Center(
         child: Padding(

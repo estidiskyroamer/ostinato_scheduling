@@ -39,8 +39,7 @@ ThemeData lightTheme = ThemeData(
       labelSmall: TextStyle(fontFamily: "Montserrat", fontSize: 12, color: Colors.black),
     ),
     scaffoldBackgroundColor: Colors.white,
-    dialogBackgroundColor: Colors.grey[300],
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
       indicatorColor: Colors.black,
       labelColor: Colors.black,
       unselectedLabelColor: HexColor("#5f5f5f"),
@@ -69,7 +68,8 @@ ThemeData lightTheme = ThemeData(
         navBarUnselectedItemColor: HexColor("#4c4c4c"),
         dangerColor: Colors.red,
       )
-    ]);
+    ],
+    dialogTheme: DialogThemeData(backgroundColor: Colors.grey[300]));
 
 ThemeData darkTheme = ThemeData(
     fontFamily: 'Alegreya',
@@ -92,8 +92,7 @@ ThemeData darkTheme = ThemeData(
       labelTextStyle: WidgetStateProperty.all(const TextStyle(fontFamily: "Montserrat", fontSize: 12, color: Colors.white)),
     ),
     scaffoldBackgroundColor: HexColor("#0a0a0a"),
-    dialogBackgroundColor: Colors.grey[900],
-    tabBarTheme: const TabBarTheme(
+    tabBarTheme: const TabBarThemeData(
       indicatorColor: Colors.white,
       labelColor: Colors.white,
       unselectedLabelColor: Colors.grey,
@@ -122,7 +121,8 @@ ThemeData darkTheme = ThemeData(
         navBarUnselectedItemColor: HexColor("acacac"),
         dangerColor: HexColor("#b01b10"),
       )
-    ]);
+    ],
+    dialogTheme: DialogThemeData(backgroundColor: Colors.grey[900]));
 
 extension StringCapitalization on String {
   /// Capitalizes the first letter of a single word or sentence.

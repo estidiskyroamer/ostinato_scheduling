@@ -20,8 +20,7 @@ class StudentService {
   Future<StudentList?> getStudents(int isActive) async {
     StudentList? studentList;
     try {
-      Response response =
-          await ServiceConfig().dio.get('/students?isActive=$isActive');
+      Response response = await ServiceConfig().dio.get('/students?isActive=$isActive');
       studentList = StudentList.fromJson(response.data);
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
@@ -40,8 +39,7 @@ class StudentService {
     return student;
   }
 
-  Future<ScheduleList?> getStudentSchedule(
-      {int? year, int? month, String? id}) async {
+  Future<ScheduleList?> getStudentSchedule({int? year, int? month, String? id}) async {
     ScheduleList? schedule;
     try {
       String url = '/students/showSchedule/$id?year=$year&month=$month';
@@ -64,8 +62,7 @@ class StudentService {
       params.addAll(user);
     }
     try {
-      Response response =
-          await ServiceConfig().dio.post('/students', data: params);
+      Response response = await ServiceConfig().dio.post('/students', data: params);
       if (response.statusCode == 200) {
         UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
         updatedUser = updatedUserDetail.data;
@@ -89,9 +86,7 @@ class StudentService {
       params.addAll(user);
     }
     try {
-      Response response = await ServiceConfig()
-          .dio
-          .put('/students/student/${student.id}', data: params);
+      Response response = await ServiceConfig().dio.put('/students/student/${student.id}', data: params);
       if (response.statusCode == 200) {
         UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
         updatedUser = updatedUserDetail.data;
@@ -106,9 +101,8 @@ class StudentService {
 
   Future<bool> deleteStudent(Student student) async {
     try {
-      Response response = await ServiceConfig()
-          .dio
-          .delete('/students/student/${student.user.id}');
+      Response response = await ServiceConfig().dio.delete('/students/student/${student.user.id}');
+      toastNotification(response.data['message']);
       return true;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);

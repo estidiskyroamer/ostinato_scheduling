@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Settings {
   final WageSettings wageSettings;
   final ScheduleSettings scheduleSettings;

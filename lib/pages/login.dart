@@ -37,24 +37,24 @@ class _LoginPageState extends State<LoginPage> {
     AuthService().login(emailController.text, passwordController.text).then((value) async {
       if (value) {
         _user = await AuthService().getMe();
-        setState(() {
-          _isLoading = false;
-          Config().storage.write(
-                key: 'teacher',
-                value: jsonEncode(
-                  _user!.toJson(),
-                ),
-              );
-        });
+        await Config().storage.write(
+              key: 'teacher',
+              value: jsonEncode(
+                _user!.toJson(),
+              ),
+            );
 
         FirebaseMessaging messaging = FirebaseMessaging.instance;
         String? fcmToken = await messaging.getToken();
-        print("FCM Token: $fcmToken");
 
         if (mounted) {
           await AuthService().updateFcmToken(_user!.id!, fcmToken);
           await SettingsService().getSettings();
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NavigationPage()));
+
+          setState(() {
+            _isLoading = false;
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const NavigationPage()));
+          });
         }
       } else {
         setState(() {

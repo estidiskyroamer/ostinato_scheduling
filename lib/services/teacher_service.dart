@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:ostinato/common/components/components.dart';
@@ -14,9 +13,7 @@ class TeacherService {
     try {
       Response response = await ServiceConfig().dio.get('/teachers/show');
       teacher = TeacherDetail.fromJson(response.data);
-      Config()
-          .storage
-          .write(key: 'teacher', value: jsonEncode(teacher.data.toJson()));
+      Config().storage.write(key: 'teacher', value: jsonEncode(teacher.data.toJson()));
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);
     }
@@ -34,14 +31,12 @@ class TeacherService {
       params.addAll(user);
     }
     try {
-      Response response =
-          await ServiceConfig().dio.post('/teachers', data: params);
+      Response response = await ServiceConfig().dio.post('/teachers', data: params);
       if (response.statusCode == 200) {
         UserDetail updatedUserDetail = UserDetail.fromJson(response.data);
         updatedUser = updatedUserDetail.data;
       }
-      toastNotification(
-          'You have successfully registered as a teacher. Check your email to verify your account.');
+      toastNotification('You have successfully registered as a teacher. Check your email to verify your account.');
       return updatedUser;
     } on DioException catch (e) {
       toastNotification(e.response!.data['errors'][0]);

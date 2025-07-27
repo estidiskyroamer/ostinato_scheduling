@@ -7,17 +7,15 @@ class ServiceConfig {
   late Dio refreshDio;
 
   ServiceConfig() {
-    dio = Dio(BaseOptions(
-        // baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"))
-        baseUrl: "http://localhost:8000/api"))
+    dio = Dio(BaseOptions(baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"))
+      // baseUrl: "http://localhost:8000/api"))
       ..interceptors.add(DioInterceptor());
   }
 }
 
 class DioInterceptor extends Interceptor {
-  Dio dio = Dio(BaseOptions(
-      // baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"));
-      baseUrl: "http://localhost:8000/api"));
+  Dio dio = Dio(BaseOptions(baseUrl: "https://musiclesson-scheduling.vercel.app/api/api"));
+  // baseUrl: "http://localhost:8000/api"));
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
