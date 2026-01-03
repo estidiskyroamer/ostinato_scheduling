@@ -1,19 +1,19 @@
 {
-	"folders": [
-		{
-			"path": "."
-		},
-		{
-			"name": "ostinato-admin",
-			"path": "../ostinato-admin"
-		},
-		{
-			"name": "musiclesson-scheduling",
-			"path": "../musiclesson-scheduling"
-		},
-		{
-			"path": "../ostinato-admin-vue"
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "name": "ostinato-admin",
+      "path": "../ostinato-admin"
+    },
+    {
+      "name": "musiclesson-scheduling",
+      "path": "../musiclesson-scheduling"
+    },
+    {
+      "path": "../ostinato-admin-vue"
+    }
+  ],
+  "settings": {}
 }

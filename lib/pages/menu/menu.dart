@@ -23,14 +23,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   void initState() {
     super.initState();
-    setRandomImage();
     getPackageInfo();
-  }
-
-  int setRandomImage() {
-    final random = Random();
-    int index = random.nextInt(6);
-    return index;
   }
 
   void getPackageInfo() async {

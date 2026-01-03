@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -168,8 +169,9 @@ class _DashboardPageState extends State<DashboardPage> {
                         ),
                       );
                     }
+                    inspect(snapshot);
                     if (!snapshot.hasData) {
-                      return const Center(child: Text('No schedule yet'));
+                      return const Center(child: Text('No schedules yet'));
                     }
                     if (snapshot.hasError) {
                       return Center(child: Text('Error: ${snapshot.error}'));

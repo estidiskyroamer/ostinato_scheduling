@@ -29,8 +29,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
   TextEditingController dateController = TextEditingController();
   TextEditingController startTimeController = TextEditingController();
   TextEditingController endTimeController = TextEditingController();
-  DateTime studentBirthDate =
-      DateTime.now().subtract(const Duration(days: 365 * 10));
+  DateTime studentBirthDate = DateTime.now().subtract(const Duration(days: 365 * 10));
   DateTime selectedScheduleDate = DateTime.now();
   DateTime selectedScheduleStartTime = DateTime.now();
   DateTime selectedScheduleEndTime = DateTime.now();
@@ -59,8 +58,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
           studentPhoneController.text = student.phoneNumber;
           studentEmailController.text = student.email;
           studentBirthDate = student.birthDate ?? studentBirthDate;
-          dateController.text =
-              DateFormat("dd MMMM yyyy").format(studentBirthDate);
+          dateController.text = DateFormat("dd MMMM yyyy").format(studentBirthDate);
         });
       }
     }
@@ -70,16 +68,9 @@ class _FormStudentPageState extends State<FormStudentPage> {
     if (mounted) {
       setState(() {
         studentBirthDate = selectedDate;
-        dateController.text =
-            DateFormat('dd MMMM yyyy').format(studentBirthDate);
+        dateController.text = DateFormat('dd MMMM yyyy').format(studentBirthDate);
       });
     }
-  }
-
-  int setRandomImage() {
-    final random = Random();
-    int index = random.nextInt(6);
-    return index;
   }
 
   void getTeacher() async {
@@ -107,9 +98,7 @@ class _FormStudentPageState extends State<FormStudentPage> {
   Widget buildForm(BuildContext context) {
     return Column(
       children: [
-        InputField(
-            textEditingController: studentNameController,
-            hintText: "Student name"),
+        InputField(textEditingController: studentNameController, hintText: "Student name"),
         InputField(
           textEditingController: dateController,
           hintText: "Birth date",
@@ -118,21 +107,14 @@ class _FormStudentPageState extends State<FormStudentPage> {
               context: context,
               builder: (context) {
                 return ItemBottomSheet(
-                    child: inputDateTimePicker(
-                        title: "Set Birth Date",
-                        context: context,
-                        selectedTime: studentBirthDate,
-                        setTime: setBirthDate));
+                    child: inputDateTimePicker(title: "Set Birth Date", context: context, selectedTime: studentBirthDate, setTime: setBirthDate));
               },
             );
           },
           isReadOnly: true,
         ),
-        InputField(
-            textEditingController: studentAddressController,
-            hintText: "Home address"),
-        InputField(
-            textEditingController: studentEmailController, hintText: "E-mail"),
+        InputField(textEditingController: studentAddressController, hintText: "Home address"),
+        InputField(textEditingController: studentEmailController, hintText: "E-mail"),
         InputField(
           textEditingController: studentPhoneController,
           hintText: "Phone number",

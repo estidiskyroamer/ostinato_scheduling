@@ -9,8 +9,7 @@ import 'package:ostinato/models/instrument.dart';
 import 'package:ostinato/models/schedule_note.dart';
 import 'package:ostinato/models/user.dart';
 
-ScheduleList scheduleListFromJson(String str) =>
-    ScheduleList.fromJson(json.decode(str));
+ScheduleList scheduleListFromJson(String str) => ScheduleList.fromJson(json.decode(str));
 
 String scheduleListToJson(ScheduleList data) => json.encode(data.toJson());
 
@@ -26,8 +25,7 @@ class ScheduleList {
   });
 
   factory ScheduleList.fromJson(Map<String, dynamic> json) => ScheduleList(
-        data:
-            List<Schedule>.from(json["data"].map((x) => Schedule.fromJson(x))),
+        data: List<Schedule>.from(json["data"].map((x) => Schedule.fromJson(x))),
         message: json["message"],
         success: json["success"],
       );
@@ -47,6 +45,7 @@ class Schedule {
   final bool? isRescheduled;
   final String startTime;
   final String endTime;
+  final int? meetingNumber;
   final User student;
   final User teacher;
   final Instrument instrument;
@@ -60,6 +59,7 @@ class Schedule {
       this.isRescheduled,
       required this.startTime,
       required this.endTime,
+      this.meetingNumber,
       required this.student,
       required this.teacher,
       required this.instrument,
@@ -73,20 +73,18 @@ class Schedule {
       isRescheduled: json['isRescheduled'] == 1 ? true : false,
       startTime: _formatTime(json["startTime"]),
       endTime: _formatTime(json["endTime"]),
+      meetingNumber: json["meeting_number"],
       student: User.fromJson(json["student"]),
       teacher: User.fromJson(json["teacher"]),
       instrument: Instrument.fromJson(json["instrument"]),
-      scheduleNote: json["schedule_note"] == null
-          ? null
-          : ScheduleNote.fromJson(json["schedule_note"]));
+      scheduleNote: json["schedule_note"] == null ? null : ScheduleNote.fromJson(json["schedule_note"]));
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "date": DateFormat('yyyy-MM-dd').format(date),
         "createdBy": createdBy,
         "status": status,
-        if (isRescheduled != null)
-          "isRescheduled": isRescheduled == true ? 1 : 0,
+        if (isRescheduled != null) "isRescheduled": isRescheduled == true ? 1 : 0,
         "startTime": startTime,
         "endTime": endTime,
         "student": student.toJson(),

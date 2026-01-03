@@ -241,7 +241,7 @@ Container scheduleItem(DateTime currentTime, Schedule schedule, BuildContext con
                 ],
               ),
               Text(
-                schedule.instrument.name,
+                "${schedule.instrument.name} | session #${schedule.meetingNumber}",
                 style: Theme.of(context).textTheme.labelSmall!.merge(const TextStyle(color: Colors.grey)),
               ),
               schedule.scheduleNote != null
